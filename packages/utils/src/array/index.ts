@@ -13,3 +13,5 @@ export const chunk = <T>(arr: T[], size: number): T[][] => {
     arr.slice(i * size, i * size + size),
   );
 };
+
+export { diffRows } from './diff';
