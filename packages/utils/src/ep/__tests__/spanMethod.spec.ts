@@ -1,7 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest';
 import { ref } from 'vue';
-import { spanMethodBuilder } from '../spanMethod';
-import { SpanMethodProps } from '../spanMethod/methods';
+import { spanMethodBuilder, SpanMethodProps } from '../spanMethod';
 
 describe('spanMethodBuilder', () => {
   // 辅助函数：创建 SpanMethodProps
