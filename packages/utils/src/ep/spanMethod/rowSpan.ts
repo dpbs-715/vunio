@@ -1,6 +1,6 @@
 import { MaybeRef, toValue } from 'vue';
 import { createCacheManager } from './cache';
-import type { SpanMethod, SpanMethodProps, SpanCache, MergeArea, ColumnMergeAreas } from './types';
+import type { SpanMethod, SpanMethodProps, SpanCache, ColumnMergeAreas } from './types';
 import { calculateRowMergeFingerprint } from './utils';
 
 /**

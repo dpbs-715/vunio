@@ -4,7 +4,6 @@ import { createColSpanMethod } from './colSpan';
 import { createRowSpanMethod } from './rowSpan';
 import type { MergeGroup, SpanMethod } from './types';
 
-// 重新导出类型和函数供外部使用
 export type { SpanMethod, SpanMethodProps, MergeGroup } from './types';
 export { createRowSpanMethod } from './rowSpan';
 export { createColSpanMethod } from './colSpan';
