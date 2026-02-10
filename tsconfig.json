@@ -2,13 +2,19 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
+    "resolveJsonModule": true,
     "moduleResolution": "Node",
     "strict": true,
     "jsx": "preserve",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["vite/client", "vue"]
+    "types": ["vite/client", "vue", "node"]
   },
-  "include": ["./packages/**/*", "./playground/**/*", "./apps/docs/examples/**/*"],
+  "include": [
+    "./packages/**/*",
+    "./playground/**/*",
+    "./apps/docs/examples/**/*",
+    "./scripts/**/*"
+  ],
   "exclude": ["node_modules"]
 }

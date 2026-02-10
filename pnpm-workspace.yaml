@@ -1,18 +1,17 @@
 packages:
-  - 'apps/*'
-  - 'packages/*'
-  - 'packages/lint-configs/*'
-  - 'playground'
-  - 'build'
+  - apps/*
+  - packages/*
+  - packages/lint-configs/*
+  - playground
+  - build
+
 catalog:
-  # Core Framework - 核心框架（使用 catalog: 引用）
   vue: ^3.5.13
   vue-router: ^4.5.1
   typescript: ^5.7.3
-  '@types/node': ^22.13.4
+  '@types/node': 22.19.10
 
 catalogs:
-  # Build Tools - 构建工具（使用 catalog:build 引用）
   build:
     vite: ^7.1.11
     '@vitejs/plugin-vue': ^5.2.1
@@ -35,8 +34,6 @@ catalogs:
     gulp-clean: ^0.4.0
     rimraf: ^6.0.1
     ts-node: ^10.9.2
-
-  # UI Frameworks - UI 框架（使用 catalog:ui 引用）
   ui:
     element-plus: ^2.13.0
     '@element-plus/icons-vue': ^2.3.1
@@ -54,10 +51,7 @@ catalogs:
     '@codemirror/view': ^6.38.5
     jsep: ^1.4.0
     resize-observer-polyfill: ^1.5.1
-
-  # Development Tools - 开发工具（使用 catalog:dev 引用）
   dev:
-    # Linting
     eslint: ^9.20.1
     '@eslint/js': 9.20.0
     eslint-plugin-vue: ^9.32.0
@@ -69,26 +63,24 @@ catalogs:
     stylelint-config-standard: ^37.0.0
     stylelint-config-standard-scss: ^14.0.0
     stylelint-scss: ^6.11.0
-    # Git Hooks
     '@changesets/cli': ^2.27.12
     '@commitlint/cli': ^19.7.1
     '@commitlint/config-conventional': ^19.7.1
     husky: ^9.1.7
     lint-staged: ^15.4.3
-    # Testing
     vitest: ^3.0.5
     '@vitest/coverage-v8': ^3.2.4
     '@vue/test-utils': ^2.4.6
     jsdom: ^25.0.1
-
-  # Styles - 样式工具（使用 catalog:styles 引用）
   styles:
     sass: ^1.85.0
     postcss: ^8.5.2
     postcss-html: ^1.8.0
     postcss-scss: ^4.0.9
-
-  # Documentation - 文档工具（使用 catalog:docs 引用）
   docs:
     vitepress: ^1.6.3
     vitepress-demo-plugin: ^1.2.3
+  cli:
+    cac: ^6.7.14
+    '@clack/prompts': ^1.0.0
+    picocolors: ^1.1.1
