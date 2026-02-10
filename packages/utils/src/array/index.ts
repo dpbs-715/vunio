@@ -15,3 +15,4 @@ export const chunk = <T>(arr: T[], size: number): T[][] => {
 };
 
 export { diffRows } from './diff';
+export { sortBy, type SortOption } from './sort';
