@@ -1,17 +1,18 @@
 import { cac } from 'cac';
 import { intro } from '@clack/prompts';
 import color from 'picocolors';
-import pkg from '../../package.json';
-import { runCommand } from './command';
+import { run } from './run';
+import { __name__, __version__ } from './config';
+import './commands/register';
 
-const cli = cac('d-cli');
+const cli = cac(__name__);
 
-cli.command('', 'run d-cli').action(async () => {
-  intro(`${color.bgCyan(color.black(' d-cli '))}`);
-  runCommand();
+cli.command('').action(async () => {
+  intro(`${color.bgCyan(color.black(__name__))}`);
+  await run();
 });
 
 cli.help();
-cli.version(pkg.version);
+cli.version(__version__);
 
 cli.parse();

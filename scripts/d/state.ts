@@ -1,4 +1,5 @@
-export const CliState = {
-  __Running__: true,
-  deep: 0,
+import { menus } from './config';
+
+export const State = {
+  stack: [menus],
 };
