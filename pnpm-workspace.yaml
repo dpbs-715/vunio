@@ -84,3 +84,4 @@ catalogs:
     cac: ^6.7.14
     '@clack/prompts': ^1.0.0
     picocolors: ^1.1.1
+    tsx: ^4.21.0
