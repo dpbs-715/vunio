@@ -28,7 +28,7 @@ export const CommonSelectProviderProps = {
   },
   //只有一条数据时自动选中
   autoSelect: {
-    type: [Boolean, String as PropType<'one' | 'first' | 'last'>],
+    type: [Boolean, String] as PropType<boolean | 'one' | 'first' | 'last'>,
     default: false,
   },
   //是否多选

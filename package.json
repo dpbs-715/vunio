@@ -63,7 +63,7 @@
     "rollup": "catalog:build",
     "stylelint": "catalog:dev",
     "ts-node": "catalog:build",
-    "tsx": "^4.21.0",
+    "tsx": "catalog:cli",
     "turbo": "catalog:build",
     "typescript": "catalog:",
     "vue": "catalog:"
