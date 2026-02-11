@@ -1,4 +1,4 @@
-import { log } from '@clack/prompts';
+import { log, spinner } from '@clack/prompts';
 
 type Index = () => Promise<void> | void;
 
@@ -20,5 +20,10 @@ export async function runHandler(name: string) {
 }
 
 export async function runCommand(cmd: string) {
-  console.log(`exe=> ${cmd}`);
+  const s = spinner();
+  s.start('Loading...');
+
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  s.stop('Done!');
 }
