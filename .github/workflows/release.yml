@@ -65,7 +65,7 @@ jobs:
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v1.4.7
         with:
           # 这会在有 changeset 时创建 "Version Packages" PR
           # 当 PR 合并后会自动发布到 npm
