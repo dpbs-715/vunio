@@ -13,6 +13,7 @@ permissions:
   contents: write # 允许创建 release 和推送代码
   pull-requests: write # 允许创建 PR
   issues: write # 允许创建 issues
+  id-token: write
 
 jobs:
   release:
@@ -29,6 +30,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          registry-url: https://registry.npmjs.org
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
