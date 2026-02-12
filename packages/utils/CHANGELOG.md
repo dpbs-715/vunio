@@ -1,5 +1,11 @@
 # dlib-utils
 
+## 1.2.4
+
+### Patch Changes
+
+- 4d5e814: 修复了一些问题，添加常用 utils
+
 ## 1.2.3
 
 ### Patch Changes
