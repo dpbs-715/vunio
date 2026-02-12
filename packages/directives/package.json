@@ -8,6 +8,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dpbs-715/d-ui"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "provenance": true
