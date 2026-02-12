@@ -1,0 +1,90 @@
+name: 🚀 Release
+
+on:
+  push:
+    branches:
+      - master
+
+# 并发控制，确保同一时间只有一个发布流程在运行
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+# 权限设置
+permissions:
+  contents: write # 允许创建 release 和推送代码
+  pull-requests: write # 允许创建 PR
+  issues: write # 允许创建 issues
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          # 需要完整的 git 历史来生成 changelog
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Run tests
+        run: |
+          # 只测试有测试脚本的包
+          cd packages/utils && pnpm test
+        continue-on-error: false
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          # 这会在有 changeset 时创建 "Version Packages" PR
+          # 当 PR 合并后会自动发布到 npm
+          publish: pnpm publish
+          title: 'chore: version packages'
+          commit: 'chore: version packages'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          echo "Packages published:"
+          echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[] | "- \(.name)@\(.version)"' > release_notes.txt
+
+          # 获取第一个发布的包的版本号作为 release tag
+          VERSION=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[0].version')
+
+          gh release create "v${VERSION}" \
+            --title "Release v${VERSION}" \
+            --notes-file release_notes.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

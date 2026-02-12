@@ -23,7 +23,8 @@
     "build": "turbo run build",
     "build:docs": "pnpm -F @DLib/docs run build",
     "build:gulp": "gulp -f build/gulpfile.js",
-    "changeset:version": "pnpm changeset && pnpm changeset version",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
     "publish": "turbo run runPublish",
     "lint:eslint": "eslint --max-warnings 0 \"**/*.{ts,tsx,js,jsx,cjs,mjs,vue}\" --fix",
     "lint:format": "prettier --write \"**/*.{js,jsx,cjs,ts,tsx,mjs,mts,md,vue,scss,css,less,html,json}\"",
@@ -33,7 +34,7 @@
     "deps:update": "pnpm update -r --latest",
     "deps:check": "pnpm outdated -r",
     "preinstall": "npx only-allow pnpm",
-    "postinstall": "turbo run build",
+    "postinstall": "test -n \"$CI\" || turbo run build",
     "prepare": "husky install",
     "rename-pkg:mac": "bash ./scripts/rename-package.sh"
   },
