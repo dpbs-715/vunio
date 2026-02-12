@@ -8,6 +8,7 @@
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
   "ignore": [
+    "d-ui",
     "@DLib/build",
     "@DLib/playground",
     "@DLib/docs",

@@ -2,6 +2,7 @@
   "name": "d-ui",
   "description": "This is a modern component library template based on Turborepo + Vue 3.5 + TypeScript.",
   "version": "0.0.1",
+  "private": true,
   "packageManager": "pnpm@10.12.4",
   "author": "dpbs <840886454@qq.com>",
   "keywords": [
