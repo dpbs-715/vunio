@@ -3,7 +3,7 @@ name: 🚀 Release
 on:
   push:
     branches:
-      - main
+      - master
 
 # 并发控制，确保同一时间只有一个发布流程在运行
 concurrency: ${{ github.workflow }}-${{ github.ref }}
@@ -33,7 +33,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: latest
+          # 不指定版本，使用 package.json 中的 packageManager 字段
           run_install: false
 
       - name: Get pnpm store directory
