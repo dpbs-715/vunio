@@ -7,5 +7,13 @@
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": ["@DLib/build", "@DLib/playground", "@DLib/docs"]
+  "ignore": [
+    "@DLib/build",
+    "@DLib/playground",
+    "@DLib/docs",
+    "@DLib/commitlint-config",
+    "@DLib/eslint-config",
+    "@DLib/prettier-config",
+    "@DLib/stylelint-config"
+  ]
 }
