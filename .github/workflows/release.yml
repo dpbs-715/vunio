@@ -3,7 +3,7 @@ name: 🚀 Release
 on:
   push:
     branches:
-      - master
+      - main
 
 # 并发控制，确保同一时间只有一个发布流程在运行
 concurrency: ${{ github.workflow }}-${{ github.ref }}
