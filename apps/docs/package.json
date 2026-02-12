@@ -1,6 +1,7 @@
 {
   "name": "@DLib/docs",
   "version": "1.0.0",
+  "private": true,
   "description": "组件库模板说明文档",
   "main": "index.js",
   "scripts": {
