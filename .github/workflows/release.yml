@@ -69,7 +69,7 @@ jobs:
         with:
           # 这会在有 changeset 时创建 "Version Packages" PR
           # 当 PR 合并后会自动发布到 npm
-          publish: pnpm changeset publish --no-git-tag
+          publish: pnpm changeset publish
           title: 'chore: version packages'
           commit: 'chore: version packages'
         env:
