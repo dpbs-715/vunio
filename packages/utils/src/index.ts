@@ -8,4 +8,5 @@ export * from './clone';
 export * from './translate';
 export * from './parse';
 export * from './ep';
+export * from './function';
 export { version } from './version';

@@ -83,6 +83,7 @@ export const en = defineConfig({
           { text: 'String Utilities', link: '/en/packages/utils/string/' },
           { text: 'Array Utilities', link: '/en/packages/utils/array/' },
           { text: 'Type Checking', link: '/en/packages/utils/is/' },
+          { text: 'Function Utilities', link: '/en/packages/utils/function/' },
           { text: 'Async Wrapper', link: '/en/packages/utils/async/' },
           { text: 'Cache', link: '/en/packages/utils/cache/' },
           { text: 'Clone', link: '/en/packages/utils/clone/' },

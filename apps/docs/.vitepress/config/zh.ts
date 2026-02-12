@@ -83,6 +83,7 @@ export const zh = defineConfig({
           { text: '字符串工具', link: '/packages/utils/string/' },
           { text: '数组工具', link: '/packages/utils/array/' },
           { text: '类型判断工具', link: '/packages/utils/is/' },
+          { text: '函数式工具', link: '/packages/utils/function/' },
           { text: '异步任务包装器', link: '/packages/utils/async/' },
           { text: '缓存工具', link: '/packages/utils/cache/' },
           { text: '克隆工具', link: '/packages/utils/clone/' },
