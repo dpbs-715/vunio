@@ -30,8 +30,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: https://registry.npmjs.org
-          always-auth: true
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -70,7 +69,7 @@ jobs:
         with:
           # 这会在有 changeset 时创建 "Version Packages" PR
           # 当 PR 合并后会自动发布到 npm
-          publish: pnpm changeset publish
+          publish: pnpm changeset publish --no-git-tag
           title: 'chore: version packages'
           commit: 'chore: version packages'
         env:
