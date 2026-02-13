@@ -166,19 +166,19 @@ const mockFetch = vi.fn().mockResolvedValue({ data: [] });
 
 # 运行所有测试
 
-pnpm -F dlib-ui run test
+pnpm -F @vunio/ui run test
 
 # 监听模式
 
-pnpm -F dlib-ui run test:watch
+pnpm -F @vunio/ui run test:watch
 
 # 生成覆盖率报告
 
-pnpm -F dlib-ui run test:coverage
+pnpm -F @vunio/ui run test:coverage
 
 # 运行特定文件
 
-pnpm -F dlib-ui run test Button.spec.ts
+pnpm -F @vunio/ui run test Button.spec.ts
 \`\`\`
 
 ## 测试覆盖率目标

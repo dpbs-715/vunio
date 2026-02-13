@@ -1,6 +1,6 @@
 import type { PropType, VNode } from 'vue';
 import { defineComponent, h, ref, watch } from 'vue';
-import { useIntersectionObserver } from 'dlib-hooks';
+import { useIntersectionObserver } from '@vunio/hooks';
 
 export interface LazyRenderProps extends IntersectionObserverInit {
   /**

@@ -1,4 +1,4 @@
-# dlib-ui
+# @vunio/ui
 
 ## 1.2.4
 

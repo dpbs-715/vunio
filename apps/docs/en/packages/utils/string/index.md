@@ -5,7 +5,7 @@
 > Determines if a value is a string.
 
 ```ts
-import { isString } from 'dlib-utils';
+import { isString } from '@vunio/utils';
 
 isString('hello'); // true
 isString(123); // false

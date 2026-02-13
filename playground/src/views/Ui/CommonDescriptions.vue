@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DescriptionsConfig } from 'dlib-ui';
+import type { DescriptionsConfig } from '@vunio/ui';
 import { reactive } from 'vue';
 import CommonDescriptions from '~/components/Descriptions/src/Descriptions.vue';
 
@@ -38,10 +38,7 @@ const config: DescriptionsConfig[] = reactive([
 
 <template>
   {{ formData }}
-  <CommonDescriptions
-    v-model="formData"
-    :config="config"
-  />
+  <CommonDescriptions v-model="formData" :config="config" />
 </template>
 
 <style scoped></style>

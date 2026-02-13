@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { CommonForm, type CommonFormConfig, renderDialog } from '~/dlib-ui';
+import { CommonForm, type CommonFormConfig, renderDialog } from '~/@vunio/ui';
 import { h, ref } from 'vue';
-import { useConfigs } from '~/dlib-hooks';
+import { useConfigs } from '~/@vunio/hooks';
 
 const { config } = useConfigs<CommonFormConfig>([
   {

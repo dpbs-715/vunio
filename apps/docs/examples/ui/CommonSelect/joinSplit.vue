@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { CommonForm } from 'dlib-ui';
-import { useMixConfig } from 'dlib-hooks';
+import { CommonForm } from '@vunio/ui';
+import { useMixConfig } from '@vunio/hooks';
 
 const formData = ref({});
 const options: any = reactive([]);
@@ -31,10 +31,7 @@ const { form } = useMixConfig([
 <template>
   {{ formData }}
   <el-divider />
-  <CommonForm
-    v-model="formData"
-    :config="form.config"
-  />
+  <CommonForm v-model="formData" :config="form.config" />
 </template>
 
 <style scoped></style>

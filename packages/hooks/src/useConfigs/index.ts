@@ -11,10 +11,11 @@ import {
   unref,
   watch,
 } from 'vue';
-import type { baseConfig } from 'dlib-ui';
+import type { baseConfig } from '@vunio/ui';
 
-export interface useConfigsResultType<T extends Omit<baseConfig, 'component'>>
-  extends UseConfigsTuple<T> {
+export interface useConfigsResultType<
+  T extends Omit<baseConfig, 'component'>,
+> extends UseConfigsTuple<T> {
   config: Reactive<T[]>;
   setHidden: (fields: string[], state: boolean) => void;
   setDisabled: (fields: string[], state: boolean) => void;

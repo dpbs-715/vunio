@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { useEventListener } from 'dlib-hooks';
+import { useEventListener } from '@vunio/hooks';
 import { ref } from 'vue';
 
 const boxRef = ref();

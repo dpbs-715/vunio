@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CreateComponent, type Config, registerComponentDefaultEventsMap } from 'dlib-ui';
+import { CreateComponent, type Config, registerComponentDefaultEventsMap } from '@vunio/ui';
 registerComponentDefaultEventsMap({
   input: {
     onClick: () => {

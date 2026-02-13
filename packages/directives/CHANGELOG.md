@@ -1,4 +1,4 @@
-# dlib-directives
+# @vunio/directives
 
 ## 1.2.4
 

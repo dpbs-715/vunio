@@ -15,7 +15,7 @@ export const en = defineConfig({
         items: [
           {
             text: 'Changelog',
-            link: 'https://github.com/dpbs-715/d-ui/blob/master/CHANGELOG.md',
+            link: 'https://github.com/dpbs-715/vunio/blob/master/CHANGELOG.md',
           },
           // {
           //   text: 'Contribute',
@@ -38,7 +38,7 @@ export const en = defineConfig({
         items: [{ text: 'Color', link: '/en/basic/' }],
       },
       {
-        text: 'Components (dlib-ui)',
+        text: 'Components (@vunio/ui)',
         items: [
           { text: 'Button', link: '/en/packages/ui/button/' },
           { text: 'Dialog', link: '/en/packages/ui/dialog/' },
@@ -59,7 +59,7 @@ export const en = defineConfig({
         ],
       },
       {
-        text: 'Hooks (dlib-hooks)',
+        text: 'Hooks (@vunio/hooks)',
         items: [
           { text: 'useCounter', link: '/en/packages/hooks/useCounter/' },
           { text: 'useRefCollect', link: '/en/packages/hooks/useRefCollect/' },
@@ -71,14 +71,14 @@ export const en = defineConfig({
         ],
       },
       {
-        text: 'Directives (dlib-directives)',
+        text: 'Directives (@vunio/directives)',
         items: [
           { text: 'vFocus', link: '/en/packages/directives/vFocus/' },
           { text: 'vTrunced', link: '/en/packages/directives/vTrunced/' },
         ],
       },
       {
-        text: 'Utilities (dlib-utils)',
+        text: 'Utilities (@vunio/utils)',
         items: [
           { text: 'String Utilities', link: '/en/packages/utils/string/' },
           { text: 'Array Utilities', link: '/en/packages/utils/array/' },

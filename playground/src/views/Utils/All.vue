@@ -2,10 +2,7 @@
   <div class="utils-list">
     工具函数汇总：
     <el-space direction="vertical">
-      <div
-        v-for="item in allUtils"
-        :key="item.name"
-      >
+      <div v-for="item in allUtils" :key="item.name">
         <div>{{ item.name }}()</div>
       </div>
     </el-space>
@@ -13,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import * as utils from 'dlib-utils';
+import * as utils from '@vunio/utils';
 
 const allUtils = Object.entries(utils).map(([name, fn], index) => {
   return {

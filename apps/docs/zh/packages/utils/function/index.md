@@ -7,7 +7,7 @@
 ### 基础用法
 
 ```ts
-import { curry } from 'dlib-utils';
+import { curry } from '@vunio/utils';
 
 const add = (a: number, b: number, c: number) => a + b + c;
 const curriedAdd = curry(add);
@@ -26,7 +26,7 @@ curriedAdd(1, 2, 3); // 6
 ### 部分应用
 
 ```ts
-import { curry } from 'dlib-utils';
+import { curry } from '@vunio/utils';
 
 const add = (a: number, b: number, c: number) => a + b + c;
 const curriedAdd = curry(add);
@@ -45,7 +45,7 @@ add5And3(2); // 10
 使用 `__` 占位符可以跳过某些参数位置，稍后再填充。
 
 ```ts
-import { curry, __ } from 'dlib-utils';
+import { curry, __ } from '@vunio/utils';
 
 // 固定第二个参数
 const divide = (a: number, b: number) => a / b;
@@ -75,7 +75,7 @@ addBrackets('World'); // "[World]"
 ### 复杂场景
 
 ```ts
-import { curry, __ } from 'dlib-utils';
+import { curry, __ } from '@vunio/utils';
 
 const replace = (search: string, replacement: string, text: string) =>
   text.replace(search, replacement);
@@ -95,7 +95,7 @@ replaceWorldWithVue('World is big'); // "Vue is big"
 ### 数组操作
 
 ```ts
-import { curry, __ } from 'dlib-utils';
+import { curry, __ } from '@vunio/utils';
 
 // map 操作
 const multiply = curry((a: number, b: number) => a * b);
@@ -122,7 +122,7 @@ const divideBy2 = divideBy(2);
 ### 函数组合
 
 ```ts
-import { curry } from 'dlib-utils';
+import { curry } from '@vunio/utils';
 
 const add = curry((a: number, b: number) => a + b);
 const multiply = curry((a: number, b: number) => a * b);
@@ -138,7 +138,7 @@ addThenDouble(3); // 16 ((3 + 5) * 2)
 ### 自定义参数数量
 
 ```ts
-import { curry } from 'dlib-utils';
+import { curry } from '@vunio/utils';
 
 // 对于使用 rest 参数的函数，需要手动指定参数数量
 const sum = (...args: number[]) => args.reduce((a, b) => a + b, 0);
@@ -178,7 +178,7 @@ const __: unique symbol;
 ### 类型支持
 
 ```ts
-import { curry, type Curry, type Placeholder } from 'dlib-utils';
+import { curry, type Curry, type Placeholder } from '@vunio/utils';
 
 // Curry 类型
 type AddFn = (a: number, b: number, c: number) => number;

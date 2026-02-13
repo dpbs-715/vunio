@@ -11,7 +11,7 @@ The simplest way to merge rows with identical values:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { spanMethodBuilder } from 'dlib-utils/ep';
+import { spanMethodBuilder } from '@vunio/utils/ep';
 
 const tableData = ref([
   { province: 'Zhejiang', city: 'Hangzhou', area: 'Xihu' },
@@ -252,7 +252,7 @@ const spanMethod = spanMethodBuilder()
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { spanMethodBuilder } from 'dlib-utils/ep';
+import { spanMethodBuilder } from '@vunio/utils/ep';
 
 const version = ref(0);
 const tableData = ref([
@@ -447,7 +447,7 @@ If you previously used `spanMethodBuilder()` and `createColSpanMethod()`, the ne
 
 ```ts
 // ❌ Old Way - Verbose, repeated configuration
-import { spanMethodBuilder, createColSpanMethod, composeSpanMethods } from 'dlib-utils/ep';
+import { spanMethodBuilder, createColSpanMethod, composeSpanMethods } from '@vunio/utils/ep';
 
 const spanMethod = composeSpanMethods(
   spanMethodBuilder({
@@ -469,7 +469,7 @@ const spanMethod = composeSpanMethods(
 );
 
 // ✅ New Way - Elegant, clear
-import { spanMethodBuilder } from 'dlib-utils/ep';
+import { spanMethodBuilder } from '@vunio/utils/ep';
 
 const spanMethod = spanMethodBuilder()
   .withData(tableData)

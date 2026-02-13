@@ -1,6 +1,6 @@
 import { useConfigs, useConfigsResultType } from '../useConfigs';
-import { CommonFormConfig, CommonTableConfig, CommonTableLayoutConfig } from 'dlib-ui';
-import { deepClone } from 'dlib-utils';
+import { CommonFormConfig, CommonTableConfig, CommonTableLayoutConfig } from '@vunio/ui';
+import { deepClone } from '@vunio/utils';
 import { Reactive, reactive, Ref, ref } from 'vue';
 
 export interface mixResultType {

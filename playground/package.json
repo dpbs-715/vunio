@@ -1,5 +1,5 @@
 {
-  "name": "@DLib/playground",
+  "name": "@vunio/playground",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,11 +8,11 @@
     "clean": "rimraf .turbo node_modules dist"
   },
   "dependencies": {
-    "dlib-directives": "workspace:*",
-    "dlib-hooks": "workspace:*",
-    "@DLib/typescript-config": "workspace:*",
-    "dlib-ui": "workspace:*",
-    "dlib-utils": "workspace:*",
+    "@vunio/directives": "workspace:*",
+    "@vunio/hooks": "workspace:*",
+    "@vunio/typescript-config": "workspace:*",
+    "@vunio/ui": "workspace:*",
+    "@vunio/utils": "workspace:*",
     "vue": "catalog:",
     "vue-router": "catalog:",
     "element-plus": "catalog:ui",

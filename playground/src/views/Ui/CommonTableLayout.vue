@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { useMixConfig } from 'dlib-hooks/src/useMixConfig';
+import { useMixConfig } from '@vunio/hooks/src/useMixConfig';
 const queryParams = reactive({
   pageNo: 1,
   pageSize: 10,
@@ -56,11 +56,7 @@ function searchFun() {
 <template>
   <CommonTableLayout>
     <template #search>
-      <CommonSearch
-        v-model="queryParams"
-        :config="search.config"
-        @search="searchFun"
-      />
+      <CommonSearch v-model="queryParams" :config="search.config" @search="searchFun" />
     </template>
     <template #operation-left>
       <CommonButton type="primary">

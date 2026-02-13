@@ -5,7 +5,7 @@ import {
   type Config,
   registerComponentDefaultSlotsMap,
   registerComponent,
-} from 'dlib-ui';
+} from '@vunio/ui';
 import { ElInput } from 'element-plus';
 
 registerComponent({

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CreateComponent, type Config } from 'dlib-ui';
+import { CreateComponent, type Config } from '@vunio/ui';
 const config = ref<Config>({
   component: 'test',
 });
@@ -11,10 +11,7 @@ const config = ref<Config>({
     测试
   </CreateComponent>
 
-  <CreateComponent
-    empty-text="没有组件"
-    :config="config"
-  >
+  <CreateComponent empty-text="没有组件" :config="config">
     测试
   </CreateComponent>
 </template>

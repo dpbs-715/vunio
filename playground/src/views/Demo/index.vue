@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
+import { useConfigs } from '@vunio/hooks/src/useConfigs';
 import type { CommonFormConfig } from '~/components';
 const options = ref([
   {

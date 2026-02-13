@@ -1,1 +1,1 @@
-export { default } from '@DLib/eslint-config';
+export { default } from '@vunio/eslint-config';

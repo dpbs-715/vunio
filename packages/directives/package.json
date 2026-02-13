@@ -1,7 +1,7 @@
 {
-  "name": "dlib-directives",
+  "name": "@vunio/directives",
   "version": "1.2.4",
-  "description": "@DLib directives library",
+  "description": "@vunio directives library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/dpbs-715/d-ui"
+    "url": "https://github.com/dpbs-715/vunio"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -22,7 +22,7 @@
     "runPublish": "pnpm publish"
   },
   "devDependencies": {
-    "@DLib/typescript-config": "workspace:*",
+    "@vunio/typescript-config": "workspace:*",
     "@rollup/plugin-json": "catalog:build",
     "@rollup/plugin-terser": "catalog:build",
     "rollup": "catalog:build",

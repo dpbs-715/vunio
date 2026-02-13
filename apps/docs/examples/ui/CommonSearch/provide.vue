@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { CommonSearch, type CommonFormConfig } from 'dlib-ui';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
+import { CommonSearch, type CommonFormConfig } from '@vunio/ui';
+import { useConfigs } from '@vunio/hooks/src/useConfigs';
 import { provide, ref } from 'vue';
 const queryParams = ref({
   pageNo: 1,
@@ -66,11 +66,7 @@ provide('search', searchFun);
 </script>
 
 <template>
-  <CommonSearch
-    v-model="queryParams"
-    :config="config"
-    @reset="resetFun"
-  />
+  <CommonSearch v-model="queryParams" :config="config" @reset="resetFun" />
   <el-divider />
   {{ queryParams }}
   <el-divider />

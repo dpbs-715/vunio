@@ -1,5 +1,5 @@
 import type { CommonFormConfig, CommonTableConfig } from '~/components';
-import { isArray, isFunction, isObject } from 'dlib-utils/src';
+import { isArray, isFunction, isObject } from '@vunio/utils/src';
 import { computed, type ComputedRef } from 'vue';
 import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap';
 import type { registerPropsMap } from '~/components';

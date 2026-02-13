@@ -1,1 +1,1 @@
-export { default } from '@DLib/commitlint-config';
+export { default } from '@vunio/commitlint-config';

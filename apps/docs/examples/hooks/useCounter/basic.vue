@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { useCounter } from 'dlib-hooks';
+import { useCounter } from '@vunio/hooks';
 
 const { count, increment, decrement } = useCounter();
 </script>

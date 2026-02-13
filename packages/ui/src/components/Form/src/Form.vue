@@ -16,7 +16,7 @@ import { ElForm, ElFormItem, ElRow, ElCol } from 'element-plus';
 import { configIterator, getRules, isHidden, useComponentProps } from '~/_utils/componentUtils.ts';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { provideFormContext } from './formContext.ts';
-import { isEmpty } from 'dlib-utils';
+import { isEmpty } from '@vunio/utils';
 
 defineOptions({
   name: 'CommonForm',

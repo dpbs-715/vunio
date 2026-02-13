@@ -5,7 +5,7 @@
 > Remove duplicate elements from an array.
 
 ```ts
-import { unique } from 'dlib-utils';
+import { unique } from '@vunio/utils';
 
 const arr = [1, 2, 2, 3, 3, 4];
 unique(arr); // [1, 2, 3, 4]
@@ -16,7 +16,7 @@ unique(arr); // [1, 2, 3, 4]
 > Split an array into chunks of specified size.
 
 ```ts
-import { chunk } from 'dlib-utils';
+import { chunk } from '@vunio/utils';
 
 const arr = [1, 2, 3, 4, 5, 6, 7];
 chunk(arr, 3); // [[1, 2, 3], [4, 5, 6], [7]]
@@ -27,7 +27,7 @@ chunk(arr, 3); // [[1, 2, 3], [4, 5, 6], [7]]
 > Compare two arrays and return added, updated, and deleted rows. Supports custom key and field comparison.
 
 ```ts
-import { diffRows } from 'dlib-utils';
+import { diffRows } from '@vunio/utils';
 
 const oldData = [
   { id: 1, name: 'Alice', age: 20 },
@@ -65,7 +65,7 @@ diffRows(oldData, newData, {
 > Sort an array with support for multiple fields and nested path access.
 
 ```ts
-import { sortBy } from 'dlib-utils';
+import { sortBy } from '@vunio/utils';
 
 const users = [
   { name: 'Alice', age: 25, score: { math: 90 } },

@@ -1,6 +1,6 @@
 {
   // 继承 Vite 配置
-  "extends": "@DLib/typescript-config/vite.json",
+  "extends": "@vunio/typescript-config/vite.json",
   "compilerOptions": {
     "module": "esnext",
     // 移除 .d.ts.map 文件映射

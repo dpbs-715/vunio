@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMixConfig } from 'dlib-hooks';
+import { useMixConfig } from '@vunio/hooks';
 const { table, search, form } = useMixConfig([
   {
     field: 'field1',

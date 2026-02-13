@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CommonTable, type CommonTableConfig } from 'dlib-ui';
-import { useConfigs } from 'dlib-hooks';
+import { CommonTable, type CommonTableConfig } from '@vunio/ui';
+import { useConfigs } from '@vunio/hooks';
 
 const { config } = useConfigs<CommonTableConfig>([
   {
@@ -63,12 +63,7 @@ function drag(p1, p2, evt) {
 </script>
 
 <template>
-  <CommonTable
-    v-model:data="tableData"
-    use-drag
-    :config="config"
-    @drag-end="drag"
-  />
+  <CommonTable v-model:data="tableData" use-drag :config="config" @drag-end="drag" />
 </template>
 
 <style scoped></style>

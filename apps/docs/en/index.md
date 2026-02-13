@@ -1,19 +1,19 @@
 ---
 layout: home
 hero:
-  name: DLib
+  name: vunio
   text: Component Library and Utility Template
   tagline: component library and utility.
   image:
     src: /logo.png
-    alt: DLib
+    alt: vunio
   actions:
     - theme: brand
       text: Get Started
       link: /en/guide/
     - theme: alt
       text: View on Github
-      link: https://github.com/dpbs-715/d-ui
+      link: https://github.com/dpbs-715/vunio
 
 features:
   - icon: 🛠️

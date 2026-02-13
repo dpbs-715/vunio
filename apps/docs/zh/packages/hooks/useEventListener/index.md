@@ -87,7 +87,7 @@ function useEventListener<E extends Event = Event>(
 
 ```vue
 <script setup lang="ts">
-import { useEventListener } from 'dlib-hooks';
+import { useEventListener } from '@vunio/hooks';
 
 useEventListener('keydown', (event) => {
   console.log('按下的键:', event.key);
@@ -99,7 +99,7 @@ useEventListener('keydown', (event) => {
 
 ```vue
 <script setup lang="ts">
-import { useEventListener } from 'dlib-hooks';
+import { useEventListener } from '@vunio/hooks';
 import { ref } from 'vue';
 
 const position = ref({ x: 0, y: 0 });
@@ -121,7 +121,7 @@ useEventListener('mousemove', (event) => {
 
 ```vue
 <script setup lang="ts">
-import { useEventListener } from 'dlib-hooks';
+import { useEventListener } from '@vunio/hooks';
 import { ref } from 'vue';
 
 const buttonRef = ref<HTMLButtonElement>();
@@ -142,7 +142,7 @@ useEventListener(buttonRef, 'click', () => {
 
 ```vue
 <script setup lang="ts">
-import { useEventListener } from 'dlib-hooks';
+import { useEventListener } from '@vunio/hooks';
 import { ref } from 'vue';
 
 const count = ref(0);
@@ -172,7 +172,7 @@ function handleStop() {
 
 ```vue
 <script setup lang="ts">
-import { useEventListener } from 'dlib-hooks';
+import { useEventListener } from '@vunio/hooks';
 
 // 使用捕获阶段
 useEventListener('click', handler, true);

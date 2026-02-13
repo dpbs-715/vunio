@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { useMixConfig } from 'dlib-hooks';
+import { useMixConfig } from '@vunio/hooks';
 import {
   CommonTableLayout,
   CommonSearch,
@@ -8,7 +8,7 @@ import {
   CommonTable,
   CommonPagination,
   registerComponentDefaultPropsMap,
-} from 'dlib-ui';
+} from '@vunio/ui';
 registerComponentDefaultPropsMap({
   CommonSearch: {
     col: {
@@ -65,11 +65,7 @@ function searchFun() {
 <template>
   <CommonTableLayout>
     <template #search>
-      <CommonSearch
-        v-model="queryParams"
-        :config="search.config"
-        @search="searchFun"
-      />
+      <CommonSearch v-model="queryParams" :config="search.config" @search="searchFun" />
     </template>
     <template #operation-left>
       <CommonButton type="primary">

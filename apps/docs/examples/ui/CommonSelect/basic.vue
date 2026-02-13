@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { CommonSelect, CommonTable, CommonForm } from 'dlib-ui';
-import { useMixConfig } from 'dlib-hooks';
+import { CommonSelect, CommonTable, CommonForm } from '@vunio/ui';
+import { useMixConfig } from '@vunio/hooks';
 
 const tableData = ref([{}]);
 const formData = ref({});
@@ -31,21 +31,11 @@ const { table, form } = useMixConfig([
   form中使用:{{ formData }}<br>
   table中使用:{{ tableData }}
   <el-divider>直接使用</el-divider>
-  <CommonSelect
-    v-model="value"
-    v-model:label="label"
-    :options="options"
-  />
+  <CommonSelect v-model="value" v-model:label="label" :options="options" />
   <el-divider>form中使用</el-divider>
-  <CommonForm
-    v-model="formData"
-    :config="form.config"
-  />
+  <CommonForm v-model="formData" :config="form.config" />
   <el-divider>table中使用</el-divider>
-  <CommonTable
-    :data="tableData"
-    :config="table.config"
-  />
+  <CommonTable :data="tableData" :config="table.config" />
 </template>
 
 <style scoped></style>

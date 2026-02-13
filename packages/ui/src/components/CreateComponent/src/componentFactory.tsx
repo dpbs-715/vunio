@@ -3,7 +3,7 @@ import type { Config, Props } from './cc.types';
 import { ComMap } from './comMap';
 import { ComponentInternalInstance } from '@vue/runtime-core';
 import { ExpandHandler } from '~/components/CreateComponent/src/factoryTool.tsx';
-import { isString } from 'dlib-utils';
+import { isString } from '@vunio/utils';
 import {
   componentDefaultEventsMap,
   componentDefaultPropsMap,

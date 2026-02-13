@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CommonForm, registerComponentDefaultPropsMap } from 'dlib-ui';
-import { useMixConfig } from 'dlib-hooks';
+import { CommonForm, registerComponentDefaultPropsMap } from '@vunio/ui';
+import { useMixConfig } from '@vunio/hooks';
 
 function getDictOptions(dictKey: string) {
   switch (dictKey) {
@@ -54,10 +54,7 @@ const { form } = useMixConfig([
 <template>
   {{ formData }}
   <el-divider />
-  <CommonForm
-    v-model="formData"
-    :config="form.config"
-  />
+  <CommonForm v-model="formData" :config="form.config" />
 </template>
 
 <style scoped></style>

@@ -1,8 +1,8 @@
 {
-  "extends": "@DLib/typescript-config/vite.json",
+  "extends": "@vunio/typescript-config/vite.json",
   "compilerOptions": {
     "skipLibCheck": true,
-    "types": ["vite/client", "dlib-ui/global.d.ts"],
+    "types": ["vite/client", "@vunio/ui/global.d.ts"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

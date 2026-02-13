@@ -1,6 +1,6 @@
 import { ComponentFunctionType, ComponentMap, ComponentType } from './cc.types';
 import { BaseMap, HtmlTags } from './baseMap';
-import { isFunction, isString } from 'dlib-utils';
+import { isFunction, isString } from '@vunio/utils';
 
 /**
  * 组件注册中心

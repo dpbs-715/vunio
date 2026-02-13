@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CommonForm } from 'dlib-ui';
-import { useMixConfig } from 'dlib-hooks';
+import { CommonForm } from '@vunio/ui';
+import { useMixConfig } from '@vunio/hooks';
 
 const formData = ref({});
 
@@ -28,10 +28,7 @@ const { form } = useMixConfig([
 </script>
 
 <template>
-  <CommonForm
-    v-model="formData"
-    :config="form.config"
-  />
+  <CommonForm v-model="formData" :config="form.config" />
 </template>
 
 <style scoped></style>

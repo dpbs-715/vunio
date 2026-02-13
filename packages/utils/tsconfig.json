@@ -1,5 +1,5 @@
 {
-  "extends": "@DLib/typescript-config/base.json",
+  "extends": "@vunio/typescript-config/base.json",
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "compilerOptions": {
     "target": "ESNext",

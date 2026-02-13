@@ -15,7 +15,7 @@ export const zh = defineConfig({
         items: [
           {
             text: '更新日志',
-            link: 'https://github.com/dpbs-715/d-ui/blob/master/CHANGELOG.md',
+            link: 'https://github.com/dpbs-715/vunio/blob/master/CHANGELOG.md',
           },
           // {
           //   text: '参与贡献',
@@ -38,7 +38,7 @@ export const zh = defineConfig({
         items: [{ text: 'Color色彩', link: '/basic/' }],
       },
       {
-        text: '组件（dlib-ui）',
+        text: '组件（@vunio/ui）',
         items: [
           { text: 'Button 按钮', link: '/packages/ui/button/' },
           { text: 'Dialog 弹窗', link: '/packages/ui/dialog/' },
@@ -59,7 +59,7 @@ export const zh = defineConfig({
         ],
       },
       {
-        text: 'Hooks（dlib-hooks）',
+        text: 'Hooks（@vunio/hooks）',
         items: [
           { text: 'useCounter 计数器', link: '/packages/hooks/useCounter/' },
           { text: 'useRefCollect 收集器', link: '/packages/hooks/useRefCollect/' },
@@ -71,14 +71,14 @@ export const zh = defineConfig({
         ],
       },
       {
-        text: '指令（dlib-directives）',
+        text: '指令（@vunio/directives）',
         items: [
           { text: 'vFocus 聚焦', link: '/packages/directives/vFocus/' },
           { text: 'vTrunced 是否截断', link: '/packages/directives/vTrunced/' },
         ],
       },
       {
-        text: '工具函数（dlib-utils）',
+        text: '工具函数（@vunio/utils）',
         items: [
           { text: '字符串工具', link: '/packages/utils/string/' },
           { text: '数组工具', link: '/packages/utils/array/' },

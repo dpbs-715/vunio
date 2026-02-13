@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
+import { useConfigs } from '@vunio/hooks/src/useConfigs';
 import type { CommonFormConfig } from '~/components';
 import { provide, reactive } from 'vue';
 const queryParams = reactive({
@@ -69,12 +69,7 @@ provide('search', searchFun);
 
 <template>
   {{ queryParams }}
-  <CommonSearch
-    v-model="queryParams"
-    :config="config"
-    @search="searchFun2"
-    @reset="resetFun"
-  />
+  <CommonSearch v-model="queryParams" :config="config" @search="searchFun2" @reset="resetFun" />
   <el-button @click="queryParams.pageNo++">
     下一页
   </el-button>

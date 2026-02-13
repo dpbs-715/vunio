@@ -1,8 +1,8 @@
 {
-  "extends": "@DLib/typescript-config/vite.json",
+  "extends": "@vunio/typescript-config/vite.json",
   "compilerOptions": {
     "skipLibCheck": true,
-    // "types": ["vite/client", "dlib-ui/global.d.ts"], // 已在env.d.ts引入了
+    // "types": ["vite/client", "@vunio/ui/global.d.ts"], // 已在env.d.ts引入了
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -17,9 +17,9 @@
     "paths": {
       "@/*": ["src/*"],
       "~/*": ["../packages/ui/src/*"],
-      "~/dlib-ui": ["../packages/ui/src/index.ts"],
-      "~/dlib-hooks": ["../packages/hooks/src/index.ts"]
-    },
+      "~/@vunio/ui": ["../packages/ui/src/index.ts"],
+      "~/@vunio/hooks": ["../packages/hooks/src/index.ts"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
   // "references": [{ "path": "./tsconfig.node.json" }]

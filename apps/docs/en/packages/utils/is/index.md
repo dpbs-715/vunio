@@ -5,7 +5,7 @@
 > Type checking utilities.
 
 ```ts
-import { is, isObject, isArray, isFunction, isNumber, isString, isEmpty } from 'dlib-utils';
+import { is, isObject, isArray, isFunction, isNumber, isString, isEmpty } from '@vunio/utils';
 is(obj, type); // Check type
 isObject(obj); // Check if object
 isArray(obj); // Check if array

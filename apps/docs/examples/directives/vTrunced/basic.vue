@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { vTrunced } from 'dlib-directives';
+import { vTrunced } from '@vunio/directives';
 import { ElDivider } from 'element-plus';
 import { ref } from 'vue';
 const obj = ref({

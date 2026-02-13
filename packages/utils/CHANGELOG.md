@@ -1,4 +1,4 @@
-# dlib-utils
+# @vunio/utils
 
 ## 1.2.4
 

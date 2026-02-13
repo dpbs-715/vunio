@@ -1,7 +1,7 @@
-import { deepClone } from 'dlib-utils';
+import { deepClone } from '@vunio/utils';
 import { createConfigsManager, useConfigsResultType } from '../useConfigs';
 import { onUnmounted, Reactive } from 'vue';
-import { baseConfig } from 'dlib-ui';
+import { baseConfig } from '@vunio/ui';
 
 /**
  * 带有 $key 属性的配置项类型

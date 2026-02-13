@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import type { CommonTableConfig } from '~/dlib-ui';
-import { useConfigs } from 'dlib-hooks';
-import { spanMethodBuilder } from 'dlib-utils/src';
+import type { CommonTableConfig } from '~/@vunio/ui';
+import { useConfigs } from '@vunio/hooks';
+import { spanMethodBuilder } from '@vunio/utils/src';
 
 const { config } = useConfigs<CommonTableConfig>([
   {

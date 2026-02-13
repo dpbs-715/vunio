@@ -1,4 +1,4 @@
-import { isObject } from 'dlib-utils/src';
+import { isObject } from '@vunio/utils/src';
 
 type PlainObject = Record<string, any>;
 

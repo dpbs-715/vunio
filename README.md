@@ -19,7 +19,7 @@ This is a modern component library based on `Turborepo + Vue 3.5 + TypeScript`, 
 - 🎯 Complete type hints to improve development experience
 - 🛠️ Rich utility functions and Hooks to improve development efficiency
 - 🔄 Support hot updates to enhance development experience
-- 🔧 Equipped with a one-click package renaming script to replace @DLib with your own package name
+- 🔧 Equipped with a one-click package renaming script to replace @vunio with your own package name
 - ⚡️ Based on Vite/Rollup to build ESM and CJS products
 - ❤️ Equipped with two packaging modes: unified packaging with gulp + rollup or individual package builds with rollup/vite, developers can choose based on their preference
 - 📝 Version and release management for multiple packages using changeset
@@ -43,10 +43,10 @@ Additionally, the project includes automated scripts and continuous integration 
 
 ```bash
 "dev": "turbo run dev", // Start the development environment for all packages
-"dev:docs": "pnpm -F @DLib/docs run dev", // Start the documentation application
-"dev:play": "pnpm -F @DLib/playground run dev", // Start the playground
+"dev:docs": "pnpm -F @vunio/docs run dev", // Start the documentation application
+"dev:play": "pnpm -F @vunio/playground run dev", // Start the playground
 "build": "turbo run build", // Build all packages
-"build:docs": "pnpm -F @DLib/docs run build", // Build the documentation application
+"build:docs": "pnpm -F @vunio/docs run build", // Build the documentation application
 "build:gulp": "gulp -f build/gulpfile.cjs", // Unified packaging script managed by gulp
 "format": "prettier --write \"**/*.{js,jsx,ts,tsx,mjs,mts,md,vue}\"", // Format all packages' code
 "clean": "turbo run clean --continue && rimraf .turbo dist && rm -rf node_modules", // Clean all packages
@@ -55,14 +55,14 @@ Additionally, the project includes automated scripts and continuous integration 
 "preinstall": "npx only-allow pnpm", // Ensure pnpm is used to install dependencies
 "postinstall": "turbo run build", // Run build after installing dependencies to ensure all packages are built and the project runs successfully
 "prepare": "husky install", // Install Husky hooks
-"rename-pkg": "bash ./scripts/rename-package.sh" // Rename packages in one go, e.g., @DLib -> @vue3-lib
+"rename-pkg": "bash ./scripts/rename-package.sh" // Rename packages in one go, e.g., @vunio -> @vue3-lib
 ```
 
 ## 🚀 Quick Start（Demo）
 
 ```bash
-# Please replace the following package names with your own. You can use the rename-pkg command to change @DLib to your own package name, for example: pnpm rename-pkg "@DLib" "@vue3-lib"
-pnpm add dlib-ui dlib-utils dlib-hooks dlib-directives
+# Please replace the following package names with your own. You can use the rename-pkg command to change @vunio to your own package name, for example: pnpm rename-pkg "@vunio" "@vue3-lib"
+pnpm add @vunio/ui @vunio/utils @vunio/hooks @vunio/directives
 
 # Example installation:
 pnpm add @hmflib/ui @hmflib/utils @hmflib/hooks @hmflib/directives

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { CommonForm, type CommonFormConfig } from 'dlib-ui';
+import { CommonForm, type CommonFormConfig } from '@vunio/ui';
 import { ElButton } from 'element-plus';
 
 const formRef = ref();
@@ -87,7 +87,7 @@ const resetForm = () => {
 
     <CommonForm ref="formRef" v-model="formData" :config="formConfig" />
 
-    <div style=" display: flex; gap: 8px;margin-top: 16px">
+    <div style="display: flex; gap: 8px; margin-top: 16px">
       <el-button type="primary" @click="loadFormDataCorrect">
         ✅ 正确：等待 ready 后加载数据
       </el-button>
@@ -99,7 +99,7 @@ const resetForm = () => {
       </el-button>
     </div>
 
-    <div style=" padding: 12px;margin-top: 16px; background: #f5f5f5; border-radius: 4px">
+    <div style="padding: 12px; margin-top: 16px; background: #f5f5f5; border-radius: 4px">
       <strong>表单数据：</strong>
       <pre>{{ JSON.stringify(formData, null, 2) }}</pre>
     </div>

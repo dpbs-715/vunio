@@ -2,7 +2,7 @@
 import { computed, defineComponent } from 'vue';
 import type { CommonSelectProps } from './Select.types';
 import { CommonSelectProviderProps } from './SelectProps.ts';
-import { isString } from 'dlib-utils';
+import { isString } from '@vunio/utils';
 import { RenderSelectClass } from './RenderSelectClass.tsx';
 
 export default defineComponent<CommonSelectProps>({

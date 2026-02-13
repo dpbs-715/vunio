@@ -1,5 +1,5 @@
 {
-  "name": "@DLib/commitlint-config",
+  "name": "@vunio/commitlint-config",
   "version": "0.0.1",
   "private": true,
   "type": "module",

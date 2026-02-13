@@ -7,7 +7,7 @@
 ```html
 <script setup lang="ts">
   import { reactive, ref } from 'vue';
-  import { useMixConfig } from 'dlib-hooks';
+  import { useMixConfig } from '@vunio/hooks';
   import { config } from './config.data';
   import dataForm from './dataForm.vue';
   const queryParams = reactive({
@@ -64,8 +64,8 @@
 
 ```html
 <script setup lang="ts">
-  import { useMixConfig, useRefCollect } from 'dlib-hooks';
-  import { CommonForm } from 'dlib-ui'; //因为和这项目组件名重了 在这指定下
+  import { useMixConfig, useRefCollect } from '@vunio/hooks';
+  import { CommonForm } from '@vunio/ui'; //因为和这项目组件名重了 在这指定下
   import { config } from './config.data';
   const { t } = useI18n();
 
@@ -116,7 +116,7 @@
 > config.data.ts配置文件
 
 ```ts
-import { CommonTableLayoutConfig } from 'dlib-ui';
+import { CommonTableLayoutConfig } from '@vunio/ui';
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict';
 
 export const config: CommonTableLayoutConfig[] = [

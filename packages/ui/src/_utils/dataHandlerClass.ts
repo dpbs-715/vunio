@@ -6,7 +6,7 @@ import {
   isEmpty,
   isFunction,
   isString,
-} from 'dlib-utils';
+} from '@vunio/utils';
 import {
   commonKeysMap,
   componentDefaultPropsMap,

@@ -5,7 +5,7 @@
 > Wraps asynchronous tasks to execute only once within a time range or use cache.
 
 ```ts
-import { asyncCache, CACHE_TYPE } from 'dlib-utils';
+import { asyncCache, CACHE_TYPE } from '@vunio/utils';
 
 export function getApi(query) {
   return axios({

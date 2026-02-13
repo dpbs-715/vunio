@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { useRefCollect } from 'dlib-hooks/src/useRefCollect';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
+import { useRefCollect } from '@vunio/hooks/src/useRefCollect';
+import { useConfigs } from '@vunio/hooks/src/useConfigs';
 import type { CommonFormConfig } from '~/components';
 const { handleRef, getRefsValidateArr, clearRefsValidate } = useRefCollect();
 const { config } = useConfigs<CommonFormConfig>([
@@ -74,17 +74,9 @@ function clear() {
 
 <template>
   {{ formData }}
-  <CommonForm
-    :ref="(el) => handleRef(el, 'form1')"
-    v-model="formData"
-    :config="config"
-  />
+  <CommonForm :ref="(el) => handleRef(el, 'form1')" v-model="formData" :config="config" />
 
-  <CommonForm
-    :ref="(el) => handleRef(el, 'form2')"
-    v-model="formData2"
-    :config="config"
-  />
+  <CommonForm :ref="(el) => handleRef(el, 'form2')" v-model="formData2" :config="config" />
   <el-button @click="submit">
     校验
   </el-button>

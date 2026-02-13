@@ -5,7 +5,7 @@ import {
   type Config,
   registerComponentDefaultPropsMap,
   registerComponent,
-} from 'dlib-ui';
+} from '@vunio/ui';
 import { ElInput } from 'element-plus';
 
 registerComponent({
@@ -33,10 +33,7 @@ const config2 = ref<Config>({
   <el-divider />
   <CreateComponent :config="config2" />
   <el-divider />
-  <CreateComponent
-    :config="config"
-    placeholder="复写2"
-  />
+  <CreateComponent :config="config" placeholder="复写2" />
 </template>
 
 <style scoped></style>
