@@ -54,6 +54,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
+      - name: Build packages
+        run: pnpm build
+
       - name: Run tests
         run: |
           # 测试所有有测试脚本的包
@@ -61,9 +64,6 @@ jobs:
           cd ../ui && pnpm test
           cd ../hooks && pnpm test
         continue-on-error: false
-
-      - name: Build packages
-        run: pnpm build
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
