@@ -51,7 +51,7 @@ import '@vunio/ui/style.css';
 const app = createApp(App);
 app.use(Button);
 // Components({
-//   resolvers: [dUIResolver()],
+//   resolvers: [vunioUIResolver()],
 // })
 /// <reference types="@vunio/ui/dist/types/index.d.ts" />
 ```
