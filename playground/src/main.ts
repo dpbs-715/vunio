@@ -10,6 +10,6 @@ import vunioUI from '~/@vunio/ui';
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
 const app = createApp(App);
 app.use(ElementPlus, { locale: zhCn });
-app.use(vunioUI); // 全局引入dlib-ui组件
+app.use(vunioUI); // 全局引入@vunio/ui组件
 app.use(router);
 app.mount('#app');

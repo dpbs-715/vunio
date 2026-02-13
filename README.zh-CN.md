@@ -4,7 +4,7 @@
 
 ## 文档地址
 
-- https://dpbs-715.github.io/d-ui
+- https://dpbs-715.github.io/vunio
 
 ## ✨ 特性
 

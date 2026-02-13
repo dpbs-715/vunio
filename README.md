@@ -6,7 +6,7 @@ This is a modern component library based on `Turborepo + Vue 3.5 + TypeScript`, 
 
 ## Document address
 
-- https://dpbs-715.github.io/d-ui
+- https://dpbs-715.github.io/vunio
 
 ## ✨ Features
 
