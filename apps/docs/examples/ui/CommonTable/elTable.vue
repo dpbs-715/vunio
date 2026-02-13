@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { CommonTable, type CommonTableConfig } from 'dlib-ui';
-import { useConfigs } from 'dlib-hooks';
+import { CommonTable, type CommonTableConfig } from '@vunio/ui';
+import { useConfigs } from '@vunio/hooks';
 const { config } = useConfigs<CommonTableConfig>([
   {
     label: 'config名称',
@@ -27,21 +27,11 @@ const tableData = reactive([
 </script>
 
 <template>
-  <CommonTable
-    :data="tableData"
-    :config="config"
-  >
-    <el-table-column
-      width="150"
-      label="默认插槽"
-    >
+  <CommonTable :data="tableData" :config="config">
+    <el-table-column width="150" label="默认插槽">
       111
     </el-table-column>
-    <el-table-column
-      fixed="right"
-      width="150"
-      label="操作"
-    >
+    <el-table-column fixed="right" width="150" label="操作">
       <template #default>
         <el-button type="primary">
           操作

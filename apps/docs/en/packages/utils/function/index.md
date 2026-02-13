@@ -7,7 +7,7 @@
 ### Basic Usage
 
 ```ts
-import { curry } from 'dlib-utils';
+import { curry } from '@vunio/utils';
 
 const add = (a: number, b: number, c: number) => a + b + c;
 const curriedAdd = curry(add);
@@ -26,7 +26,7 @@ curriedAdd(1, 2, 3); // 6
 ### Partial Application
 
 ```ts
-import { curry } from 'dlib-utils';
+import { curry } from '@vunio/utils';
 
 const add = (a: number, b: number, c: number) => a + b + c;
 const curriedAdd = curry(add);
@@ -45,7 +45,7 @@ add5And3(2); // 10
 Use the `__` placeholder to skip certain parameter positions and fill them later.
 
 ```ts
-import { curry, __ } from 'dlib-utils';
+import { curry, __ } from '@vunio/utils';
 
 // Fix the second parameter
 const divide = (a: number, b: number) => a / b;
@@ -75,7 +75,7 @@ addBrackets('World'); // "[World]"
 ### Advanced Scenarios
 
 ```ts
-import { curry, __ } from 'dlib-utils';
+import { curry, __ } from '@vunio/utils';
 
 const replace = (search: string, replacement: string, text: string) =>
   text.replace(search, replacement);
@@ -95,7 +95,7 @@ replaceWorldWithVue('World is big'); // "Vue is big"
 ### Array Operations
 
 ```ts
-import { curry, __ } from 'dlib-utils';
+import { curry, __ } from '@vunio/utils';
 
 // map operation
 const multiply = curry((a: number, b: number) => a * b);
@@ -122,7 +122,7 @@ const divideBy2 = divideBy(2);
 ### Function Composition
 
 ```ts
-import { curry } from 'dlib-utils';
+import { curry } from '@vunio/utils';
 
 const add = curry((a: number, b: number) => a + b);
 const multiply = curry((a: number, b: number) => a * b);
@@ -138,7 +138,7 @@ addThenDouble(3); // 16 ((3 + 5) * 2)
 ### Custom Arity
 
 ```ts
-import { curry } from 'dlib-utils';
+import { curry } from '@vunio/utils';
 
 // For functions using rest parameters, you need to manually specify the arity
 const sum = (...args: number[]) => args.reduce((a, b) => a + b, 0);
@@ -178,7 +178,7 @@ Placeholder constant used to skip parameter positions in curried functions.
 ### Type Support
 
 ```ts
-import { curry, type Curry, type Placeholder } from 'dlib-utils';
+import { curry, type Curry, type Placeholder } from '@vunio/utils';
 
 // Curry type
 type AddFn = (a: number, b: number, c: number) => number;

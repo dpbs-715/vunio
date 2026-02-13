@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
-import { CommonForm } from 'dlib-ui';
-import type { CommonFormConfig } from 'dlib-ui';
+import { useConfigs } from '@vunio/hooks/src/useConfigs';
+import { CommonForm } from '@vunio/ui';
+import type { CommonFormConfig } from '@vunio/ui';
 const formData = ref({});
 const { config } = useConfigs<CommonFormConfig>([
   {
@@ -37,10 +37,7 @@ const { config } = useConfigs<CommonFormConfig>([
 </script>
 
 <template>
-  <CommonForm
-    v-model="formData"
-    :config="config"
-  />
+  <CommonForm v-model="formData" :config="config" />
 </template>
 
 <style scoped></style>

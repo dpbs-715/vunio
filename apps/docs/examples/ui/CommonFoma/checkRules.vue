@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CommonFoma } from 'dlib-ui';
+import { CommonFoma } from '@vunio/ui';
 import { ref } from 'vue';
 const model = ref('');
 const error = ref('');

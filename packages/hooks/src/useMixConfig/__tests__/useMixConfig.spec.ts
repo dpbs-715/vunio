@@ -1,14 +1,14 @@
 import { describe, expect, it, vi } from 'vitest';
 import { useMixConfig } from '../index';
 
-// Mock dlib-ui types and dlib-utils
-vi.mock('dlib-ui', () => ({
+// Mock @vunio/ui types and @vunio/utils
+vi.mock('@vunio/ui', () => ({
   CommonTableConfig: {},
   CommonFormConfig: {},
   CommonTableLayoutConfig: {},
 }));
 
-vi.mock('dlib-utils', () => ({
+vi.mock('@vunio/utils', () => ({
   deepClone: (obj: any) => JSON.parse(JSON.stringify(obj)),
 }));
 

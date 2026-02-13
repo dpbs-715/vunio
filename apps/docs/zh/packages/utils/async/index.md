@@ -5,7 +5,7 @@
 > 包装异步任务,在时间范围内只执行一次 或使用缓存。
 
 ```ts
-import { asyncCache, CACHE_TYPE } from 'dlib-utils';
+import { asyncCache, CACHE_TYPE } from '@vunio/utils';
 
 export function getApi(query) {
   return axios({

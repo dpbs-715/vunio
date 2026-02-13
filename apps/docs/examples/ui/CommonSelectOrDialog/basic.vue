@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ElDivider } from 'element-plus';
-import { CommonSelectOrDialog, type CommonTableLayoutConfig } from 'dlib-ui';
+import { CommonSelectOrDialog, type CommonTableLayoutConfig } from '@vunio/ui';
 import { ref } from 'vue';
 
 const model = ref('');

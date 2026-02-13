@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { translateJsError } from 'dlib-utils';
+import { translateJsError } from '@vunio/utils';
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { EditorView, Decoration, WidgetType, keymap } from '@codemirror/view';
 import { EditorState, StateField, StateEffect, RangeSet } from '@codemirror/state';

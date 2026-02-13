@@ -93,7 +93,7 @@ pnpm publish
 ### Utility
 
 ```bash
-# Rename package scope (e.g., @DLib to @myorg)
+# Rename package scope (e.g., @vunio to @myorg)
 pnpm rename-pkg:mac
 ```
 
@@ -103,21 +103,21 @@ pnpm rename-pkg:mac
 
 The project uses **pnpm workspaces** with **Turborepo** for task orchestration:
 
-- **`packages/ui`**: Main UI component library (dlib-ui)
+- **`packages/ui`**: Main UI component library (@vunio/ui)
   - Built with Vite
   - Components prefixed with `Common*` (e.g., CommonButton, CommonTable)
   - Includes custom unplugin-vue-components resolver for auto-import
   - Outputs: ESM (`dist/esm/`), CJS (`dist/cjs/`), Types (`dist/types/`)
 
-- **`packages/hooks`**: Vue 3 composables library (dlib-hooks)
+- **`packages/hooks`**: Vue 3 composables library (@vunio/hooks)
   - Built with Rollup
   - Exports reusable Vue composition functions
 
-- **`packages/directives`**: Vue 3 directives library (dlib-directives)
+- **`packages/directives`**: Vue 3 directives library (@vunio/directives)
   - Built with Rollup
   - Custom Vue directives (e.g., v-focus)
 
-- **`packages/utils`**: Utility functions library (dlib-utils)
+- **`packages/utils`**: Utility functions library (@vunio/utils)
   - Built with Rollup
   - Framework-agnostic utilities organized by category:
     - `string/`: String manipulation (capitalize, camelToKebab)
@@ -138,11 +138,11 @@ The project uses **pnpm workspaces** with **Turborepo** for task orchestration:
   - `stylelint-config`: CSS/SCSS linting rules
   - `typescript-config`: TypeScript compiler configurations
 
-- **`apps/docs`**: VitePress documentation site (@DLib/docs)
+- **`apps/docs`**: VitePress documentation site (@vunio/docs)
   - Internationalized (Chinese root, English /en)
   - Uses vitepress-demo-plugin for interactive component demos
 
-- **`playground`**: Development playground (@DLib/playground)
+- **`playground`**: Development playground (@vunio/playground)
   - Vite-based app for testing components during development
 
 - **`build`**: Unified build scripts (Gulp + Rollup)
@@ -244,7 +244,7 @@ This project uses **Changesets** for version management:
 
 **Configuration:**
 
-- Changesets config excludes `@DLib/build`, `@DLib/playground`, `@DLib/docs` from versioning
+- Changesets config excludes `@vunio/build`, `@vunio/playground`, `@vunio/docs` from versioning
 - See [AUTO_RELEASE.md](docs/AUTO_RELEASE.md) for detailed automated release guide
 
 ### Git Hooks
@@ -271,10 +271,10 @@ When adding dependencies to a specific package:
 
 ```bash
 # Install to specific workspace
-pnpm -F dlib-ui add some-package
+pnpm -F @vunio/ui add some-package
 
 # Install dev dependency
-pnpm -F dlib-ui add -D some-package
+pnpm -F @vunio/ui add -D some-package
 
 # Install to all packages
 pnpm add -w some-package
@@ -392,6 +392,6 @@ const curriedFn = curry(fn, 3) as any; // Use 'as any' for proper type handling
 
 ### Package Naming Convention
 
-- Scope: `@DLib/` or your custom scope (use `pnpm rename-pkg:mac` to change)
+- Scope: `@vunio/` or your custom scope (use `pnpm rename-pkg:mac` to change)
 - UI Components: Use `Common*` prefix (CommonButton, CommonTable)
-- Packages: `dlib-ui`, `dlib-utils`, `dlib-hooks`, `dlib-directives`
+- Packages: `@vunio/ui`, `@vunio/utils`, `@vunio/hooks`, `@vunio/directives`

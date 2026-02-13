@@ -6,7 +6,7 @@ import './styles/global.css';
 import 'element-plus/dist/index.css';
 import 'element-plus/theme-chalk/dark/css-vars.css';
 // 引入UI库的样式
-import 'dlib-ui/style.css';
+import '@vunio/ui/style.css';
 export default {
   extends: DefaultTheme,
   enhanceApp({ app }) {

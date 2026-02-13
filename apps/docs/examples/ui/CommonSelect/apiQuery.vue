@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CommonForm } from 'dlib-ui';
-import { useMixConfig } from 'dlib-hooks';
+import { CommonForm } from '@vunio/ui';
+import { useMixConfig } from '@vunio/hooks';
 
 const formData = ref({});
 function mockApi(queryParams: any) {
@@ -49,10 +49,7 @@ const { form } = useMixConfig([
 
 <template>
   <el-divider>第一个字段是第二个字段的搜索条件</el-divider>
-  <CommonForm
-    v-model="formData"
-    :config="form.config"
-  />
+  <CommonForm v-model="formData" :config="form.config" />
 </template>
 
 <style scoped></style>

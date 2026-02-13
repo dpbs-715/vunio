@@ -11,7 +11,7 @@
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { spanMethodBuilder } from 'dlib-utils/ep';
+import { spanMethodBuilder } from '@vunio/utils/ep';
 
 const tableData = ref([
   { province: '浙江', city: '杭州', area: '西湖区' },
@@ -252,7 +252,7 @@ const spanMethod = spanMethodBuilder()
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { spanMethodBuilder } from 'dlib-utils/ep';
+import { spanMethodBuilder } from '@vunio/utils/ep';
 
 const version = ref(0);
 const tableData = ref([
@@ -447,7 +447,7 @@ spanMethodBuilder().withCacheKey(version);
 
 ```ts
 // ❌ 旧方式 - 繁琐、重复配置
-import { spanMethodBuilder, createColSpanMethod, composeSpanMethods } from 'dlib-utils/ep';
+import { spanMethodBuilder, createColSpanMethod, composeSpanMethods } from '@vunio/utils/ep';
 
 const spanMethod = composeSpanMethods(
   spanMethodBuilder({
@@ -469,7 +469,7 @@ const spanMethod = composeSpanMethods(
 );
 
 // ✅ 新方式 - 优雅、清晰
-import { spanMethodBuilder } from 'dlib-utils/ep';
+import { spanMethodBuilder } from '@vunio/utils/ep';
 
 const spanMethod = spanMethodBuilder()
   .withData(tableData)

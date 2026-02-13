@@ -1,5 +1,5 @@
 {
-  "name": "@DLib/stylelint-config",
+  "name": "@vunio/stylelint-config",
   "version": "0.0.1",
   "private": true,
   "type": "module",

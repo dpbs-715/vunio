@@ -3,13 +3,13 @@ import { useRepeatConfig } from '../index';
 import { defineComponent, h } from 'vue';
 import { mount } from '@vue/test-utils';
 
-// Mock dlib-utils
-vi.mock('dlib-utils', () => ({
+// Mock @vunio/utils
+vi.mock('@vunio/utils', () => ({
   deepClone: (obj: any) => JSON.parse(JSON.stringify(obj)),
 }));
 
-// Mock dlib-ui
-vi.mock('dlib-ui', () => ({
+// Mock @vunio/ui
+vi.mock('@vunio/ui', () => ({
   baseConfig: {},
 }));
 

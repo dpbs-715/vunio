@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import type { Config } from '~/dlib-ui';
+import type { Config } from '~/@vunio/ui';
 
 const configValue = ref();
 const options = reactive<Record<any, any>>([
@@ -40,20 +40,11 @@ function createOption() {
 <template>
   <el-divider>单选与下拉</el-divider>
   值:{{ configValue }}<br>
-  <CreateComponent
-    v-model="configValue"
-    :config="config"
-  /><br>
-  <CreateComponent
-    v-model="configValue"
-    :config="config2"
-  /><br>
+  <CreateComponent v-model="configValue" :config="config" /><br>
+  <CreateComponent v-model="configValue" :config="config2" /><br>
   <el-divider>多选</el-divider>
   值:{{ configValue2 }}<br>
-  <CreateComponent
-    v-model="configValue2"
-    :config="config3"
-  /><br>
+  <CreateComponent v-model="configValue2" :config="config3" /><br>
   <el-divider />
   <el-button @click="createOption">
     追加option

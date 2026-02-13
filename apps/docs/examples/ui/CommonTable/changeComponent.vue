@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { CommonTable, type CommonTableConfig } from 'dlib-ui';
-import { useConfigs } from 'dlib-hooks';
+import { CommonTable, type CommonTableConfig } from '@vunio/ui';
+import { useConfigs } from '@vunio/hooks';
 import { ElInput } from 'element-plus';
 const { config } = useConfigs<CommonTableConfig>([
   {
@@ -52,10 +52,7 @@ const tableData = reactive([
 </script>
 
 <template>
-  <CommonTable
-    :data="tableData"
-    :config="config"
-  />
+  <CommonTable :data="tableData" :config="config" />
 </template>
 
 <style scoped></style>

@@ -5,7 +5,7 @@
 > 类型判断工具。
 
 ```ts
-import { is, isObject, isArray, isFunction, isNumber, isString, isEmpty } from 'dlib-utils';
+import { is, isObject, isArray, isFunction, isNumber, isString, isEmpty } from '@vunio/utils';
 is(obj, type); //判断类型
 isObject(obj); //判断对象
 isArray(obj); //判断数组

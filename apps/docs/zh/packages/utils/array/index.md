@@ -5,7 +5,7 @@
 > 数组去重。
 
 ```ts
-import { unique } from 'dlib-utils';
+import { unique } from '@vunio/utils';
 
 const arr = [1, 2, 2, 3, 3, 4];
 unique(arr); // [1, 2, 3, 4]
@@ -16,7 +16,7 @@ unique(arr); // [1, 2, 3, 4]
 > 将数组分割成指定大小的块。
 
 ```ts
-import { chunk } from 'dlib-utils';
+import { chunk } from '@vunio/utils';
 
 const arr = [1, 2, 3, 4, 5, 6, 7];
 chunk(arr, 3); // [[1, 2, 3], [4, 5, 6], [7]]
@@ -27,7 +27,7 @@ chunk(arr, 3); // [[1, 2, 3], [4, 5, 6], [7]]
 > 比较两个数组，返回新增、更新和删除的行。支持自定义键和字段比较。
 
 ```ts
-import { diffRows } from 'dlib-utils';
+import { diffRows } from '@vunio/utils';
 
 const oldData = [
   { id: 1, name: '张三', age: 20 },
@@ -65,7 +65,7 @@ diffRows(oldData, newData, {
 > 对数组进行排序，支持多字段排序和嵌套路径访问。
 
 ```ts
-import { sortBy } from 'dlib-utils';
+import { sortBy } from '@vunio/utils';
 
 const users = [
   { name: '张三', age: 25, score: { math: 90 } },

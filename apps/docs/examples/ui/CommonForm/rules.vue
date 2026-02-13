@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
-import { CommonForm } from 'dlib-ui';
-import type { CommonFormConfig } from 'dlib-ui';
+import { useConfigs } from '@vunio/hooks/src/useConfigs';
+import { CommonForm } from '@vunio/ui';
+import type { CommonFormConfig } from '@vunio/ui';
 const formData = ref({});
 const { config } = useConfigs<CommonFormConfig>([
   {
@@ -51,11 +51,7 @@ function submit() {
 </script>
 
 <template>
-  <CommonForm
-    ref="formRef"
-    v-model="formData"
-    :config="config"
-  />
+  <CommonForm ref="formRef" v-model="formData" :config="config" />
   <el-divider />
   <el-button @click="submit">
     提交

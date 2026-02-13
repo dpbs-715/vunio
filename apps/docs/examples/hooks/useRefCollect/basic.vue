@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
-import { CommonForm } from 'dlib-ui';
-import type { CommonFormConfig } from 'dlib-ui';
+import { useConfigs } from '@vunio/hooks/src/useConfigs';
+import { CommonForm } from '@vunio/ui';
+import type { CommonFormConfig } from '@vunio/ui';
 import { ElButton, ElDivider } from 'element-plus';
-import { useRefCollect } from 'dlib-hooks';
+import { useRefCollect } from '@vunio/hooks';
 const formData = ref({});
 const formData2 = ref({});
 
@@ -51,17 +51,9 @@ function getRef() {
 </script>
 
 <template>
-  <CommonForm
-    :ref="(el) => handleRef(el, 'form1')"
-    v-model="formData"
-    :config="config"
-  />
+  <CommonForm :ref="(el) => handleRef(el, 'form1')" v-model="formData" :config="config" />
   <el-divider />
-  <CommonForm
-    :ref="(el) => handleRef(el, 'form2')"
-    v-model="formData2"
-    :config="config"
-  />
+  <CommonForm :ref="(el) => handleRef(el, 'form2')" v-model="formData2" :config="config" />
   <el-divider />
   <el-button @click="submit">
     提交

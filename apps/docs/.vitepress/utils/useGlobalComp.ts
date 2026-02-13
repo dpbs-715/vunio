@@ -1,5 +1,5 @@
 import { App, type Component } from 'vue';
-// 如果报：“找不到模块“dlib-ui”或其相应的类型声明”的错误，记得先build打包一下
+// 如果报：“找不到模块“@vunio/ui”或其相应的类型声明”的错误，记得先build打包一下
 import ElementPlus from 'element-plus';
 import MainColor from '../../examples/basic/main-color.vue';
 import SecondaryColors from '../../examples/basic/secondary-colors.vue';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { CommonPagination } from 'dlib-ui';
+import { CommonPagination } from '@vunio/ui';
 
 const total = ref(50);
 const queryParams = reactive({

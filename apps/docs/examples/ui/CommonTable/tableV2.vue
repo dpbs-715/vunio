@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { CommonTable, type CommonTableConfig } from 'dlib-ui';
-import { useConfigs } from 'dlib-hooks';
+import { CommonTable, type CommonTableConfig } from '@vunio/ui';
+import { useConfigs } from '@vunio/hooks';
 const { config } = useConfigs<CommonTableConfig>([
   {
     label: '名称1',
@@ -44,12 +44,7 @@ const tableData = reactive([
 
 <template>
   <div style="display: flex; width: 100%; height: 200px">
-    <CommonTable
-      fixed
-      v2
-      :data="tableData"
-      :config="config"
-    />
+    <CommonTable fixed v2 :data="tableData" :config="config" />
   </div>
 </template>
 

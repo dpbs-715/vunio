@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CommonFoma } from 'dlib-ui';
+import { CommonFoma } from '@vunio/ui';
 import { ElButton, ElDivider } from 'element-plus';
 import { ref } from 'vue';
 const model = ref('code1+code2');

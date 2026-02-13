@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
-import { CommonForm, CommonButton } from 'dlib-ui';
-import type { CommonFormConfig } from 'dlib-ui';
+import { useConfigs } from '@vunio/hooks/src/useConfigs';
+import { CommonForm, CommonButton } from '@vunio/ui';
+import type { CommonFormConfig } from '@vunio/ui';
 
 const formData = ref({});
 const { config, setDisabled, setDisabledAll } = useConfigs<CommonFormConfig>([
@@ -30,35 +30,17 @@ function disabledField(flg: boolean) {
 </script>
 
 <template>
-  <CommonForm
-    v-model="formData"
-    :config="config"
-  />
-  <CommonButton
-    type="primary"
-    @click="() => disabledField(true)"
-  >
+  <CommonForm v-model="formData" :config="config" />
+  <CommonButton type="primary" @click="() => disabledField(true)">
     禁用field1
   </CommonButton>
-  <CommonButton
-    style="margin-left: 5px"
-    type="primary"
-    @click="() => disabledField(false)"
-  >
+  <CommonButton style="margin-left: 5px" type="primary" @click="() => disabledField(false)">
     启用field1
   </CommonButton>
-  <CommonButton
-    style="margin-left: 5px"
-    type="primary"
-    @click="() => disabledFun(true)"
-  >
+  <CommonButton style="margin-left: 5px" type="primary" @click="() => disabledFun(true)">
     禁用全部
   </CommonButton>
-  <CommonButton
-    style="margin-left: 5px"
-    type="primary"
-    @click="() => disabledFun(false)"
-  >
+  <CommonButton style="margin-left: 5px" type="primary" @click="() => disabledFun(false)">
     启用全部
   </CommonButton>
 </template>

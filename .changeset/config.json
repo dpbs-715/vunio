@@ -7,10 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "@DLib/build",
-    "@DLib/playground",
-    "@DLib/docs",
-    "@DLib/*-config"
-  ]
+  "ignore": ["@vunio/build", "@vunio/playground", "@vunio/docs", "@vunio/*-config"]
 }

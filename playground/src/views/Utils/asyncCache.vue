@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { asyncCache, CACHE_TYPE } from 'dlib-utils';
+import { asyncCache, CACHE_TYPE } from '@vunio/utils';
 
 function mockApi() {
   return new Promise((resolve) => {

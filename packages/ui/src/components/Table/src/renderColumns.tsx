@@ -6,7 +6,7 @@ import {
   type DataType,
   type RowDataType,
 } from '~/components';
-import { isArray } from 'dlib-utils';
+import { isArray } from '@vunio/utils';
 import { ElIcon, ElTableColumn, ElTooltip, ElFormItem } from 'element-plus';
 import { SORT_ORDERS, SORTABLE } from './useTableSort.ts';
 import { configIterator, getRules, isHidden } from '~/_utils/componentUtils.ts';

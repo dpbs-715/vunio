@@ -1,4 +1,4 @@
-# dlib-hooks
+# @vunio/hooks
 
 ## 1.2.4
 

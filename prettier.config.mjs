@@ -1,1 +1,1 @@
-export { default } from '@DLib/prettier-config';
+export { default } from '@vunio/prettier-config';

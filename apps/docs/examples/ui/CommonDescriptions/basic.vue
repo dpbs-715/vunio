@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CommonDescriptions, type DescriptionsConfig } from 'dlib-ui';
+import { CommonDescriptions, type DescriptionsConfig } from '@vunio/ui';
 import { reactive, ref } from 'vue';
 
 const descriptionsData = ref({
@@ -24,10 +24,7 @@ const config: DescriptionsConfig[] = reactive([
 </script>
 
 <template>
-  <CommonDescriptions
-    v-model="descriptionsData"
-    :config="config"
-  />
+  <CommonDescriptions v-model="descriptionsData" :config="config" />
 </template>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { useMixConfig } from 'dlib-hooks/src/useMixConfig';
+import { useMixConfig } from '@vunio/hooks/src/useMixConfig';
 
 const formData = reactive({});
 function mockApi(queryParams: any) {
@@ -48,10 +48,7 @@ const { form } = useMixConfig([
 
 <template>
   <el-divider>第一个字段是第二个字段的搜索条件</el-divider>
-  <CommonForm
-    v-model="formData"
-    :config="form.config"
-  />
+  <CommonForm v-model="formData" :config="form.config" />
 </template>
 
 <style scoped></style>

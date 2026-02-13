@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
-import { CommonForm } from 'dlib-ui';
-import type { CommonFormConfig } from 'dlib-ui';
+import { useConfigs } from '@vunio/hooks/src/useConfigs';
+import { CommonForm } from '@vunio/ui';
+import type { CommonFormConfig } from '@vunio/ui';
 const formData = ref({});
 const { config, getConfigByField } = useConfigs<CommonFormConfig>([
   {
@@ -26,11 +26,7 @@ function change() {
 </script>
 
 <template>
-  <CommonForm
-    v-model="formData"
-    :label-width="'auto'"
-    :config="config"
-  />
+  <CommonForm v-model="formData" :label-width="'auto'" :config="config" />
   <el-divider />
   <el-button @click="change">
     提交

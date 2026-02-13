@@ -2,7 +2,7 @@
 
 ## 介绍
 
-DLib 是一个基于 Vue3、elementPlus 的组件库和工具集项目，包含以下几个部分：
+vunio 是一个基于 Vue3、elementPlus 的组件库和工具集项目，包含以下几个部分：
 
 - UI 组件库：提供常用的 UI 组件，包含动态组件
 - 工具函数：提供常用的工具函数
@@ -16,19 +16,19 @@ DLib 是一个基于 Vue3、elementPlus 的组件库和工具集项目，包含�
 ::: code-group
 
 ```bash [npm]
-npm install dlib-ui dlib-utils dlib-hooks dlib-directives
+npm install @vunio/ui @vunio/utils @vunio/hooks @vunio/directives
 ```
 
 ```bash [yarn]
-yarn add dlib-ui dlib-utils dlib-hooks dlib-directives
+yarn add @vunio/ui @vunio/utils @vunio/hooks @vunio/directives
 ```
 
 ```bash [pnpm]
-pnpm add dlib-ui dlib-utils dlib-hooks dlib-directives
+pnpm add @vunio/ui @vunio/utils @vunio/hooks @vunio/directives
 ```
 
 ```bash [bun]
-bun add dlib-ui dlib-utils dlib-hooks dlib-directives
+bun add @vunio/ui @vunio/utils @vunio/hooks @vunio/directives
 ```
 
 :::
@@ -42,49 +42,49 @@ bun add dlib-ui dlib-utils dlib-hooks dlib-directives
 ```ts
 // 全局引入
 import { createApp } from 'vue';
-import UI from 'dlib-ui';
-import 'dlib-ui/style.css';
+import UI from '@vunio/ui';
+import '@vunio/ui/style.css';
 const app = createApp(App);
 app.use(UI);
 
 // 按需引入
-import { Button } from 'dlib-ui';
-import 'dlib-ui/style.css';
+import { Button } from '@vunio/ui';
+import '@vunio/ui/style.css';
 const app = createApp(App);
 app.use(Button);
 
 //unplugin-vue-components方式
-import { dUIResolver } from 'dlib-ui';
+import { dUIResolver } from '@vunio/ui';
 //vite中配置使用ComponentResolver()
 // Components({
 //   resolvers: [dUIResolver()],
 // })
 //可能还需要在d.ts中添加下面引用
-/// <reference types="dlib-ui/dist/types/index.d.ts" />
+/// <reference types="@vunio/ui/dist/types/index.d.ts" />
 ```
 
 ### 工具函数
 
 ```ts
-import { isString } from 'dlib-utils';
+import { isString } from '@vunio/utils';
 console.log(isString('hello')); // true
 ```
 
 ### Hooks
 
 ```ts
-import { useCounter } from 'dlib-hooks';
+import { useCounter } from '@vunio/hooks';
 const { count, increment, decrement } = useCounter();
 ```
 
 ### 指令
 
 ```ts
-import { vFocus } from 'dlib-directives';
+import { vFocus } from '@vunio/directives';
 // 全局引入
 app.directive('focus', vFocus);
 
 // 按需引入
-import { vFocus } from 'dlib-directives';
+import { vFocus } from '@vunio/directives';
 app.directive('focus', vFocus);
 ```

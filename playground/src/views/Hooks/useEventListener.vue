@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEventListener } from 'dlib-hooks/src/useEventListener';
+import { useEventListener } from '@vunio/hooks/src/useEventListener';
 import { ref } from 'vue';
 
 const divRef = ref();

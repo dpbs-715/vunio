@@ -1,3 +1,3 @@
 {
-  "extends": "@DLib/typescript-config/base.json"
+  "extends": "@vunio/typescript-config/base.json"
 }

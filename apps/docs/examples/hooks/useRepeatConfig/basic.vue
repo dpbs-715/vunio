@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, nextTick } from 'vue';
-import { useRepeatConfig } from 'dlib-hooks';
-import { CommonForm } from 'dlib-ui';
+import { useRepeatConfig } from '@vunio/hooks';
+import { CommonForm } from '@vunio/ui';
 const formDataList = reactive([{ rowKey: 1 }, { rowKey: 2 }]);
 
 const { getConfig, collect } = useRepeatConfig([
@@ -37,14 +37,8 @@ setTimeout(() => {
 </script>
 
 <template>
-  <template
-    v-for="(item, index) in formDataList"
-    :key="item.rowKey"
-  >
-    <CommonForm
-      v-model="formDataList[index]"
-      :config="collect(index)"
-    />
+  <template v-for="(item, index) in formDataList" :key="item.rowKey">
+    <CommonForm v-model="formDataList[index]" :config="collect(index)" />
   </template>
 </template>
 

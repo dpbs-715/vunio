@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { CommonTable, type CommonTableConfig } from 'dlib-ui';
-import { useConfigs } from 'dlib-hooks';
+import { CommonTable, type CommonTableConfig } from '@vunio/ui';
+import { useConfigs } from '@vunio/hooks';
 const { config } = useConfigs<CommonTableConfig>([
   {
     label: '名称1',
@@ -49,23 +49,13 @@ function getSelection() {
 
 <template>
   <el-divider>表格多选</el-divider>
-  <CommonTable
-    ref="tableRef"
-    use-selection
-    :data="tableData"
-    :config="config"
-  />
+  <CommonTable ref="tableRef" use-selection :data="tableData" :config="config" />
   <el-divider />
   <el-button @click="getSelection">
     获取选中数据
   </el-button>
   <el-divider>表格单选</el-divider>
-  <CommonTable
-    use-selection
-    single-selection
-    :data="tableData"
-    :config="config"
-  />
+  <CommonTable use-selection single-selection :data="tableData" :config="config" />
 </template>
 
 <style scoped></style>

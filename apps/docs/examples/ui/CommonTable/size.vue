@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { CommonTable, type CommonTableConfig } from 'dlib-ui';
-import { useConfigs } from 'dlib-hooks';
+import { CommonTable, type CommonTableConfig } from '@vunio/ui';
+import { useConfigs } from '@vunio/hooks';
 const { config } = useConfigs<CommonTableConfig>([
   {
     label: '名称1',
@@ -44,28 +44,13 @@ const tableData = reactive([
 
 <template>
   <el-divider>默认</el-divider>
-  <CommonTable
-    :data="tableData"
-    :config="config"
-  />
+  <CommonTable :data="tableData" :config="config" />
   <el-divider>small</el-divider>
-  <CommonTable
-    size="small"
-    :data="tableData"
-    :config="config"
-  />
+  <CommonTable size="small" :data="tableData" :config="config" />
   <el-divider>default</el-divider>
-  <CommonTable
-    size="default"
-    :data="tableData"
-    :config="config"
-  />
+  <CommonTable size="default" :data="tableData" :config="config" />
   <el-divider>large</el-divider>
-  <CommonTable
-    size="large"
-    :data="tableData"
-    :config="config"
-  />
+  <CommonTable size="large" :data="tableData" :config="config" />
 </template>
 
 <style scoped></style>

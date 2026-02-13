@@ -1,5 +1,5 @@
 {
-  "name": "@DLib/typescript-config",
+  "name": "@vunio/typescript-config",
   "version": "0.0.1",
   "private": true,
   "publishConfig": {

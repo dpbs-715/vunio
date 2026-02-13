@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ElDivider } from 'element-plus';
-import { CommonSelectOrDialog, type CommonTableLayoutConfig } from 'dlib-ui';
+import { CommonSelectOrDialog, type CommonTableLayoutConfig } from '@vunio/ui';
 import { ref } from 'vue';
 
 const model = ref('');
@@ -38,10 +38,7 @@ function changeHandler() {
 </script>
 
 <template>
-  字典名称：<el-input
-    v-model="dictType"
-    @change="changeHandler"
-  />
+  字典名称：<el-input v-model="dictType" @change="changeHandler" />
   <el-divider />
   值:{{ model || '-' }}
   <br>

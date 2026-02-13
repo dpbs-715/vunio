@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { vTrunced } from 'dlib-directives';
+import { vTrunced } from '@vunio/directives';
 import { ref } from 'vue';
 const obj = ref({
   flg: false,

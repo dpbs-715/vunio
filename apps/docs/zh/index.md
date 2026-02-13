@@ -1,19 +1,19 @@
 ---
 layout: home
 hero:
-  name: DLib
+  name: vunio
   text: 组件库和工具集
   tagline: Vue3 组件库和工具集。
   image:
     src: /logo.png
-    alt: DLib
+    alt: vunio
   actions:
     - theme: brand
       text: 开始使用
       link: /guide/
     - theme: alt
       text: 在 Github 上查看
-      link: https://github.com/dpbs-715/d-ui
+      link: https://github.com/dpbs-715/vunio
 
 features:
   - icon: 🌈

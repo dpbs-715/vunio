@@ -8,10 +8,10 @@ import { CommonTable } from '../../Table';
 import { CommonPagination } from '../../Pagination';
 import { defineModel, ref, watch, type Ref, useAttrs } from 'vue';
 import type { SelectOrDialogEmits, SelectOrDialogProps } from './SelectOrDialog.types';
-import { useMixConfig } from 'dlib-hooks';
+import { useMixConfig } from '@vunio/hooks';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { commonKeysMap } from '../../CreateComponent';
-import { isEmpty } from 'dlib-utils';
+import { isEmpty } from '@vunio/utils';
 defineOptions({
   name: 'CommonSelectOrDialog',
   inheritAttrs: false,

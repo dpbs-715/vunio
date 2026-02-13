@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { CommonTable, type CommonTableConfig } from 'dlib-ui';
-import { useConfigs, useRefCollect } from 'dlib-hooks';
+import { CommonTable, type CommonTableConfig } from '@vunio/ui';
+import { useConfigs, useRefCollect } from '@vunio/hooks';
 import { ElInput } from 'element-plus';
 
 const { handleRef, getRefsValidateArr } = useRefCollect();
@@ -65,21 +65,13 @@ function submit2() {
 </script>
 
 <template>
-  <CommonTable
-    ref="tableRef"
-    :data="tableData"
-    :config="config"
-  />
+  <CommonTable ref="tableRef" :data="tableData" :config="config" />
   <el-divider />
   <el-button @click="submit">
     校验
   </el-button>
   <el-divider />
-  <CommonTable
-    :ref="(el) => handleRef(el, 'table2Ref')"
-    :data="tableData"
-    :config="config"
-  />
+  <CommonTable :ref="(el) => handleRef(el, 'table2Ref')" :data="tableData" :config="config" />
   <el-divider />
   <el-button @click="submit2">
     校验

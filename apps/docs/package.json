@@ -1,5 +1,5 @@
 {
-  "name": "@DLib/docs",
+  "name": "@vunio/docs",
   "version": "1.0.0",
   "private": true,
   "description": "组件库模板说明文档",
@@ -15,11 +15,11 @@
   "license": "MIT",
   "dependencies": {
     "@element-plus/icons-vue": "catalog:ui",
-    "dlib-directives": "workspace:*",
-    "dlib-hooks": "workspace:*",
-    "@DLib/typescript-config": "workspace:*",
-    "dlib-ui": "workspace:*",
-    "dlib-utils": "workspace:*",
+    "@vunio/directives": "workspace:*",
+    "@vunio/hooks": "workspace:*",
+    "@vunio/typescript-config": "workspace:*",
+    "@vunio/ui": "workspace:*",
+    "@vunio/utils": "workspace:*",
     "element-plus": "catalog:ui",
     "vue": "catalog:"
   },

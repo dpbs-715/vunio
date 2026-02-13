@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="demo-button"
-    style="margin-top: 20px"
-  >
+  <div class="demo-button" style="margin-top: 20px">
     <CommonButton type="delete">
       删除
     </CommonButton>
@@ -19,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { CommonButton } from 'dlib-ui';
+import { CommonButton } from '@vunio/ui';
 </script>
 
 <style scoped>

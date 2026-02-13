@@ -9,8 +9,8 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, './src'),
       // 使用本地UI库，ui组件修改实时变化，提高调试效率。
-      '~/dlib-ui': resolve(__dirname, '../packages/ui/src/index.ts'),
-      '~/dlib-hooks': resolve(__dirname, '../packages/hooks/src/index.ts'),
+      '~/@vunio/ui': resolve(__dirname, '../packages/ui/src/index.ts'),
+      '~/@vunio/hooks': resolve(__dirname, '../packages/hooks/src/index.ts'),
       '~': resolve(__dirname, '../packages/ui/src'),
     },
   },

@@ -75,7 +75,7 @@ First, define the context in a separate file:
 
 ```typescript
 // contexts/userContext.ts
-import { createContext } from 'dlib-hooks';
+import { createContext } from '@vunio/hooks';
 
 interface UserContext {
   name: string;
@@ -130,7 +130,7 @@ const user = injectUser();
 
 ```typescript
 // contexts/themeContext.ts
-import { createContext } from 'dlib-hooks';
+import { createContext } from '@vunio/hooks';
 
 interface ThemeContext {
   color: string;
@@ -156,7 +156,7 @@ const theme = injectTheme({
 
 ```typescript
 // contexts/formContext.ts
-import { createContext } from 'dlib-hooks';
+import { createContext } from '@vunio/hooks';
 
 interface FormContext {
   disabled: boolean;
@@ -184,7 +184,7 @@ provideForm({ disabled: false, size: 'medium' });
 
 ```typescript
 // contexts/appContext.ts
-import { createContext } from 'dlib-hooks';
+import { createContext } from '@vunio/hooks';
 
 interface AppContext {
   locale: string;
@@ -204,7 +204,7 @@ First, define the context:
 
 ```typescript
 // contexts/themeContext.ts
-import { createContext } from 'dlib-hooks';
+import { createContext } from '@vunio/hooks';
 
 export interface ThemeContext {
   mode: 'light' | 'dark';
@@ -337,7 +337,7 @@ Since `createContext` creates a new Symbol key each time it's called, it's **str
 
 ```typescript
 // contexts/userContext.ts
-import { createContext } from 'dlib-hooks';
+import { createContext } from '@vunio/hooks';
 
 export interface UserContext {
   id: string;
@@ -375,7 +375,7 @@ const user = injectUser();
 
 ```typescript
 // contexts/formContext.ts
-import { createContext } from 'dlib-hooks';
+import { createContext } from '@vunio/hooks';
 
 export interface FormContext {
   disabled: boolean;

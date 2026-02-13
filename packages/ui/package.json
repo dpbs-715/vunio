@@ -1,6 +1,6 @@
 {
-  "name": "dlib-ui",
-  "description": "@DLib ui library",
+  "name": "@vunio/ui",
+  "description": "@vunio ui library",
   "version": "1.2.4",
   "type": "module",
   "main": "dist/cjs/index.js",
@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/dpbs-715/d-ui"
+    "url": "https://github.com/dpbs-715/vunio"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -36,7 +36,7 @@
     "runPublish": "pnpm publish"
   },
   "devDependencies": {
-    "@DLib/typescript-config": "workspace:*",
+    "@vunio/typescript-config": "workspace:*",
     "@element-plus/icons-vue": "catalog:ui",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:build",

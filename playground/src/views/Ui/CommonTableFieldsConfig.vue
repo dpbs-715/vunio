@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { useMixConfig } from 'dlib-hooks/src/useMixConfig';
+import { useMixConfig } from '@vunio/hooks/src/useMixConfig';
 const { table } = useMixConfig([
   {
     label: '名称1',
@@ -48,10 +48,7 @@ const tableData = reactive([
 
 <template>
   <CommonTableFieldsConfig :config="table.config" />
-  <CommonTable
-    :data="tableData"
-    :config="table.config"
-  />
+  <CommonTable :data="tableData" :config="table.config" />
 </template>
 
 <style scoped></style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { CommonForm, CommonButton, type CommonFormConfig, renderDialog } from 'dlib-ui';
+import { CommonForm, CommonButton, type CommonFormConfig, renderDialog } from '@vunio/ui';
 import { h, reactive } from 'vue';
-import { useConfigs } from 'dlib-hooks';
+import { useConfigs } from '@vunio/hooks';
 
 const formData = reactive({
   test: '',
@@ -45,10 +45,7 @@ function openDialog() {
 <template>
   {{ formData }}
   <el-divider />
-  <CommonButton
-    type="primary"
-    @click="openDialog"
-  >
+  <CommonButton type="primary" @click="openDialog">
     打开弹窗
   </CommonButton>
 </template>

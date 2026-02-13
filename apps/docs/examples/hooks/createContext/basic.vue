@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { createContext } from 'dlib-hooks';
+import { createContext } from '@vunio/hooks';
 import { computed, defineComponent, h, ref } from 'vue';
 const [injectTheme, provideTheme] = createContext('ThemeProvider');
 // Theme Provider Component

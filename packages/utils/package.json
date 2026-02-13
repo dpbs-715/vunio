@@ -1,6 +1,6 @@
 {
-  "name": "dlib-utils",
-  "description": "@DLib utils library",
+  "name": "@vunio/utils",
+  "description": "@vunio utils library",
   "version": "1.2.4",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.mjs",
@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/dpbs-715/d-ui"
+    "url": "https://github.com/dpbs-715/vunio"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -25,7 +25,7 @@
     "runPublish": "pnpm publish"
   },
   "devDependencies": {
-    "@DLib/typescript-config": "workspace:*",
+    "@vunio/typescript-config": "workspace:*",
     "@rollup/plugin-json": "catalog:build",
     "@vitest/coverage-v8": "catalog:dev",
     "rollup": "catalog:build",

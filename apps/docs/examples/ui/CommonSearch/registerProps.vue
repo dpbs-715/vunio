@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { CommonSearch, type CommonFormConfig, registerComponentDefaultPropsMap } from 'dlib-ui';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
+import { CommonSearch, type CommonFormConfig, registerComponentDefaultPropsMap } from '@vunio/ui';
+import { useConfigs } from '@vunio/hooks/src/useConfigs';
 import { ref } from 'vue';
 registerComponentDefaultPropsMap({
   CommonSearch: {
@@ -28,10 +28,7 @@ const { config } = useConfigs<CommonFormConfig>([
 </script>
 
 <template>
-  <CommonSearch
-    v-model="queryParams"
-    :config="config"
-  />
+  <CommonSearch v-model="queryParams" :config="config" />
   <el-divider />
   {{ queryParams }}
   <el-divider />
