@@ -9,6 +9,12 @@
   }
 }
 
-.modalBlur {
+.el-overlay.modalBlur {
   backdrop-filter: blur(4px);
+}
+
+.viewCenter .el-overlay-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<DialogPropsWithEvents>(), {
 
 const emits: any = defineEmits<DialogEmits>();
 
-const dialogProps: any = useComponentProps(props, 'CommonDialog');
+const dialogProps = useComponentProps(props, 'CommonDialog');
 
 const dialogVisible = defineModel<boolean>();
 
@@ -55,7 +55,11 @@ const comSlots: any = {
         {
           ...$attrs,
           ...dialogProps,
-          modalClass: `${dialogProps.modalBlur && 'modalBlur'} ${dialogProps.modalClass ?? ''}`,
+          modalClass: `
+            ${dialogProps.modalBlur ? 'modalBlur' : ''}
+            ${dialogProps.viewCenter ? 'viewCenter' : ''}
+            ${dialogProps.modalClass ?? ''}
+          `,
           class: 'CommonDialog',
           modelValue: dialogVisible,
           'onUpdate:modelValue': updateModel,

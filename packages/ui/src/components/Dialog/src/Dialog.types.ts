@@ -3,6 +3,7 @@ export interface DialogProps {
   width?: string | number;
   fullscreen?: Boolean;
   top?: string;
+  modal: Boolean;
   modalClass?: string;
   appendToBody?: Boolean;
   draggable?: Boolean;
@@ -10,6 +11,7 @@ export interface DialogProps {
   center?: Boolean;
   alignCenter?: Boolean;
   modalBlur?: Boolean;
+  viewCenter?: Boolean;
 }
 
 export interface DialogEmits {
