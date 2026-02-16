@@ -60,7 +60,7 @@ export default {
   CommonDialog: {
     modalBlur: true,
     draggable: true,
-    top: '15vh',
+    top: '10vh',
     appendToBody: true,
   },
 };
