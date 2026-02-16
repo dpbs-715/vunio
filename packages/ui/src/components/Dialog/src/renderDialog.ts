@@ -8,7 +8,7 @@ export function renderDialog(
   dialogProps?: DialogPropsWithEvents,
 ) {
   const dialog = h(
-    CommonDialog,
+    CommonDialog as any,
     {
       ...dialogProps,
       modelValue: true,

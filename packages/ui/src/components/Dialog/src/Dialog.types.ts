@@ -3,6 +3,7 @@ export interface DialogProps {
   width?: string | number;
   fullscreen?: Boolean;
   top?: string;
+  modal: Boolean;
   modalClass?: string;
   appendToBody?: Boolean;
   draggable?: Boolean;
