@@ -61,7 +61,6 @@ export default {
     modalBlur: true,
     draggable: true,
     top: '0vh',
-    viewCenter: true,
     appendToBody: true,
   },
 };

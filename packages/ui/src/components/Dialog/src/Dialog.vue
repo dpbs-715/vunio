@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<DialogPropsWithEvents>(), {
   title: '标题',
 });
 
-const emits: any = defineEmits<DialogEmits>();
+const emits = defineEmits<DialogEmits>();
 
 const dialogProps = useComponentProps(props, 'CommonDialog');
 
@@ -22,7 +22,7 @@ function updateModel(val: boolean) {
   dialogVisible.value = val;
 }
 
-const slots: any = useSlots();
+const slots = useSlots();
 
 function close() {
   dialogVisible.value = false;
@@ -31,15 +31,15 @@ function close() {
 const vm = getCurrentInstance();
 
 function confirm() {
-  const vnode: any = vm?.vnode || {};
-  if (vnode['props']?.onConfirm) {
+  const vnode = vm?.vnode;
+  if (vnode?.props?.onConfirm) {
     emits('confirm', close);
   } else {
     close();
   }
 }
 
-const comSlots: any = {
+const comSlots = {
   footer: () => [
     h(CommonButton, { type: 'normal', onClick: close }, { default: () => '取消' }),
     h(CommonButton, { type: 'primary', onClick: confirm }, { default: () => '确定' }),
@@ -51,13 +51,12 @@ const comSlots: any = {
   <component
     :is="
       h(
-        ElDialog,
+        ElDialog as any,
         {
           ...$attrs,
           ...dialogProps,
           modalClass: `
             ${dialogProps.modalBlur ? 'modalBlur' : ''}
-            ${dialogProps.viewCenter ? 'viewCenter' : ''}
             ${dialogProps.modalClass ?? ''}
           `,
           class: 'CommonDialog',
