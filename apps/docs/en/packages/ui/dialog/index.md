@@ -10,9 +10,10 @@ Basic dialog component.
 
 ## Props
 
-| Attribute  | Description                | Type    | Default |
-| ---------- | -------------------------- | ------- | ------- |
-| modelValue | Controls dialog visibility | boolean | false   |
+| Attribute  | Description                                        | Type    | Default |
+| ---------- |----------------------------------------------------| ------- | ------- |
+| modelValue | Controls dialog visibility                         | boolean | false   |
+| modalBlur   | enable blurring of modal background  | boolean | true  |
 
 ## Events
 
