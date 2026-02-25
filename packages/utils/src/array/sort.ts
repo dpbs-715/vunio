@@ -21,7 +21,7 @@ export function sortBy<T>(
   })();
 
   return [...arr].sort((a, b) => {
-    for (const { key: fieldKey, order: fieldOrder = 'asc' } of sortOptions) {
+    for (const { key: fieldKey, order: fieldOrder = order } of sortOptions) {
       const aVal = getByPath(a, fieldKey);
       const bVal = getByPath(b, fieldKey);
 
