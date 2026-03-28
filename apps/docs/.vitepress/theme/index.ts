@@ -1,4 +1,5 @@
 import DefaultTheme from 'vitepress/theme';
+import { ID_INJECTION_KEY, ZINDEX_INJECTION_KEY } from 'element-plus';
 
 import { useGlobalComp } from '../utils/useGlobalComp';
 // 自定义样式重载
