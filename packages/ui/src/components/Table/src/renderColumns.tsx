@@ -8,13 +8,64 @@ import {
 } from '~/components';
 import { isArray } from '@vunio/utils';
 import { ElIcon, ElTableColumn, ElTooltip, ElFormItem } from 'element-plus';
+import type { Placement } from 'element-plus/es/components/popper';
 import { SORT_ORDERS, SORTABLE } from './useTableSort.ts';
 import { configIterator, getRules, isHidden } from '~/_utils/componentUtils.ts';
-import { ComputedRef, type SlotsType, toValue, withModifiers } from 'vue';
+import {
+  ComputedRef,
+  defineComponent,
+  h,
+  onMounted,
+  ref,
+  type PropType,
+  type SlotsType,
+  toValue,
+  withModifiers,
+} from 'vue';
 import { QuestionFilled } from '@element-plus/icons-vue';
 
 // Lazy getter for defaultColMinWidth to avoid initialization order issues in tests
 const getDefaultColMinWidth = () => componentDefaultPropsMap.CommonTable?.defaultColMinWidth ?? 150;
+
+const SsrSafeTooltip = defineComponent({
+  name: 'SsrSafeTooltip',
+  props: {
+    content: {
+      type: String,
+      default: '',
+    },
+    placement: {
+      type: String as PropType<Placement>,
+      default: 'top',
+    },
+  },
+  setup(props, { slots }) {
+    const isMounted = ref(false);
+
+    onMounted(() => {
+      isMounted.value = true;
+    });
+
+    return () => {
+      const fallback = slots.default?.();
+
+      if (!isMounted.value) {
+        return fallback;
+      }
+
+      return h(
+        ElTooltip,
+        {
+          content: props.content,
+          placement: props.placement,
+        },
+        {
+          default: () => fallback,
+        },
+      );
+    };
+  },
+});
 
 export class RenderColumnsClass {
   props: ComputedRef<CommonTableProps>;
@@ -309,7 +360,7 @@ function checkRequired(rules: any) {
 function renderHelpToolTips(text: string | undefined) {
   if (text) {
     return (
-      <ElTooltip content={text} placement="top">
+      <SsrSafeTooltip content={text} placement="top">
         {{
           default: () => (
             <ElIcon style={{ margin: '0 5px' }}>
@@ -317,7 +368,7 @@ function renderHelpToolTips(text: string | undefined) {
             </ElIcon>
           ),
         }}
-      </ElTooltip>
+      </SsrSafeTooltip>
     );
   }
 }
