@@ -18,6 +18,14 @@ const ELEMENT_PLUS_SSR_Z_INDEX = {
   current: 0,
 };
 
+if (typeof window === 'undefined' && typeof globalThis.window === 'undefined') {
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: globalThis,
+    writable: true,
+  });
+}
+
 export default {
   extends: DefaultTheme,
   enhanceApp({ app }:any) {
