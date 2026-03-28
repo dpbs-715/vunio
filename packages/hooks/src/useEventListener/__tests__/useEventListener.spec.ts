@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useEventListener } from '../index';
 import { nextTick, ref } from 'vue';
 
@@ -10,12 +10,23 @@ describe('useEventListener', () => {
     document.body.appendChild(element);
   });
 
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it('should listen to window events', () => {
     const handler = vi.fn();
     useEventListener('click', handler);
 
     window.dispatchEvent(new Event('click'));
     expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not throw when window is unavailable', () => {
+    vi.stubGlobal('window', undefined);
+    const handler = vi.fn();
+
+    expect(() => useEventListener('click', handler)).not.toThrow();
   });
 
   it('should listen to element events', () => {

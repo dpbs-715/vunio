@@ -1,10 +1,15 @@
 <script lang="ts" setup>
 const colorsType = ['success', 'warning', 'danger', 'info'];
+const isClient = typeof window !== 'undefined';
 
 const colorLevel = [1, 3, 7, 8, 9].map((item) => `light-${item}`);
 colorLevel.unshift('dark-2');
 
 const getColorValue = (type: string) => {
+  if (!isClient) {
+    return `var(--el-color-${type})`;
+  }
+
   const color = getComputedStyle(document.documentElement).getPropertyValue(`--el-color-${type}`);
   return color;
 };
