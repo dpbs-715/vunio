@@ -1,4 +1,4 @@
-import { onActivated, onBeforeUnmount, onUnmounted, ref, watch } from 'vue';
+import { onActivated, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap.ts';
 
 /**
@@ -10,6 +10,7 @@ import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defau
 export const useTableHeight = (otherRefs?: any[] | any) => {
   // 初始化表格高度为200px
   const tableHeight = ref(200);
+  const isClient = typeof window !== 'undefined';
   // 计算需要忽略的固定高度
   const ignoreHeight = componentDefaultPropsMap.CommonTable.ignoreHeight;
   /**
@@ -17,6 +18,10 @@ export const useTableHeight = (otherRefs?: any[] | any) => {
    * 此函数会根据窗口高度和其他元素的高度来计算表格的高度
    */
   function getHeight() {
+    if (!isClient) {
+      return;
+    }
+
     let height = window.innerHeight;
     // 如果otherRefs是数组，则遍历数组中的每个ref对象，减去其高度
     if (Array.isArray(otherRefs)) {
@@ -32,18 +37,48 @@ export const useTableHeight = (otherRefs?: any[] | any) => {
     tableHeight.value = height > 200 ? height : 200;
   }
 
-  // 监听窗口变化，触发高度计算
-  window.addEventListener('resize', getHeight);
+  onMounted(() => {
+    if (!isClient) {
+      return;
+    }
+
+    getHeight();
+    window.addEventListener('resize', getHeight);
+  });
+
   // 在组件卸载前移除事件监听器
   onBeforeUnmount?.(() => {
+    if (!isClient) {
+      return;
+    }
+
     window.removeEventListener('resize', getHeight);
   });
 
   // 初始化高度以及监听
-  const observer = new ResizeObserver(() => {
-    // 重新计算高度
+  const observer =
+    typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(() => {
+          // 重新计算高度
+          getHeight();
+        })
+      : null;
+
+  function resetObserver(element?: HTMLElement | null) {
+    if (!observer) {
+      getHeight();
+      return;
+    }
+
+    observer.disconnect();
+
+    if (element) {
+      observer.observe(element);
+      return;
+    }
+
     getHeight();
-  });
+  }
 
   // 根据otherRefs的类型，监听ref对象的变化，以便更新观察目标
   if (Array.isArray(otherRefs)) {
@@ -51,8 +86,7 @@ export const useTableHeight = (otherRefs?: any[] | any) => {
       watch(
         () => ref.value,
         () => {
-          observer.disconnect();
-          ref.value && observer.observe(ref.value);
+          resetObserver(ref.value);
         },
         { immediate: true },
       );
@@ -62,8 +96,7 @@ export const useTableHeight = (otherRefs?: any[] | any) => {
       () => otherRefs?.value,
       () => {
         if (otherRefs?.value) {
-          observer.disconnect();
-          observer.observe(otherRefs.value);
+          resetObserver(otherRefs.value);
         } else {
           getHeight();
         }
@@ -80,7 +113,7 @@ export const useTableHeight = (otherRefs?: any[] | any) => {
   });
   // 在组件卸载时断开观察器连接
   onUnmounted(() => {
-    observer.disconnect();
+    observer?.disconnect();
   });
 
   // 返回表格高度和获取高度的函数

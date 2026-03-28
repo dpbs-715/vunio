@@ -63,14 +63,14 @@ export function useEventListener<E extends Event = Event>(
 ): UseEventListenerControls;
 
 export function useEventListener(...args: any[]): UseEventListenerControls {
-  let target: MaybeElementRef<EventTarget>;
+  let target: MaybeElementRef<EventTarget> | undefined;
   let event: string;
   let listener: EventListener;
   let options: boolean | AddEventListenerOptions | undefined;
 
   if (typeof args[0] === 'string') {
     [event, listener, options] = args;
-    target = window;
+    target = typeof window !== 'undefined' ? window : undefined;
   } else {
     [target, event, listener, options] = args;
   }
