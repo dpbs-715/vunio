@@ -2,22 +2,30 @@ import type { MergeGroup, SpanMethod, SpanMethodProps } from './types';
 
 /**
  * 组合多个 spanMethod 函数
- * 按顺序执行，返回第一个非默认值（rowspan !== 1 或 colspan !== 1）
+ * 支持同时组合行合并和列合并：
+ * 1. 任一规则将单元格标记为隐藏（0, 0）时，结果直接隐藏
+ * 2. 其余情况取最大的 rowspan / colspan，支持叠加成矩形合并区域
  *
  * @param methods - 要组合的 spanMethod 函数数组
  * @returns 组合后的 spanMethod 函数
  */
 export function composeSpanMethods(...methods: SpanMethod[]): SpanMethod {
   return (props: SpanMethodProps) => {
+    let rowspan = 1
+    let colspan = 1
+
     for (const method of methods) {
       const result = method(props);
 
-      if (result.rowspan !== 1 || result.colspan !== 1) {
-        return result;
+      if (result.rowspan === 0 || result.colspan === 0) {
+        return { rowspan: 0, colspan: 0 };
       }
+
+      rowspan = Math.max(rowspan, result.rowspan)
+      colspan = Math.max(colspan, result.colspan)
     }
 
-    return { rowspan: 1, colspan: 1 };
+    return { rowspan, colspan };
   };
 }
 
