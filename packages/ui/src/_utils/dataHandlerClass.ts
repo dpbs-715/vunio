@@ -54,6 +54,7 @@ export interface DataHandlerType {
 
 export const DEFAULT_LABEL_FIELD = 'label';
 export const DEFAULT_VALUE_FIELD = 'value';
+export const DEFAULT_OPTIONS_FIELD = 'options';
 
 export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   props: ComputedRef<T>;
@@ -70,6 +71,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   VALUE_FIELD = computed(
     () => this.props.value.props?.value || this.props.value.valueField || DEFAULT_VALUE_FIELD,
   );
+  OPTIONS_FIELD = computed(() => this.props.value.props?.options || DEFAULT_OPTIONS_FIELD);
 
   constructor(props: T, attrs = {}) {
     this.props = computed(() => {
@@ -368,8 +370,8 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       } else if (type === 'int' || type === 'Int') {
         o[this.VALUE_FIELD.value] = Number(o[this.VALUE_FIELD.value]);
       }
-      if (o.children) {
-        o.children = this.valueTypeHandler(o.children, type);
+      if (Array.isArray(o[this.OPTIONS_FIELD.value])) {
+        o[this.OPTIONS_FIELD.value] = this.valueTypeHandler(o[this.OPTIONS_FIELD.value], type);
       }
       return o;
     });
@@ -393,8 +395,30 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
     }
   }
 
+  findOptionByValue(
+    value: string | number,
+    options: Record<any, any>[] = toValue(this.options),
+  ): Record<any, any> | undefined {
+    for (const option of options || []) {
+      if (option[this.VALUE_FIELD.value] === value) {
+        return option;
+      }
+
+      if (
+        Array.isArray(option[this.OPTIONS_FIELD.value]) &&
+        option[this.OPTIONS_FIELD.value].length > 0
+      ) {
+        const matched = this.findOptionByValue(value, option[this.OPTIONS_FIELD.value]);
+        if (matched) {
+          return matched;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
   getLabelByValue(value: string | number | string[] | number[]): string {
-    const options: Record<any, any> = toValue(this.options);
     const props = toValue(this.props);
 
     // 处理数组值或可分割的字符串值
@@ -409,14 +433,14 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       }
       return valueArr
         .map((item: string | number) => {
-          const option = options.find((o: any) => o[this.VALUE_FIELD.value] === item);
+          const option = this.findOptionByValue(item);
           return option ? option[this.LABEL_FIELD.value] : '';
         })
         .filter((label) => label !== undefined && label !== null && label !== '')
         .join(',');
     } else {
       // 处理单个值的情况
-      const option = options.find((o: any) => o[this.VALUE_FIELD.value] === value);
+      const option = this.findOptionByValue(value);
       return option ? option[this.LABEL_FIELD.value] : '';
     }
   }

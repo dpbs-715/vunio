@@ -8,6 +8,10 @@ function mockApi(queryParams: any) {
     const res = [
       { label: '选项1', value: '1' },
       { label: '选项2', value: '2' },
+      {
+        label: '分组',
+        options: [{ label: '选项2', value: '3' }],
+      },
     ];
     if (queryParams.field) {
       res.push({ label: `${JSON.stringify(queryParams)}`, value: '3' });
