@@ -55,6 +55,7 @@ export interface DataHandlerType {
 export const DEFAULT_LABEL_FIELD = 'label';
 export const DEFAULT_VALUE_FIELD = 'value';
 export const DEFAULT_OPTIONS_FIELD = 'options';
+export const DEFAULT_CHILDREN_FIELD = 'children';
 
 export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   props: ComputedRef<T>;
@@ -72,6 +73,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
     () => this.props.value.props?.value || this.props.value.valueField || DEFAULT_VALUE_FIELD,
   );
   OPTIONS_FIELD = computed(() => this.props.value.props?.options || DEFAULT_OPTIONS_FIELD);
+  CHILDREN_FIELD = computed(() => this.props.value.props?.children || DEFAULT_CHILDREN_FIELD);
 
   constructor(props: T, attrs = {}) {
     this.props = computed(() => {
@@ -370,8 +372,10 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       } else if (type === 'int' || type === 'Int') {
         o[this.VALUE_FIELD.value] = Number(o[this.VALUE_FIELD.value]);
       }
-      if (Array.isArray(o[this.OPTIONS_FIELD.value])) {
-        o[this.OPTIONS_FIELD.value] = this.valueTypeHandler(o[this.OPTIONS_FIELD.value], type);
+      for (const childrenField of this.getChildrenFields()) {
+        if (Array.isArray(o[childrenField])) {
+          o[childrenField] = this.valueTypeHandler(o[childrenField], type);
+        }
       }
       return o;
     });
@@ -404,18 +408,22 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
         return option;
       }
 
-      if (
-        Array.isArray(option[this.OPTIONS_FIELD.value]) &&
-        option[this.OPTIONS_FIELD.value].length > 0
-      ) {
-        const matched = this.findOptionByValue(value, option[this.OPTIONS_FIELD.value]);
-        if (matched) {
-          return matched;
+      for (const childrenField of this.getChildrenFields()) {
+        const children = option[childrenField];
+        if (Array.isArray(children) && children.length > 0) {
+          const matched = this.findOptionByValue(value, children);
+          if (matched) {
+            return matched;
+          }
         }
       }
     }
 
     return undefined;
+  }
+
+  getChildrenFields(): string[] {
+    return Array.from(new Set([this.OPTIONS_FIELD.value, this.CHILDREN_FIELD.value]));
   }
 
   getLabelByValue(value: string | number | string[] | number[]): string {
