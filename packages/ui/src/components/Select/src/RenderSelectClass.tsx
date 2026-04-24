@@ -260,6 +260,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         ref={(instance: any) => (this.ref = instance)}
         props={{
           label: this.LABEL_FIELD.value,
+          children: this.CHILDREN_FIELD.value,
         }}
         highlightCurrent={true}
         nodeKey={this.VALUE_FIELD.value}
