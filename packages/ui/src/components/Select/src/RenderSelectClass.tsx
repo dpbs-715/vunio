@@ -1,6 +1,6 @@
 import { Ref, SlotsType, ref, toValue } from 'vue';
 import { CommonSelectProps } from './Select.types.ts';
-import { ElSelect, ElSelectV2, ElTreeSelect, ElOption } from 'element-plus';
+import { ElSelect, ElSelectV2, ElTreeSelect, ElOption, ElOptionGroup } from 'element-plus';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { injectFormContext } from '~/components/Form/src/formContext.ts';
 
@@ -42,6 +42,37 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
     this.init();
   }
 
+  getFlatOptions(options = this.options.value): Record<any, any>[] {
+    return (options || []).flatMap((item: any) => {
+      const groupOptions = item[this.OPTIONS_FIELD.value];
+      if (Array.isArray(groupOptions) && groupOptions.length > 0) {
+        return this.getFlatOptions(groupOptions);
+      }
+      return item;
+    });
+  }
+
+  renderOptionNodes(options = this.options.value) {
+    return (options || []).map((item: any) => {
+      const groupOptions = item[this.OPTIONS_FIELD.value];
+      if (Array.isArray(groupOptions) && groupOptions.length > 0) {
+        return (
+          <ElOptionGroup key={item[this.LABEL_FIELD.value]} label={item[this.LABEL_FIELD.value]}>
+            {this.renderOptionNodes(groupOptions)}
+          </ElOptionGroup>
+        );
+      }
+
+      return (
+        <ElOption
+          key={item[this.VALUE_FIELD.value]}
+          label={item[this.LABEL_FIELD.value]}
+          value={item[this.VALUE_FIELD.value]}
+        />
+      );
+    });
+  }
+
   afterInit(options: Record<any, any>) {
     this.determineComponentType(options);
     this.selectFirst();
@@ -68,7 +99,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
    * */
   selectFirst() {
     let props = toValue(this.props);
-    let options = this.options;
+    const flatOptions = this.getFlatOptions();
 
     // 如果 model 已经有值，不执行自动选择
     const hasValue =
@@ -83,7 +114,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
     }
 
     const strategy = props.autoSelect === true ? 'one' : props.autoSelect;
-    const optionsLength = options.value?.length || 0;
+    const optionsLength = flatOptions.length;
 
     // 没有选项，直接返回
     if (optionsLength === 0) {
@@ -97,16 +128,16 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
       case 'one':
         // 只有一个选项时自动选择
         if (optionsLength === 1) {
-          targetOption = options.value[0];
+          targetOption = flatOptions[0];
         }
         break;
       case 'first':
         // 总是选择第一个
-        targetOption = options.value[0];
+        targetOption = flatOptions[0];
         break;
       case 'last':
         // 总是选择最后一个
-        targetOption = options.value[optionsLength - 1];
+        targetOption = flatOptions[optionsLength - 1];
         break;
     }
 
@@ -133,18 +164,15 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
    * 选项改变操作
    * */
   changeSelect(value: any) {
+    const flatOptions = this.getFlatOptions();
     if (this.props.value.multiple) {
       this.label.value = value.map((v: any) => {
-        return this.options.value.find((item: any) => item[this.VALUE_FIELD.value] === v)?.[
-          this.LABEL_FIELD.value
-        ];
+        return this.findOptionByValue(v)?.[this.LABEL_FIELD.value];
       });
-      const arr = this.options.value.filter((item: any) =>
-        value.includes(item[this.VALUE_FIELD.value]),
-      );
+      const arr = flatOptions.filter((item: any) => value.includes(item[this.VALUE_FIELD.value]));
       this.emits('changeObj', arr);
     } else {
-      const obj = this.options.value.find((item: any) => item[this.VALUE_FIELD.value] === value);
+      const obj = this.findOptionByValue(value);
       this.label.value = obj && obj[this.LABEL_FIELD.value];
       this.emits('changeObj', obj);
     }
@@ -190,24 +218,14 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         props={{
           value: this.VALUE_FIELD.value,
           label: this.LABEL_FIELD.value,
+          options: this.OPTIONS_FIELD.value,
         }}
         {...props}
         {...moreProps}
         vModel={this.model.value}
       >
         {{
-          default: !Com.props.options
-            ? () => {
-                return this.options.value.map((item: any) => {
-                  return (
-                    <ElOption
-                      label={item[this.LABEL_FIELD.value]}
-                      value={item[this.VALUE_FIELD.value]}
-                    />
-                  );
-                });
-              }
-            : null,
+          default: !Com.props.options ? () => this.renderOptionNodes() : null,
         }}
       </Com>
     );
@@ -225,6 +243,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         props={{
           value: this.VALUE_FIELD.value,
           label: this.LABEL_FIELD.value,
+          options: this.OPTIONS_FIELD.value,
         }}
         {...props}
         vModel={this.model.value}
