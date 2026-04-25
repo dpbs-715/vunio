@@ -101,7 +101,11 @@ function getConfig(item: CommonFormConfig): Config {
   };
   configIterator(cfg, {
     config: item,
-    writeArgs: { formData: toValue(formData), configItem: item },
+    getWriteArgs: () => ({
+      formData: toValue(formData),
+      configItem: item,
+      formRef: formRef.value,
+    }),
   });
   return cfg as Config;
 }

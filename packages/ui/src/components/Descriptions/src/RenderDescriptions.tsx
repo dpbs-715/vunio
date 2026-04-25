@@ -32,10 +32,10 @@ export class RenderDescriptions {
     //处理配置 对配置追加参数
     configIterator(item, {
       config: configItem,
-      writeArgs: {
-        formData: model,
+      getWriteArgs: () => ({
+        formData: toValue(this.model),
         configItem,
-      },
+      }),
     });
     if (this.slots[item.field]) {
       return this.slots[item.field]({ formData: model, configItem });
