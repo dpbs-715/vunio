@@ -241,12 +241,12 @@ export class RenderColumnsClass {
     //处理配置 对配置追加参数
     configIterator(cfg, {
       config: configItem,
-      writeArgs: {
+      getWriteArgs: () => ({
         rowData: row,
         tableData: toValue(this.data),
         rowIndex: $index,
         configItem,
-      },
+      }),
     });
     const modelMap: Record<string, any> = {};
     const model = configItem.model;

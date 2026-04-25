@@ -5,6 +5,21 @@ import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defau
 import type { registerPropsMap } from '~/components';
 
 const ignoreFunction = ['api'];
+const VUNIO_WRAPPED = Symbol('vunio_wrapped');
+
+type WrappedFn = ((...args: any[]) => any) & {
+  [VUNIO_WRAPPED]?: true;
+};
+
+function wrapWithCtx(fn: WrappedFn, getCtx: () => Record<string, any>) {
+  if (fn[VUNIO_WRAPPED]) return fn;
+
+  const wrapped = ((...args: any[]) => fn(...args, getCtx())) as WrappedFn;
+  wrapped[VUNIO_WRAPPED] = true;
+
+  return wrapped;
+}
+
 /**
  * 配置迭代器 给函数式配置追加参数等
  * */
@@ -13,26 +28,36 @@ export const configIterator = (
   {
     config,
     writeArgs,
-  }: { config?: CommonFormConfig | CommonTableConfig | any; writeArgs?: Record<string, any> },
+    getWriteArgs,
+  }: {
+    config?: CommonFormConfig | CommonTableConfig | any;
+    writeArgs?: Record<string, any>;
+    getWriteArgs?: () => Record<string, any>;
+  },
 ) => {
+  const getCtx = getWriteArgs || (() => writeArgs || {});
+
   for (const key in config) {
     if (isObject(config[key]) && key != 'component') {
       //处理对象递归调用
       aimConfig[key] = {};
-      configIterator(aimConfig[key], { config: config[key], writeArgs });
+      configIterator(aimConfig[key], { config: config[key], getWriteArgs: getCtx });
     } else if (isArray(config[key])) {
       aimConfig[key] = [];
       for (let index = 0; index < config[key].length; index++) {
         if (isObject(config[key][index])) {
           aimConfig[key][index] = {};
-          configIterator(aimConfig[key][index], { config: config[key][index], writeArgs });
+          configIterator(aimConfig[key][index], {
+            config: config[key][index],
+            getWriteArgs: getCtx,
+          });
         } else {
           aimConfig[key][index] = config[key][index];
         }
       }
     } else if (isFunction(config[key]) && !config[key][`__D__`] && !ignoreFunction.includes(key)) {
       //处理函数追加参数
-      aimConfig[key] = (...args: any) => config[key](...args, writeArgs);
+      aimConfig[key] = wrapWithCtx(config[key], getCtx);
     } else {
       //其他情况直接赋值
       aimConfig[key] = config[key];
@@ -46,7 +71,7 @@ export const configIterator = (
       aimConfig.props = {};
     }
     if (isFunction(config.isDisabled)) {
-      aimConfig.props['disabled'] = config.isDisabled?.(writeArgs) || config.props?.['disabled'];
+      aimConfig.props['disabled'] = config.isDisabled?.(getCtx()) || config.props?.['disabled'];
     } else {
       aimConfig.props['disabled'] = config.isDisabled || config.props?.['disabled'];
     }
