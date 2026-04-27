@@ -1,5 +1,11 @@
 # @vunio/hooks
 
+## 1.3.2
+
+### Patch Changes
+
+- ed4622d: 性能优化
+
 ## 1.3.1
 
 ### Patch Changes
