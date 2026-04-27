@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ElDialog } from 'element-plus';
-import { h, useSlots, getCurrentInstance } from 'vue';
+import { h, useSlots, getCurrentInstance, computed, useAttrs } from 'vue';
 import type { DialogEmits, DialogPropsWithEvents } from './Dialog.types';
 import { CommonButton } from '../../Button';
 import { useComponentProps } from '~/_utils/componentUtils.ts';
 defineOptions({
   name: 'CommonDialog',
+  inheritAttrs: false,
 });
 
 const props = withDefaults(defineProps<DialogPropsWithEvents>(), {
@@ -15,8 +16,16 @@ const props = withDefaults(defineProps<DialogPropsWithEvents>(), {
 const emits = defineEmits<DialogEmits>();
 
 const dialogProps = useComponentProps(props, 'CommonDialog');
+const elDialogProps = computed(() => {
+  const restProps = { ...dialogProps.value };
+  delete restProps.footerHide;
+  delete restProps.modalBlur;
+  delete restProps.onConfirm;
+  return restProps;
+});
 
 const dialogVisible = defineModel<boolean>();
+const attrs = useAttrs();
 
 function updateModel(val: boolean) {
   dialogVisible.value = val;
@@ -39,13 +48,20 @@ function confirm() {
   }
 }
 
-const comSlots = {
-  footer: () => [
-    h(CommonButton, { type: 'normal', onClick: close }, { default: () => '取消' }),
-    h(CommonButton, { type: 'primary', onClick: confirm }, { default: () => '确定' }),
-  ],
-  ...slots,
-};
+const defaultFooterSlot = () => [
+  h(CommonButton, { type: 'normal', onClick: close }, { default: () => '取消' }),
+  h(CommonButton, { type: 'primary', onClick: confirm }, { default: () => '确定' }),
+];
+
+const comSlots = computed(() => {
+  const resolvedSlots: Record<string, any> = { ...slots };
+
+  if (!dialogProps.value.footerHide && !resolvedSlots.footer) {
+    resolvedSlots.footer = defaultFooterSlot;
+  }
+
+  return resolvedSlots;
+});
 </script>
 <template>
   <component
@@ -54,12 +70,12 @@ const comSlots = {
         ElDialog as any,
         {
           ...$attrs,
-          ...dialogProps,
+          ...elDialogProps,
           modalClass: `
             ${dialogProps.modalBlur ? 'modalBlur' : ''}
             ${dialogProps.modalClass ?? ''}
           `,
-          class: 'CommonDialog',
+          class: ['CommonDialog', attrs.class],
           modelValue: dialogVisible,
           'onUpdate:modelValue': updateModel,
         },
