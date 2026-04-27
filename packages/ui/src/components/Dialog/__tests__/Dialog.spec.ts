@@ -167,6 +167,23 @@ describe('CommonDialog', () => {
     expect(dialog.attributes('data-append-to-body')).toBe('false');
   });
 
+  it('should update merged defaults when boolean prop switches from omitted to explicit false', async () => {
+    const wrapper = mount(Dialog, {
+      props: {
+        modelValue: true,
+      },
+    });
+
+    const dialog = wrapper.find('.CommonDialog');
+    expect(dialog.attributes('data-draggable')).toBe('true');
+
+    await wrapper.setProps({
+      draggable: false,
+    });
+
+    expect(dialog.attributes('data-draggable')).toBe('false');
+  });
+
   it('should inherit app context when renderDialog receives appContext', async () => {
     const injectionKey = Symbol('dialog-context');
     const Content = defineComponent({
