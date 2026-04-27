@@ -1,16 +1,9 @@
-export interface DialogProps {
-  title?: string;
-  width?: string | number;
-  fullscreen?: Boolean;
-  top?: string;
-  modal: Boolean;
-  modalClass?: string;
-  appendToBody?: Boolean;
-  draggable?: Boolean;
-  destroyOnClose?: Boolean;
-  center?: Boolean;
-  alignCenter?: Boolean;
-  modalBlur?: Boolean;
+import type { AppContext, Component, VNode } from 'vue';
+import type { DialogProps as ElDialogProps } from 'element-plus';
+
+export interface DialogProps extends ElDialogProps {
+  modalBlur?: boolean;
+  footerHide?: boolean;
 }
 
 export interface DialogEmits {
@@ -34,3 +27,9 @@ export type DialogEvents = {
 };
 
 export type DialogPropsWithEvents = DialogProps & DialogEvents;
+
+export interface RenderDialogOptions {
+  appContext?: AppContext;
+}
+
+export type RenderDialogContent = Component | VNode;

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { CommonForm, CommonButton, type CommonFormConfig, renderDialog } from '@vunio/ui';
-import { h, reactive } from 'vue';
+import { getCurrentInstance, h, reactive } from 'vue';
 import { useConfigs } from '@vunio/hooks';
 
 const formData = reactive({
   test: '',
 });
+const instance = getCurrentInstance();
 const { config } = useConfigs<CommonFormConfig>([
   {
     label: '测试',
@@ -37,6 +38,9 @@ function openDialog() {
       onConfirm: (close: Function) => {
         close();
       },
+    },
+    {
+      appContext: instance?.appContext,
     },
   );
 }
