@@ -1,6 +1,6 @@
 import type { CommonFormConfig, CommonTableConfig } from '~/components';
 import { isArray, isFunction, isObject } from '@vunio/utils/src';
-import { computed, type ComputedRef } from 'vue';
+import { computed, getCurrentInstance, onBeforeUpdate, shallowRef, type ComputedRef } from 'vue';
 import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap';
 import type { registerPropsMap } from '~/components';
 
@@ -126,6 +126,33 @@ export function useComponentProps<T extends Record<string, any>>(
   excludeKeys: (keyof T)[] = [],
 ): ComputedRef<Partial<T>> {
   const excludeSet = new Set(excludeKeys);
+  const instance = getCurrentInstance();
+  const explicitProps = shallowRef<Record<string, true>>({});
+
+  const hasOwn = (target: Record<string, any>, key: string) =>
+    Object.prototype.hasOwnProperty.call(target, key);
+
+  const hyphenate = (key: string) => key.replace(/\B([A-Z])/g, '-$1').toLowerCase();
+
+  const collectExplicitProps = () => {
+    const rawProps = instance?.vnode.props ?? {};
+    const nextExplicitProps: Record<string, true> = {};
+
+    for (const key in rawProps) {
+      nextExplicitProps[key] = true;
+    }
+
+    explicitProps.value = nextExplicitProps;
+  };
+
+  collectExplicitProps();
+  onBeforeUpdate(collectExplicitProps);
+
+  const isExplicitProp = (key: string) => {
+    const currentExplicitProps = explicitProps.value;
+
+    return hasOwn(currentExplicitProps, key) || hasOwn(currentExplicitProps, hyphenate(key));
+  };
 
   return computed(() => {
     const defaults = componentDefaultPropsMap[componentName] || {};
@@ -133,6 +160,10 @@ export function useComponentProps<T extends Record<string, any>>(
 
     for (const key in props) {
       if (!excludeSet.has(key) && props[key] !== undefined) {
+        if (props[key] === false && defaults[key] === true && !isExplicitProp(key)) {
+          continue;
+        }
+
         result[key] = props[key];
       }
     }

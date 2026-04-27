@@ -1,12 +1,11 @@
-// 组件默认事件配置
-import {
+import { reactive } from 'vue';
+import defaultComponentProps from '~/components/CreateComponent/src/defaultComponentProps.ts';
+import type {
   registerEventsMap,
   registerKeysMap,
   registerPropsMap,
   registerSlotsMap,
-} from '~/components';
-import { reactive } from 'vue';
-import defaultComponentProps from '~/components/CreateComponent/src/defaultComponentProps.ts';
+} from './cc.types';
 
 export let componentDefaultEventsMap: registerEventsMap = reactive({});
 // 组件默认属性配置

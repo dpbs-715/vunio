@@ -4,13 +4,15 @@ import {
   componentDefaultEventsMap,
   componentDefaultPropsMap,
   componentDefaultSlotsMap,
+} from '~/components';
+import { deepMerge } from '~/_utils';
+import type {
   registerEventsMap,
   registerKeysMap,
   registerMap,
   registerPropsMap,
   registerSlotsMap,
-} from '~/components';
-import { deepMerge } from '~/_utils';
+} from './components/CreateComponent/src/cc.types';
 
 /**
  * 抛出map注册组件方法

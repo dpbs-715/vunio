@@ -16,6 +16,9 @@ vi.mock('element-plus', async (importOriginal) => {
         modalClass: String,
         showClose: Boolean,
         closeOnClickModal: Boolean,
+        draggable: Boolean,
+        appendToBody: Boolean,
+        top: String,
       },
       emits: ['update:modelValue', 'closed'],
       setup(props, { attrs, slots }) {
@@ -28,6 +31,9 @@ vi.mock('element-plus', async (importOriginal) => {
               'data-modal-class': props.modalClass,
               'data-show-close': String(props.showClose),
               'data-close-on-click-modal': String(props.closeOnClickModal),
+              'data-draggable': String(props.draggable),
+              'data-append-to-body': String(props.appendToBody),
+              'data-top': props.top,
             },
             [
               h('div', { class: 'dialog-body' }, slots.default?.()),
@@ -117,6 +123,65 @@ describe('CommonDialog', () => {
     const dialog = wrapper.find('.CommonDialog');
     expect(dialog.attributes('data-show-close')).toBe('true');
     expect(dialog.attributes('data-close-on-click-modal')).toBe('false');
+  });
+
+  it('should pass modalBlur to Element Plus modal class', () => {
+    const wrapper = mount(Dialog, {
+      props: {
+        modelValue: true,
+        modalBlur: true,
+      },
+    });
+
+    const dialog = wrapper.find('.CommonDialog');
+    expect(dialog.attributes('data-modal-class')).toContain('modalBlur');
+  });
+
+  it('should apply CommonDialog default props', () => {
+    const wrapper = mount(Dialog, {
+      props: {
+        modelValue: true,
+      },
+    });
+
+    const dialog = wrapper.find('.CommonDialog');
+    expect(dialog.attributes('data-modal-class')).toContain('modalBlur');
+    expect(dialog.attributes('data-draggable')).toBe('true');
+    expect(dialog.attributes('data-append-to-body')).toBe('true');
+    expect(dialog.attributes('data-top')).toBe('15vh');
+  });
+
+  it('should allow explicit boolean props to override CommonDialog defaults', () => {
+    const wrapper = mount(Dialog, {
+      props: {
+        modelValue: true,
+        modalBlur: false,
+        draggable: false,
+        appendToBody: false,
+      },
+    });
+
+    const dialog = wrapper.find('.CommonDialog');
+    expect(dialog.attributes('data-modal-class')).not.toContain('modalBlur');
+    expect(dialog.attributes('data-draggable')).toBe('false');
+    expect(dialog.attributes('data-append-to-body')).toBe('false');
+  });
+
+  it('should update merged defaults when boolean prop switches from omitted to explicit false', async () => {
+    const wrapper = mount(Dialog, {
+      props: {
+        modelValue: true,
+      },
+    });
+
+    const dialog = wrapper.find('.CommonDialog');
+    expect(dialog.attributes('data-draggable')).toBe('true');
+
+    await wrapper.setProps({
+      draggable: false,
+    });
+
+    expect(dialog.attributes('data-draggable')).toBe('false');
   });
 
   it('should inherit app context when renderDialog receives appContext', async () => {
