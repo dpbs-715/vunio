@@ -72,6 +72,24 @@ describe('CommonDialog', () => {
     expect(wrapper.text()).not.toContain('确定');
   });
 
+  it('should keep custom footer when footerHide is true', () => {
+    const wrapper = mount(Dialog, {
+      props: {
+        modelValue: true,
+        footerHide: true,
+      },
+      slots: {
+        footer: '<button class="custom-footer">自定义底部</button>',
+      },
+    });
+
+    expect(wrapper.find('.dialog-footer').exists()).toBe(true);
+    expect(wrapper.find('.custom-footer').exists()).toBe(true);
+    expect(wrapper.text()).toContain('自定义底部');
+    expect(wrapper.text()).not.toContain('取消');
+    expect(wrapper.text()).not.toContain('确定');
+  });
+
   it('should preserve user class and CommonDialog class together', () => {
     const wrapper = mount(Dialog, {
       props: {

@@ -56,12 +56,7 @@ const defaultFooterSlot = () => [
 const comSlots = computed(() => {
   const resolvedSlots: Record<string, any> = { ...slots };
 
-  if (dialogProps.value.footerHide) {
-    delete resolvedSlots.footer;
-    return resolvedSlots;
-  }
-
-  if (!resolvedSlots.footer) {
+  if (!dialogProps.value.footerHide && !resolvedSlots.footer) {
     resolvedSlots.footer = defaultFooterSlot;
   }
 
