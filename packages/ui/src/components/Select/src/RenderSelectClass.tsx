@@ -82,7 +82,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
 
   isOptionDisabled(option: Record<any, any>) {
     const value = option[this.VALUE_FIELD.value];
-    return Boolean(option.disabled || this.isDisabledValue(value, option));
+    return Boolean(option[this.DISABLED_FIELD.value] || this.isDisabledValue(value, option));
   }
 
   resolveDisabledValues(disabledValues: any, option: Record<any, any>, value: any): any {
@@ -134,7 +134,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
       const children = item[this.CHILDREN_FIELD.value];
       const nextItem = {
         ...item,
-        disabled: this.isOptionDisabled(item),
+        [this.DISABLED_FIELD.value]: this.isOptionDisabled(item),
       };
 
       if (Array.isArray(groupOptions)) {
@@ -295,6 +295,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
           value: this.VALUE_FIELD.value,
           label: this.LABEL_FIELD.value,
           options: this.OPTIONS_FIELD.value,
+          disabled: this.DISABLED_FIELD.value,
         }}
         {...props}
         {...moreProps}
@@ -319,6 +320,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
           value: this.VALUE_FIELD.value,
           label: this.LABEL_FIELD.value,
           options: this.OPTIONS_FIELD.value,
+          disabled: this.DISABLED_FIELD.value,
         }}
         {...props}
         options={this.withDisabledOptions()}
@@ -337,6 +339,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         props={{
           label: this.LABEL_FIELD.value,
           children: this.CHILDREN_FIELD.value,
+          disabled: this.DISABLED_FIELD.value,
         }}
         highlightCurrent={true}
         nodeKey={this.VALUE_FIELD.value}

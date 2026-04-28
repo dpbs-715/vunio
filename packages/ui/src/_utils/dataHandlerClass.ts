@@ -56,6 +56,7 @@ export const DEFAULT_LABEL_FIELD = 'label';
 export const DEFAULT_VALUE_FIELD = 'value';
 export const DEFAULT_OPTIONS_FIELD = 'options';
 export const DEFAULT_CHILDREN_FIELD = 'children';
+export const DEFAULT_DISABLED_FIELD = 'disabled';
 
 export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   props: ComputedRef<T>;
@@ -74,6 +75,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   );
   OPTIONS_FIELD = computed(() => this.props.value.props?.options || DEFAULT_OPTIONS_FIELD);
   CHILDREN_FIELD = computed(() => this.props.value.props?.children || DEFAULT_CHILDREN_FIELD);
+  DISABLED_FIELD = computed(() => this.props.value.props?.disabled || DEFAULT_DISABLED_FIELD);
 
   constructor(props: T, attrs = {}) {
     this.props = computed(() => {

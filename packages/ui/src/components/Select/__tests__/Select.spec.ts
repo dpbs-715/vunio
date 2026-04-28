@@ -385,6 +385,29 @@ describe('CommonSelect', () => {
       expect(selectV2.props('options')[2].disabled).toBe(true);
     });
 
+    it('should respect custom disabled field mapping', async () => {
+      const options = [
+        { value: '1', label: 'Option 1', isDisabled: true },
+        { value: '2', label: 'Option 2', isDisabled: false },
+      ];
+      const wrapper = mount(Select, {
+        props: {
+          options,
+          props: {
+            disabled: 'isDisabled',
+          },
+          componentType: 'ElSelectV2',
+        },
+      });
+
+      await nextTick();
+
+      const selectV2 = wrapper.findComponent({ name: 'ElSelectV2' });
+      expect(selectV2.props('props').disabled).toBe('isDisabled');
+      expect(selectV2.props('options')[0].isDisabled).toBe(true);
+      expect(selectV2.props('options')[1].isDisabled).toBe(false);
+    });
+
     it('should handle large dataset', () => {
       const largeOptions = Array.from({ length: 100 }, (_, i) => ({
         value: `${i + 1}`,
@@ -450,6 +473,29 @@ describe('CommonSelect', () => {
         props: {
           options: mockOptions,
           disabledValues: ['1'],
+          autoSelect: 'first',
+          modelValue: '',
+          'onUpdate:modelValue': onUpdateModelValue,
+        },
+      });
+
+      await flushPromises();
+      await nextTick();
+
+      expect(onUpdateModelValue).toHaveBeenCalledWith('2');
+    });
+
+    it('should skip options disabled by custom disabled field when auto selecting first', async () => {
+      const onUpdateModelValue = vi.fn();
+      mount(Select, {
+        props: {
+          options: [
+            { value: '1', label: 'Option 1', isDisabled: true },
+            { value: '2', label: 'Option 2', isDisabled: false },
+          ],
+          props: {
+            disabled: 'isDisabled',
+          },
           autoSelect: 'first',
           modelValue: '',
           'onUpdate:modelValue': onUpdateModelValue,
