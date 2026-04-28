@@ -361,6 +361,28 @@ describe('CommonSelect', () => {
       expect(selectV2.props('options')[2].disabled).toBe(true);
     });
 
+    it('should update when adding a new key to reactive disabledValues map', async () => {
+      const disabledMap = reactive<Record<string, boolean>>({});
+      const wrapper = mount(Select, {
+        props: {
+          options: mockOptions,
+          disabledValues: disabledMap,
+          componentType: 'ElSelectV2',
+        },
+      });
+
+      await nextTick();
+
+      let selectV2 = wrapper.findComponent({ name: 'ElSelectV2' });
+      expect(selectV2.props('options')[2].disabled).toBe(false);
+
+      disabledMap['3'] = true;
+      await nextTick();
+
+      selectV2 = wrapper.findComponent({ name: 'ElSelectV2' });
+      expect(selectV2.props('options')[2].disabled).toBe(true);
+    });
+
     it('should only match own keys when disabledValues is an object map', async () => {
       const options = [
         { value: 'toString', label: 'toString' },

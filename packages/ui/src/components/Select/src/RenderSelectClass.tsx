@@ -113,13 +113,15 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
     }
 
     if (typeof resolvedValue === 'object') {
+      const stringValue = String(value);
+      const mappedValue = resolvedValue[value];
       if (Object.prototype.hasOwnProperty.call(resolvedValue, value)) {
-        return Boolean(resolvedValue[value]);
+        return Boolean(mappedValue);
       }
 
-      const stringValue = String(value);
+      const mappedStringValue = resolvedValue[stringValue];
       if (Object.prototype.hasOwnProperty.call(resolvedValue, stringValue)) {
-        return Boolean(resolvedValue[stringValue]);
+        return Boolean(mappedStringValue);
       }
 
       return false;
