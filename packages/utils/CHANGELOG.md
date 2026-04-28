@@ -1,5 +1,11 @@
 # @vunio/utils
 
+## 1.3.3
+
+### Patch Changes
+
+- 2791bbd: 修改select disabled
+
 ## 1.3.2
 
 ### Patch Changes
