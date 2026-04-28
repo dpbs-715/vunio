@@ -128,6 +128,20 @@ describe('clone utils', () => {
       expect(cloned.props.disabledMap).toBe(reactiveLike);
     });
 
+    it('should clone reactive-like root input to avoid shared mutations', () => {
+      const reactiveRoot: any = {
+        __v_isReactive: true,
+        items: [{ label: 'A' }],
+      };
+
+      const cloned = deepClone(reactiveRoot);
+      cloned.items[0].label = 'B';
+
+      expect(cloned).not.toBe(reactiveRoot);
+      expect(cloned.items).not.toBe(reactiveRoot.items);
+      expect(reactiveRoot.items[0].label).toBe('A');
+    });
+
     it('should clone objects with Symbol properties', () => {
       const sym = Symbol('test');
       const obj = {
