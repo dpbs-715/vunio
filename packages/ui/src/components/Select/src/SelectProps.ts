@@ -1,4 +1,5 @@
 import type { PropType } from 'vue';
+import type { CommonSelectDisabledValues } from './Select.types.ts';
 
 export const CommonSelectProviderProps = {
   //请求api
@@ -57,6 +58,11 @@ export const CommonSelectProviderProps = {
   //忽略的标签
   ignoreByLabel: {
     type: Array<string>,
+    default: () => [],
+  },
+  //禁用的选项值
+  disabledValues: {
+    type: [Array, Object, Function] as PropType<CommonSelectDisabledValues>,
     default: () => [],
   },
   //组件类型

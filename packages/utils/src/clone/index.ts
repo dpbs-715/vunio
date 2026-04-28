@@ -1,8 +1,15 @@
 export const deepClone = (() => {
-  let map = new WeakMap<object, any>();
-  function clone<T>(target: T): T {
+  function isVueReactiveValue(target: any): boolean {
+    return Boolean(target?.__v_isRef || target?.__v_isReactive || target?.__v_isReadonly);
+  }
+
+  function clone<T>(target: T, map = new WeakMap<object, any>()): T {
     // 基本类型直接返回
     if (target === null || typeof target !== 'object') {
+      return target;
+    }
+    // Vue ref/reactive/computed 保留原引用，避免递归其内部循环结构并保持响应性
+    if (isVueReactiveValue(target)) {
       return target;
     }
     // 检查是否已经拷贝过该对象（处理循环引用）
@@ -26,7 +33,7 @@ export const deepClone = (() => {
       const copy = new Map() as unknown as T;
       map.set(target, copy);
       (target as Map<any, any>).forEach((value: any, key: any) => {
-        (copy as Map<any, any>).set(clone(key), clone(value));
+        (copy as Map<any, any>).set(clone(key, map), clone(value, map));
       });
       return copy;
     }
@@ -35,7 +42,7 @@ export const deepClone = (() => {
       const copy = new Set() as unknown as T;
       map.set(target, copy);
       (target as Set<any>).forEach((value: any) => {
-        (copy as Set<any>).add(clone(value));
+        (copy as Set<any>).add(clone(value, map));
       });
       return copy;
     }
@@ -48,15 +55,14 @@ export const deepClone = (() => {
     // 拷贝普通属性
     for (const key in target) {
       if (Object.prototype.hasOwnProperty.call(target, key)) {
-        (cloneTarget as any)[key] = clone((target as any)[key]);
+        (cloneTarget as any)[key] = clone((target as any)[key], map);
       }
     }
     // 拷贝 Symbol 属性（可选，根据需求）
     const symbolKeys = Object.getOwnPropertySymbols(target);
     for (const symKey of symbolKeys) {
-      (cloneTarget as any)[symKey] = clone((target as any)[symKey]);
+      (cloneTarget as any)[symKey] = clone((target as any)[symKey], map);
     }
-    map = new WeakMap();
     return cloneTarget;
   }
   return clone;

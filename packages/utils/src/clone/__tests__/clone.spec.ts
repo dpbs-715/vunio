@@ -86,6 +86,48 @@ describe('clone utils', () => {
       expect(cloned).not.toBe(obj);
     });
 
+    it('should handle nested circular references', () => {
+      const obj: any = {
+        a: {
+          b: 1,
+        },
+      };
+      obj.a.parent = obj;
+
+      const cloned = deepClone(obj);
+
+      expect(cloned.a.b).toBe(1);
+      expect(cloned.a.parent).toBe(cloned);
+      expect(cloned.a).not.toBe(obj.a);
+    });
+
+    it('should preserve Vue reactive values by reference', () => {
+      const computedLike: any = {
+        __v_isRef: true,
+        effect: {},
+      };
+      computedLike.effect.computed = computedLike;
+      const reactiveLike: any = {
+        __v_isReactive: true,
+        value: {
+          disabled: true,
+        },
+      };
+      const obj = {
+        props: {
+          disabledValues: computedLike,
+          disabledMap: reactiveLike,
+        },
+      };
+
+      const cloned = deepClone(obj);
+
+      expect(cloned).not.toBe(obj);
+      expect(cloned.props).not.toBe(obj.props);
+      expect(cloned.props.disabledValues).toBe(computedLike);
+      expect(cloned.props.disabledMap).toBe(reactiveLike);
+    });
+
     it('should clone objects with Symbol properties', () => {
       const sym = Symbol('test');
       const obj = {

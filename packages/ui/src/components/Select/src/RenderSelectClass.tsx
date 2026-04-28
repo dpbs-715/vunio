@@ -1,4 +1,4 @@
-import { Ref, SlotsType, ref, toValue } from 'vue';
+import { Ref, SlotsType, isRef, ref, toValue, unref } from 'vue';
 import { CommonSelectProps } from './Select.types.ts';
 import { ElSelect, ElSelectV2, ElTreeSelect, ElOption, ElOptionGroup } from 'element-plus';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
@@ -68,8 +68,75 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
           key={item[this.VALUE_FIELD.value]}
           label={item[this.LABEL_FIELD.value]}
           value={item[this.VALUE_FIELD.value]}
+          disabled={this.isOptionDisabled(item)}
         />
       );
+    });
+  }
+
+  isDisabledValue(value: any, option: Record<any, any>) {
+    const disabledValues = toValue(this.props).disabledValues;
+    const resolvedDisabledValues = this.resolveDisabledValues(disabledValues, option, value);
+    return this.matchDisabledValue(resolvedDisabledValues, value);
+  }
+
+  isOptionDisabled(option: Record<any, any>) {
+    const value = option[this.VALUE_FIELD.value];
+    return Boolean(option.disabled || this.isDisabledValue(value, option));
+  }
+
+  resolveDisabledValues(disabledValues: any, option: Record<any, any>, value: any): any {
+    const resolvedValue = isRef(disabledValues) ? unref(disabledValues) : disabledValues;
+
+    if (typeof resolvedValue === 'function') {
+      return resolvedValue(option, value);
+    }
+
+    return resolvedValue;
+  }
+
+  matchDisabledValue(disabledValues: any, value: any) {
+    const resolvedValue = isRef(disabledValues) ? unref(disabledValues) : disabledValues;
+
+    if (!resolvedValue) {
+      return false;
+    }
+
+    if (typeof resolvedValue === 'boolean') {
+      return resolvedValue;
+    }
+
+    if (Array.isArray(resolvedValue)) {
+      return resolvedValue.some((disabledValue: any) => {
+        return disabledValue === value || String(disabledValue) === String(value);
+      });
+    }
+
+    if (typeof resolvedValue === 'object') {
+      return Boolean(resolvedValue[value] || resolvedValue[String(value)]);
+    }
+
+    return false;
+  }
+
+  withDisabledOptions(options = this.options.value): Record<any, any>[] {
+    return (options || []).map((item: any) => {
+      const groupOptions = item[this.OPTIONS_FIELD.value];
+      const children = item[this.CHILDREN_FIELD.value];
+      const nextItem = {
+        ...item,
+        disabled: this.isOptionDisabled(item),
+      };
+
+      if (Array.isArray(groupOptions)) {
+        nextItem[this.OPTIONS_FIELD.value] = this.withDisabledOptions(groupOptions);
+      }
+
+      if (Array.isArray(children)) {
+        nextItem[this.CHILDREN_FIELD.value] = this.withDisabledOptions(children);
+      }
+
+      return nextItem;
     });
   }
 
@@ -99,7 +166,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
    * */
   selectFirst() {
     let props = toValue(this.props);
-    const flatOptions = this.getFlatOptions();
+    const flatOptions = this.getFlatOptions().filter((option) => !this.isOptionDisabled(option));
 
     // 如果 model 已经有值，不执行自动选择
     const hasValue =
@@ -207,7 +274,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
     let moreProps = {};
     if (Com.props.options) {
       moreProps = {
-        options: this.options.value,
+        options: this.withDisabledOptions(),
       };
     }
     return (
@@ -239,13 +306,13 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
       <Com
         ref={(instance: any) => (this.ref = instance)}
         onChange={(value: any) => this.changeSelect(value)}
-        options={this.options.value}
         props={{
           value: this.VALUE_FIELD.value,
           label: this.LABEL_FIELD.value,
           options: this.OPTIONS_FIELD.value,
         }}
         {...props}
+        options={this.withDisabledOptions()}
         vModel={this.model.value}
       />
     );
@@ -264,8 +331,8 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         }}
         highlightCurrent={true}
         nodeKey={this.VALUE_FIELD.value}
-        data={this.options.value}
         {...props}
+        data={this.withDisabledOptions()}
         vModel={this.model.value}
       />
     );

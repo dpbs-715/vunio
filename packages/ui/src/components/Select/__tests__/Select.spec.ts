@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
-import { nextTick, ref } from 'vue';
+import { flushPromises, mount } from '@vue/test-utils';
+import { nextTick, reactive, ref } from 'vue';
 
 import Select from '../src/Select.vue';
 
@@ -265,6 +265,102 @@ describe('CommonSelect', () => {
       expect(wrapper.exists()).toBe(true);
     });
 
+    it('should disable options matching disabledValues', async () => {
+      const wrapper = mount(Select, {
+        props: {
+          options: mockOptions,
+          disabledValues: ['2'],
+          componentType: 'ElSelect',
+        },
+      });
+
+      await nextTick();
+
+      const optionComponents = wrapper.findAllComponents({ name: 'ElOption' });
+      expect(optionComponents[0].props('disabled')).toBe(false);
+      expect(optionComponents[1].props('disabled')).toBe(true);
+      expect(optionComponents[2].props('disabled')).toBe(false);
+    });
+
+    it('should pass disabled options to ElSelectV2', async () => {
+      const wrapper = mount(Select, {
+        props: {
+          options: mockOptions,
+          disabledValues: ['2'],
+          componentType: 'ElSelectV2',
+        },
+      });
+
+      await nextTick();
+
+      const selectV2 = wrapper.findComponent({ name: 'ElSelectV2' });
+      expect(selectV2.props('options')[1].disabled).toBe(true);
+    });
+
+    it('should support disabledValues as predicate function', async () => {
+      const wrapper = mount(Select, {
+        props: {
+          options: mockOptions,
+          disabledValues: (option: Record<string, string>) => option.value === '2',
+          componentType: 'ElSelect',
+        },
+      });
+
+      await nextTick();
+
+      const optionComponents = wrapper.findAllComponents({ name: 'ElOption' });
+      expect(optionComponents[1].props('disabled')).toBe(true);
+    });
+
+    it('should support disabledValues as function returning values', async () => {
+      const disabledValues = ref(['2']);
+      const wrapper = mount(Select, {
+        props: {
+          options: mockOptions,
+          disabledValues: () => disabledValues.value,
+          componentType: 'ElSelectV2',
+        },
+      });
+
+      await nextTick();
+
+      let selectV2 = wrapper.findComponent({ name: 'ElSelectV2' });
+      expect(selectV2.props('options')[1].disabled).toBe(true);
+
+      disabledValues.value = ['3'];
+      await nextTick();
+
+      selectV2 = wrapper.findComponent({ name: 'ElSelectV2' });
+      expect(selectV2.props('options')[1].disabled).toBe(false);
+      expect(selectV2.props('options')[2].disabled).toBe(true);
+    });
+
+    it('should support disabledValues as reactive map', async () => {
+      const disabledMap = reactive<Record<string, boolean>>({
+        '2': true,
+      });
+      const wrapper = mount(Select, {
+        props: {
+          options: mockOptions,
+          disabledValues: disabledMap,
+          componentType: 'ElSelectV2',
+        },
+      });
+
+      await nextTick();
+
+      let selectV2 = wrapper.findComponent({ name: 'ElSelectV2' });
+      expect(selectV2.props('options')[1].disabled).toBe(true);
+
+      disabledMap['2'] = false;
+      disabledMap['3'] = true;
+      await nextTick();
+
+      selectV2 = wrapper.findComponent({ name: 'ElSelectV2' });
+      expect(selectV2.props('options')[1].disabled).toBe(false);
+      expect(selectV2.props('options')[2].disabled).toBe(true);
+    });
+
     it('should handle large dataset', () => {
       const largeOptions = Array.from({ length: 100 }, (_, i) => ({
         value: `${i + 1}`,
@@ -322,6 +418,24 @@ describe('CommonSelect', () => {
 
       // After initialization, optionsReady should be emitted
       expect(wrapper.emitted()).toBeDefined();
+    });
+
+    it('should skip disabled options when auto selecting first', async () => {
+      const onUpdateModelValue = vi.fn();
+      mount(Select, {
+        props: {
+          options: mockOptions,
+          disabledValues: ['1'],
+          autoSelect: 'first',
+          modelValue: '',
+          'onUpdate:modelValue': onUpdateModelValue,
+        },
+      });
+
+      await flushPromises();
+      await nextTick();
+
+      expect(onUpdateModelValue).toHaveBeenCalledWith('2');
     });
   });
 
