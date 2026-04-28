@@ -101,22 +101,15 @@ describe('clone utils', () => {
       expect(cloned.a).not.toBe(obj.a);
     });
 
-    it('should preserve Vue reactive values by reference', () => {
+    it('should preserve Vue ref values by reference', () => {
       const computedLike: any = {
         __v_isRef: true,
         effect: {},
       };
       computedLike.effect.computed = computedLike;
-      const reactiveLike: any = {
-        __v_isReactive: true,
-        value: {
-          disabled: true,
-        },
-      };
       const obj = {
         props: {
           disabledValues: computedLike,
-          disabledMap: reactiveLike,
         },
       };
 
@@ -125,21 +118,58 @@ describe('clone utils', () => {
       expect(cloned).not.toBe(obj);
       expect(cloned.props).not.toBe(obj.props);
       expect(cloned.props.disabledValues).toBe(computedLike);
-      expect(cloned.props.disabledMap).toBe(reactiveLike);
     });
 
     it('should clone reactive-like root input to avoid shared mutations', () => {
-      const reactiveRoot: any = {
-        __v_isReactive: true,
-        items: [{ label: 'A' }],
-      };
+      const rawRoot: any = [{ label: 'A', props: { disabled: false } }];
+      const reactiveRoot = new Proxy(rawRoot, {
+        get(target, key, receiver) {
+          if (key === '__v_isReactive') {
+            return true;
+          }
+          if (key === '__v_raw') {
+            return target;
+          }
+          return Reflect.get(target, key, receiver);
+        },
+      });
 
       const cloned = deepClone(reactiveRoot);
-      cloned.items[0].label = 'B';
+      cloned[0].label = 'B';
+      cloned[0].props.disabled = true;
 
       expect(cloned).not.toBe(reactiveRoot);
-      expect(cloned.items).not.toBe(reactiveRoot.items);
-      expect(reactiveRoot.items[0].label).toBe('A');
+      expect(cloned).not.toBe(rawRoot);
+      expect(cloned[0]).not.toBe(rawRoot[0]);
+      expect(rawRoot[0].label).toBe('A');
+      expect(rawRoot[0].props.disabled).toBe(false);
+    });
+
+    it('should clone nested reactive-like values instead of aliasing them', () => {
+      const rawChild: any = { label: 'A', props: { disabled: false } };
+      const reactiveChild = new Proxy(rawChild, {
+        get(target, key, receiver) {
+          if (key === '__v_isReactive') {
+            return true;
+          }
+          if (key === '__v_raw') {
+            return target;
+          }
+          return Reflect.get(target, key, receiver);
+        },
+      });
+      const obj = {
+        items: [reactiveChild],
+      };
+
+      const cloned = deepClone(obj);
+      cloned.items[0].label = 'B';
+      cloned.items[0].props.disabled = true;
+
+      expect(cloned.items[0]).not.toBe(reactiveChild);
+      expect(cloned.items[0]).not.toBe(rawChild);
+      expect(rawChild.label).toBe('A');
+      expect(rawChild.props.disabled).toBe(false);
     });
 
     it('should clone objects with Symbol properties', () => {
