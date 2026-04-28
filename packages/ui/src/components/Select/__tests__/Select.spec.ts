@@ -361,6 +361,30 @@ describe('CommonSelect', () => {
       expect(selectV2.props('options')[2].disabled).toBe(true);
     });
 
+    it('should only match own keys when disabledValues is an object map', async () => {
+      const options = [
+        { value: 'toString', label: 'toString' },
+        { value: 'constructor', label: 'constructor' },
+        { value: '2', label: 'Option 2' },
+      ];
+      const wrapper = mount(Select, {
+        props: {
+          options,
+          disabledValues: {
+            '2': true,
+          },
+          componentType: 'ElSelectV2',
+        },
+      });
+
+      await nextTick();
+
+      const selectV2 = wrapper.findComponent({ name: 'ElSelectV2' });
+      expect(selectV2.props('options')[0].disabled).toBe(false);
+      expect(selectV2.props('options')[1].disabled).toBe(false);
+      expect(selectV2.props('options')[2].disabled).toBe(true);
+    });
+
     it('should handle large dataset', () => {
       const largeOptions = Array.from({ length: 100 }, (_, i) => ({
         value: `${i + 1}`,
