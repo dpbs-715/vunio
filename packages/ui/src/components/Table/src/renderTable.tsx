@@ -14,18 +14,22 @@ export class RenderTableClass {
   slots: any;
   emits: any;
   tableRef: any;
-  data: DataType;
   constructor(props: CommonTableProps, attrs: any, slots: SlotsType, emits: any) {
-    this.props = useComponentProps(
-      {
-        ...props,
-        ...attrs,
-      },
-      'CommonTable',
-    );
-    this.data = props.data || [];
+    const mergedProps = new Proxy({} as CommonTableProps, {
+      get: (_, key: keyof CommonTableProps) => (key in attrs ? attrs[key] : props[key]),
+      ownKeys: () => Array.from(new Set([...Reflect.ownKeys(props), ...Reflect.ownKeys(attrs)])),
+      getOwnPropertyDescriptor: () => ({
+        enumerable: true,
+        configurable: true,
+      }),
+    });
+
+    this.props = useComponentProps(mergedProps, 'CommonTable');
     this.slots = slots;
     this.emits = emits;
+  }
+  get data(): DataType {
+    return this.props.value.data || [];
   }
   getTableRef() {
     return this.tableRef;
@@ -50,7 +54,7 @@ export class RenderTableClass {
    * 渲染elementPlus TableV2
    * */
   renderTableV2(Com: any) {
-    const { sortState, setSortState } = useTableV2Sort(this.data);
+    const { sortState, setSortState } = useTableV2Sort(() => this.data);
     const renderColumns: RenderColumnsClass = new RenderColumnsClass(this.props, this.slots);
 
     const v2Props = {

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { h, defineComponent, ref } from 'vue';
+import { h, defineComponent, ref, nextTick } from 'vue';
 import { ElTable } from 'element-plus';
 
 // Mock CreateComponent to avoid circular dependency issues
@@ -188,6 +188,21 @@ describe('CommonTable', () => {
       expect(wrapper.findComponent(ElTable).exists()).toBe(true);
       // Data is bound through props
       expect(wrapper.props('data')).toEqual(mockData);
+    });
+
+    it('should update table data when parent replaces data prop', async () => {
+      const dataRef = ref(mockData);
+      const wrapper = mount({
+        setup() {
+          return () => h(Table, { config: basicConfig, data: dataRef.value });
+        },
+      });
+      const nextData = [{ id: 4, name: 'Alice Cooper', age: 28, email: 'alice@example.com' }];
+
+      dataRef.value = nextData;
+      await nextTick();
+
+      expect(wrapper.findComponent(ElTable).props('data')).toEqual(nextData);
     });
 
     it('should handle empty data array', () => {

@@ -1,5 +1,5 @@
 import { watchDebounced } from '@vueuse/core';
-import { computed, ref } from 'vue';
+import { computed, ref, toValue, type MaybeRefOrGetter } from 'vue';
 
 import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap.ts';
 
@@ -25,7 +25,7 @@ export const sortChange = ({ prop, order }: any, tableData: any) => {
 /**
  * tableV2排序
  */
-export const useTableV2Sort = (data: any) => {
+export const useTableV2Sort = (data: MaybeRefOrGetter<any>) => {
   const sortState = ref({ key: '', order: 'asc' });
   //设置排序状态
   function setSortState({ key, order }: any) {
@@ -38,7 +38,7 @@ export const useTableV2Sort = (data: any) => {
   watchDebounced(
     () => sortState.value,
     () => {
-      sortChange({ prop: sortState.value.key, order: sortState.value.order }, data);
+      sortChange({ prop: sortState.value.key, order: sortState.value.order }, toValue(data));
     },
     {
       deep: true,
