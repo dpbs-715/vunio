@@ -72,7 +72,7 @@
     &--#{$type} {
       color: #fff;
       background-color: $color;
-      border-color: $color;
+      border: 1px solid $color;
 
       &:hover {
         $hover-color: color.mix(#fff, $color, 20%);
