@@ -69,6 +69,7 @@ const handleCurrentChange = (val: number) => {
 
 <template>
   <el-pagination
+    v-bind="$attrs"
     v-model:current-page="currentPage"
     v-model:page-size="actualPageSize"
     :background="true"
