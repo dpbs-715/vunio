@@ -241,7 +241,7 @@ function isDisabled({ cellData, column, rowData, rowIndex, tableData }) {
 | expandedRowKeys        | `Array<string \| number>`      | -       | 当前展开的行 keys 数组。               |
 | defaultExpandedRowKeys | `Array<string \| number>`      | -       | 初始展开的行 keys 数组。               |
 | class                  | `string \| string[] \| object` | -       | 组件根元素的 class。                   |
-| fixed                  | `boolean`                      | `false` | 是否固定列。                           |
+| fixed                  | `boolean \| string`            | `false` | 是否固定列。                           |
 | hScrollbarSize         | `number`                       | -       | 水平滚动条的大小。                     |
 | vScrollbarSize         | `number`                       | -       | 垂直滚动条的大小。                     |
 | sortBy                 | `object`                       | -       | 排序字段及方向。                       |
@@ -272,7 +272,7 @@ function isDisabled({ cellData, column, rowData, rowIndex, tableData }) {
 | columnKey           | 列唯一标识符                        | [string]                                           | -      |
 | width               | 列宽度                              | [number]                                           | -      |
 | minWidth            | 最小列宽                            | `string \| number`                                 | -      |
-| fixed               | 列是否固定                          | `boolean`                                          | -      |
+| fixed               | 列是否固定                          | `boolean \| string`                                | -      |
 | renderHeader        | 自定义表头渲染函数                  | `Function`                                         | -      |
 | sortable            | 是否可排序                          | `boolean`                                          | -      |
 | sortMethod          | 自定义排序方法                      | `Function`                                         | -      |
