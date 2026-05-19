@@ -27,7 +27,7 @@ export type CommonTableConfig = Omit<baseConfig, 'component'> & {
   columnKey?: string;
   width?: number;
   minWidth?: string | number;
-  fixed?: Boolean;
+  fixed?: Boolean | string;
   renderHeader?: Function;
   sortable?: Boolean;
   sortMethod?: Function;
