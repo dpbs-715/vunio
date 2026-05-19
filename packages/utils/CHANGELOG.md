@@ -1,5 +1,11 @@
 # @vunio/utils
 
+## 1.3.4
+
+### Patch Changes
+
+- 0f91a1e: 修改样式跟类型定义
+
 ## 1.3.3
 
 ### Patch Changes
