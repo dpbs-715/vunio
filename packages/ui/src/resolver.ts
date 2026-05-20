@@ -9,7 +9,9 @@ export interface vunioUIResolverOptions {
   importStyle?: boolean;
 }
 
-export function vunioUIResolver(): ComponentResolver {
+export function vunioUIResolver(options: vunioUIResolverOptions = {}): ComponentResolver {
+  const { importStyle = true } = options;
+
   return {
     type: 'component',
     resolve: (name: string) => {
@@ -17,7 +19,7 @@ export function vunioUIResolver(): ComponentResolver {
         return {
           name: name,
           from: '@vunio/ui',
-          sideEffects: undefined,
+          sideEffects: importStyle ? '@vunio/ui/style.css' : undefined,
         };
       } else {
         return undefined;

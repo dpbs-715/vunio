@@ -39,28 +39,45 @@ bun add @vunio/ui @vunio/utils @vunio/hooks @vunio/directives
 
 > 三种导入方式
 
-```ts
-// 全局引入
+全局引入：
+
+```ts [main.ts]
 import { createApp } from 'vue';
 import UI from '@vunio/ui';
 import '@vunio/ui/style.css';
+
 const app = createApp(App);
 app.use(UI);
+```
 
-// 按需引入
-import { Button } from '@vunio/ui';
+按需引入：
+
+```ts
+import { CommonButton } from '@vunio/ui';
 import '@vunio/ui/style.css';
-const app = createApp(App);
-app.use(Button);
 
-//unplugin-vue-components方式
-import { dUIResolver } from '@vunio/ui';
-//vite中配置使用ComponentResolver()
-// Components({
-//   resolvers: [dUIResolver()],
-// })
-//可能还需要在d.ts中添加下面引用
-/// <reference types="@vunio/ui/dist/types/index.d.ts" />
+export default {
+  components: {
+    CommonButton,
+  },
+};
+```
+
+unplugin-vue-components 方式：
+
+```ts [vite.config.ts]
+import { defineConfig } from 'vite';
+import Components from 'unplugin-vue-components/vite';
+import { vunioUIResolver } from '@vunio/ui/resolver';
+
+export default defineConfig({
+  plugins: [
+    Components({
+      resolvers: [vunioUIResolver()],
+      dts: true,
+    }),
+  ],
+});
 ```
 
 ### 工具函数

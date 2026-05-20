@@ -3,10 +3,9 @@
 
 /**
  * 用作给全局引入的UI组件类型提示：
- * tsconfig.json 需要添加配置："types": ["@vunio/ui/global.d.ts"]
+ * tsconfig.json 需要添加配置："types": ["@vunio/ui/global"]
  *
- * 或者
- * 一个全局的类型声明文件.d.ts写入：/// <reference types="@vunio/ui/global.d.ts" />
+ * 或者在一个全局的类型声明文件 .d.ts 写入：/// <reference types="@vunio/ui/global" />
  * 类似于：/// <reference types="vite/client" /> 具体可参考playground下的env.d.ts
  */
 declare module 'vue' {
