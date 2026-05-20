@@ -41,19 +41,17 @@ export default defineConfig({
         }
       },
     }),
-
-    // 自定义复制插件（可以使用 vite-plugin-static-copy 插件代替）
-    // {
-    //   name: 'copy-global-dts',
-    //   closeBundle() {
-    //     try {
-    //       // 复制文件global.d.ts到dist里
-    //       const srcPath = path.resolve(import.meta.dirname, 'src/types/global.d.ts');
-    //       const destPath = path.resolve(import.meta.dirname, 'dist/global.d.ts');
-    //       fs.copyFileSync(srcPath, destPath);
-    //     } catch (e) {}
-    //   },
-    // },
+    {
+      name: 'write-cjs-package-json',
+      closeBundle() {
+        const cjsDir = path.resolve(import.meta.dirname, 'dist/cjs');
+        fs.mkdirSync(cjsDir, { recursive: true });
+        fs.writeFileSync(
+          path.resolve(cjsDir, 'package.json'),
+          JSON.stringify({ type: 'commonjs' }, null, 2) + '\n',
+        );
+      },
+    },
   ],
   build: {
     target: 'esnext', // 目标版本

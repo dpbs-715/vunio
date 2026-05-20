@@ -39,21 +39,33 @@ bun add @vunio/ui @vunio/utils @vunio/hooks @vunio/directives
 
 > 三种导入方式
 
-```ts
-// 全局引入
+全局引入：
+
+```ts [main.ts]
 import { createApp } from 'vue';
 import UI from '@vunio/ui';
 import '@vunio/ui/style.css';
+
 const app = createApp(App);
 app.use(UI);
+```
 
-// 按需引入
+按需引入：
+
+```ts
 import { CommonButton } from '@vunio/ui';
 import '@vunio/ui/style.css';
-const app = createApp(App);
-app.use(CommonButton);
 
-// unplugin-vue-components 方式（vite.config.ts）
+export default {
+  components: {
+    CommonButton,
+  },
+};
+```
+
+unplugin-vue-components 方式：
+
+```ts [vite.config.ts]
 import { defineConfig } from 'vite';
 import Components from 'unplugin-vue-components/vite';
 import { vunioUIResolver } from '@vunio/ui/resolver';

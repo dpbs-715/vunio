@@ -37,20 +37,33 @@ bun add @vunio/ui @vunio/utils @vunio/hooks @vunio/directives
 
 ### UI Components
 
-```ts
-// Global import
+Global import:
+
+```ts [main.ts]
 import { createApp } from 'vue';
 import UI from '@vunio/ui';
 import '@vunio/ui/style.css';
+
 const app = createApp(App);
 app.use(UI);
+```
 
-// Import on demand
+Import on demand:
+
+```ts
 import { CommonButton } from '@vunio/ui';
 import '@vunio/ui/style.css';
-const app = createApp(App);
-app.use(CommonButton);
-// unplugin-vue-components (vite.config.ts)
+
+export default {
+  components: {
+    CommonButton,
+  },
+};
+```
+
+unplugin-vue-components:
+
+```ts [vite.config.ts]
 import { defineConfig } from 'vite';
 import Components from 'unplugin-vue-components/vite';
 import { vunioUIResolver } from '@vunio/ui/resolver';
