@@ -1,5 +1,11 @@
 # @vunio/hooks
 
+## 1.4.0
+
+### Minor Changes
+
+- 53f8b00: 导入方式修改
+
 ## 1.3.5
 
 ### Patch Changes
