@@ -20,6 +20,8 @@ export default defineConfig({
     dts({
       // 包含的文件类型
       include: ['src/**/*.{vue,ts,tsx}'],
+      // 排除测试和手动复制的全局声明，避免发布无关声明文件
+      exclude: ['src/**/__tests__/**', 'src/**/*.spec.ts', 'src/types/global.d.ts'],
       // 输出目录
       outDir: ['dist/types'],
       // 写入文件前的处理
@@ -28,27 +30,14 @@ export default defineConfig({
         filePath: filePath.replace('/src/', '/'),
         content,
       }),
-      // 新增：在写入最后一个文件后，将全局类型声明合并到 index.d.ts 中
+      // 单独发布全局组件类型声明，由用户按需引用 @vunio/ui/global
       afterBuild: () => {
         try {
-          const indexPath = path.resolve(import.meta.dirname, 'dist/types/index.d.ts');
           const globalPath = path.resolve(import.meta.dirname, 'src/types/global.d.ts');
-
-          // 读取全局类型声明
-          let globalContent = fs.readFileSync(globalPath, 'utf-8');
-          // 移除注释行
-          globalContent = globalContent.replace(/\/\/.*\n/g, '').trim();
-
-          // 读取 index.d.ts 内容
-          let indexContent = fs.readFileSync(indexPath, 'utf-8');
-
-          // 将全局类型声明添加到 index.d.ts 末尾
-          indexContent += '\n' + globalContent;
-
-          // 写回文件
-          fs.writeFileSync(indexPath, indexContent);
+          const globalOutPath = path.resolve(import.meta.dirname, 'dist/types/global.d.ts');
+          fs.copyFileSync(globalPath, globalOutPath);
         } catch (e) {
-          console.error('Failed to merge global types:', e);
+          console.error('Failed to copy global types:', e);
         }
       },
     }),
@@ -74,7 +63,10 @@ export default defineConfig({
     // 库配置
     lib: {
       // 入口文件
-      entry: path.resolve(import.meta.dirname, 'src/index.ts'),
+      entry: {
+        index: path.resolve(import.meta.dirname, 'src/index.ts'),
+        resolver: path.resolve(import.meta.dirname, 'src/resolver.ts'),
+      },
       // 输出格式
       formats: ['es', 'cjs'],
       // 输出文件名

@@ -49,7 +49,6 @@ export { install };
 
 export * from './components';
 export * from './libExports';
-export * from './resolver';
 import './styles/common-variables.scss';
 export default {
   install,

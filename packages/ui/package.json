@@ -17,6 +17,10 @@
       "import": "./dist/esm/resolver.mjs",
       "require": "./dist/cjs/resolver.js"
     },
+    "./global": {
+      "types": "./dist/types/global.d.ts"
+    },
+    "./global.d.ts": "./dist/types/global.d.ts",
     "./style.css": "./dist/style.css",
     "./*": "./dist/*"
   },
