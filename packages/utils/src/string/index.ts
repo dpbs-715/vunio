@@ -10,7 +10,7 @@ export const capitalize = (str: string): string => {
  */
 export const camelToKebab = (str: string, separator = '-'): string => {
   return str
-    .replace(/(?<!^)([A-Z])/g, (match, p1) => {
+    .replace(/(?<!^)([A-Z])/g, (_, p1) => {
       return separator + p1.toLowerCase();
     })
     .toLowerCase();

@@ -46,14 +46,23 @@ const app = createApp(App);
 app.use(UI);
 
 // Import on demand
-import { Button } from '@vunio/ui';
+import { CommonButton } from '@vunio/ui';
 import '@vunio/ui/style.css';
 const app = createApp(App);
-app.use(Button);
-// Components({
-//   resolvers: [vunioUIResolver()],
-// })
-/// <reference types="@vunio/ui/dist/types/index.d.ts" />
+app.use(CommonButton);
+// unplugin-vue-components (vite.config.ts)
+import { defineConfig } from 'vite';
+import Components from 'unplugin-vue-components/vite';
+import { vunioUIResolver } from '@vunio/ui/resolver';
+
+export default defineConfig({
+  plugins: [
+    Components({
+      resolvers: [vunioUIResolver()],
+      dts: true,
+    }),
+  ],
+});
 ```
 
 ### Utility Functions

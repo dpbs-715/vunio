@@ -12,6 +12,11 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     },
+    "./resolver": {
+      "types": "./dist/types/resolver.d.ts",
+      "import": "./dist/esm/resolver.mjs",
+      "require": "./dist/cjs/resolver.js"
+    },
     "./style.css": "./dist/style.css",
     "./*": "./dist/*"
   },
