@@ -1,5 +1,11 @@
 # @vunio/ui
 
+## 1.5.0
+
+### Minor Changes
+
+- 19a1cff: 导入方式修改
+
 ## 1.4.0
 
 ### Minor Changes
