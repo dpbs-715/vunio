@@ -170,11 +170,12 @@ class summaryMethodBuilderImpl<Row = any> implements summaryMethodBuilder<Row> {
   }
 
   build(): SummaryMethod {
+    const sumRule: FieldRule<Row> = { kind: 'aggregate', aggregator: sumValues };
+
     return (props: SummaryMethodProps): string[] => {
       const { columns } = props;
       const rows = (Array.isArray(props.data) ? props.data : []) as Row[];
       const summableFields = this.collectSummableFields();
-      const sumRule: FieldRule<Row> = { kind: 'aggregate', aggregator: sumValues };
 
       return columns.map((column, index) => {
         const field = column?.property as string | undefined;

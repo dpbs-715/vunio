@@ -132,6 +132,12 @@ describe('summaryMethodBuilder', () => {
       expect(result).toEqual(['合计', '-']);
     });
 
+    it('空数据：count 列返回 0（计数为 0 是合法汇总值，不走 emptyText）', () => {
+      const method = summaryMethodBuilder().count('name').emptyText('-').build();
+      const result = method(createProps(['name'], []));
+      expect(result).toEqual(['0']);
+    });
+
     it('非有限值被过滤，不参与求和', () => {
       const data = [{ qty: 10 }, { qty: 'abc' }, { qty: null }, { qty: 5 }];
       const method = summaryMethodBuilder().sum('qty').build();
