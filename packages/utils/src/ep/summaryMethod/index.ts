@@ -32,14 +32,17 @@ const DEFAULT_PRECISION = 2;
 const toFieldList = (fields: FieldInput<any>): string[] =>
   (Array.isArray(fields) ? fields : [fields]).map((field) => String(field));
 
+const isNonEmpty = (value: unknown) => value !== null && value !== undefined && value !== '';
+
 const toFiniteNumbers = (rows: any[], field: string): number[] =>
   rows.reduce<number[]>((acc, row) => {
-    const value = Number(row?.[field]);
+    const raw = row?.[field];
+    // 空值（null / undefined / ''）不参与聚合，避免 Number('') / Number(null) 被强转为 0
+    if (!isNonEmpty(raw)) return acc;
+    const value = Number(raw);
     if (Number.isFinite(value)) acc.push(value);
     return acc;
   }, []);
-
-const isNonEmpty = (value: unknown) => value !== null && value !== undefined && value !== '';
 
 const sumValues = (values: number[]) => values.reduce((total, value) => total + value, 0);
 

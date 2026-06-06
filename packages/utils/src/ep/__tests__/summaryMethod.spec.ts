@@ -145,6 +145,21 @@ describe('summaryMethodBuilder', () => {
       expect(result).toEqual(['15.00']);
     });
 
+    it('空值（null / 空字符串）不被强转为 0，不参与平均值计算', () => {
+      const data = [{ rate: 10 }, { rate: null }, { rate: '' }];
+      const method = summaryMethodBuilder().avg('rate').build();
+      const result = method(createProps(['rate'], data));
+      // 仅有效值 10 参与，平均值为 10 而非 (10+0+0)/3
+      expect(result).toEqual(['10.00']);
+    });
+
+    it('全部为空值时聚合列返回 emptyText', () => {
+      const data = [{ qty: null }, { qty: '' }, { qty: undefined }];
+      const method = summaryMethodBuilder().sum('qty').emptyText('-').build();
+      const result = method(createProps(['qty'], data));
+      expect(result).toEqual(['-']);
+    });
+
     it('label：默认落在第 0 列', () => {
       const method = summaryMethodBuilder().label('合计').build();
       const result = method(createProps([undefined, undefined], rows));
