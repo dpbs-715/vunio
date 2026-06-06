@@ -486,3 +486,158 @@ const spanMethod = spanMethodBuilder()
 - ✅ Chainable calls, more readable code
 - ✅ Multiple `mergeRows()` calls solve column dependency issues
 - ✅ Configuration reuse - `data` and `cacheKey` configured once
+
+## summaryMethodBuilder
+
+> Create a summary-row function for the ElementPlus Table component. Supports sum, average, count, and custom aggregation, and can auto-sum columns marked `summable` in your column config — all through a fluent chained API.
+
+### Quick Start
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { summaryMethodBuilder } from '@vunio/utils/ep';
+
+const tableData = ref([
+  { name: 'Item A', qty: 10, price: 2 },
+  { name: 'Item B', qty: 20, price: 4 },
+]);
+
+// Show "Total" in the first column, sum qty and price
+const summaryMethod = summaryMethodBuilder().label('Total').sum(['qty', 'price']).build();
+</script>
+
+<template>
+  <el-table :data="tableData" :summary-method="summaryMethod" show-summary border>
+    <el-table-column prop="name" label="Name" />
+    <el-table-column prop="qty" label="Qty" />
+    <el-table-column prop="price" label="Price" />
+  </el-table>
+</template>
+```
+
+### Generic Type Hints
+
+Pass a row type to get field-name completion; `rows` inside aggregate/custom functions is typed too:
+
+```ts
+interface Row {
+  name: string;
+  qty: number;
+  price: number;
+}
+
+const summaryMethod = summaryMethodBuilder<Row>()
+  .label('Total')
+  .sum(['qty', 'price']) // 'qty' / 'price' autocompleted
+  .build();
+```
+
+### Aggregation Methods
+
+```ts
+const summaryMethod = summaryMethodBuilder()
+  .label('Stats', 0)
+  .sum(['qty', 'price']) // sum
+  .avg('rate') // average
+  .count('name') // count non-empty cells
+  .aggregate('qty', (values) => Math.max(...values)) // custom aggregation (returns a number, formatted)
+  .custom('ratio', (values, rows) => {
+    // Fully custom output; string is shown as-is, number goes through numeric formatting
+    const total = rows.reduce((sum, row) => sum + Number(row.qty || 0), 0);
+    const current = values.reduce((sum, value) => sum + value, 0);
+    return total ? `${((current / total) * 100).toFixed(1)}%` : '/';
+  })
+  .build();
+```
+
+### Auto-Sum From Column Config (summableFrom)
+
+Mark columns with `summable: true` in your config and `summableFrom` collects them automatically; explicit rules take precedence over auto-sum. When columns change (e.g. tab switches), pass a getter `() => columns` to always read the latest columns.
+
+```ts
+const columns = ref([
+  { field: 'name', label: 'Name' },
+  { field: 'qty', label: 'Qty', summable: true },
+  { field: 'price', label: 'Price', summable: true },
+  { field: 'rate', label: 'Rate', summable: false },
+]);
+
+const summaryMethod = summaryMethodBuilder()
+  .label('Total')
+  .summableFrom(() => columns.value)
+  .precision(2)
+  .build();
+```
+
+> In `CommonTable`, `CommonTableConfig` already includes an optional `summable` field, so you can pass the column config straight to `summableFrom`.
+
+### Number Formatting
+
+```ts
+// precision: number of decimal places (default 2)
+const a = summaryMethodBuilder().sum('qty').precision(0).build();
+
+// formatter: custom format (higher priority than precision), e.g. thousands separators
+const b = summaryMethodBuilder()
+  .sum('qty')
+  .formatter((value) => value.toLocaleString('en-US', { minimumFractionDigits: 2 }))
+  .build();
+```
+
+### Using With CommonTable
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { summaryMethodBuilder } from '@vunio/utils/ep';
+
+const config = ref([
+  { field: 'name', label: 'Name' },
+  { field: 'qty', label: 'Qty', summable: true },
+  { field: 'price', label: 'Price', summable: true },
+]);
+const data = ref([
+  { name: 'Item A', qty: 10, price: 2 },
+  { name: 'Item B', qty: 20, price: 4 },
+]);
+
+const summaryMethod = summaryMethodBuilder()
+  .label('Total')
+  .summableFrom(() => config.value)
+  .build();
+</script>
+
+<template>
+  <CommonTable :config="config" :data="data" :summary-method="summaryMethod" show-summary border />
+</template>
+```
+
+### API Reference
+
+#### summaryMethodBuilder()
+
+Creates a summary-row builder returning a chainable object. Supports the generic form `summaryMethodBuilder<Row>()`.
+
+#### summaryMethodBuilder methods
+
+| Method                          | Params                                             | Description                                                     |
+| ------------------------------- | -------------------------------------------------- | --------------------------------------------------------------- |
+| `label(text, columnIndex?)`     | `string, number`                                   | Summary-row label and its column; `columnIndex` defaults to `0` |
+| `sum(fields)`                   | `keyof Row \| string \| array`                     | Sum the given columns                                           |
+| `avg(fields)`                   | `keyof Row \| string \| array`                     | Average the given columns                                       |
+| `count(fields)`                 | `keyof Row \| string \| array`                     | Count non-empty cells in the given columns                      |
+| `aggregate(fields, aggregator)` | `fields, (values, rows) => number`                 | Custom aggregation; the number result is formatted              |
+| `custom(field, resolver)`       | `field, (values, rows, props) => string \| number` | Fully customize a column's output                               |
+| `summableFrom(columns)`         | `MaybeRef<config[]> \| (() => config[])`           | Auto-collect columns marked `summable: true` and sum them       |
+| `precision(digits)`             | `number`                                           | Decimal places for numeric results, default `2`                 |
+| `formatter(fn)`                 | `(value, field) => string`                         | Custom numeric formatting, higher priority than `precision`     |
+| `emptyText(text)`               | `string`                                           | Placeholder for columns without a summary, default empty string |
+| `build()`                       | —                                                  | Produce the el-table `summary-method` function                  |
+
+### Notes
+
+- The function returned by `build()` reads rows from the `data` provided in the `summary-method` argument — no need to call `withData` like `spanMethodBuilder`.
+- Non-finite values (empty strings, `null`, non-numeric) are filtered out and excluded from aggregation.
+- Aggregation columns return `emptyText` (default empty string) when there are no valid numeric values; however `count` returns `0` for empty data (a count of zero is a legitimate summary value).
+- Explicit rules (`sum`/`avg`/`count`/`aggregate`/`custom`) take precedence over sums inferred by `summableFrom`.
