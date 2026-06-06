@@ -160,10 +160,16 @@ class summaryMethodBuilderImpl<Row = any> implements summaryMethodBuilder<Row> {
 
   private collectSummableFields(): Set<string> {
     const fields = new Set<string>();
-    resolveColumns(this.summableColumns).forEach((column) => {
-      const field = unref(column.field as any) as string | undefined;
-      if (field && column.summable) fields.add(field);
-    });
+    // 递归遍历分组列（columnChildren），叶子列才有对应 property，需一并收集
+    const walk = (columns: SummaryColumnLike[]) => {
+      columns.forEach((column) => {
+        const field = unref(column.field as any) as string | undefined;
+        if (field && column.summable) fields.add(field);
+        const children = column.columnChildren;
+        if (Array.isArray(children)) walk(children as SummaryColumnLike[]);
+      });
+    };
+    walk(resolveColumns(this.summableColumns));
     return fields;
   }
 

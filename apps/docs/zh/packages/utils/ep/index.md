@@ -571,6 +571,8 @@ const summaryMethod = summaryMethodBuilder()
 ```
 
 > 在 `CommonTable` 中，`CommonTableConfig` 已内置可选的 `summable` 字段，可直接把列配置传给 `summableFrom`。
+>
+> `summableFrom` 会递归遍历分组列（`columnChildren`），因此分组表格中被标记 `summable: true` 的叶子列同样会被自动求和。
 
 ### 数值格式化
 

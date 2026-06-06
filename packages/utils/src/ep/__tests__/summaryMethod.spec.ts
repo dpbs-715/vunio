@@ -99,6 +99,24 @@ describe('summaryMethodBuilder', () => {
       const result = method(createProps(['qty', 'price'], rows));
       expect(result).toEqual(['20.00', '12.00']);
     });
+
+    it('分组列：递归收集 columnChildren 中的 summable 叶子列', () => {
+      const grouped = [
+        { field: 'name', label: '名称' },
+        {
+          field: 'group',
+          label: '数量组',
+          columnChildren: [
+            { field: 'qty', label: '数量', summable: true },
+            { field: 'price', label: '单价', summable: true },
+          ],
+        },
+      ];
+      const method = summaryMethodBuilder().label('合计').summableFrom(grouped).build();
+      // el-table 只对叶子列（qty/price）调用 summary，分组父列无 property
+      const result = method(createProps([undefined, 'qty', 'price'], rows));
+      expect(result).toEqual(['合计', '60.00', '12.00']);
+    });
   });
 
   describe('格式化', () => {

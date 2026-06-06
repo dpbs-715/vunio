@@ -571,6 +571,8 @@ const summaryMethod = summaryMethodBuilder()
 ```
 
 > In `CommonTable`, `CommonTableConfig` already includes an optional `summable` field, so you can pass the column config straight to `summableFrom`.
+>
+> `summableFrom` recurses through grouped columns (`columnChildren`), so leaf columns marked `summable: true` in grouped tables are auto-summed too.
 
 ### Number Formatting
 
