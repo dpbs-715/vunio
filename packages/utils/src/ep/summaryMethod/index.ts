@@ -34,11 +34,15 @@ const toFieldList = (fields: FieldInput<any>): string[] =>
 
 const isNonEmpty = (value: unknown) => value !== null && value !== undefined && value !== '';
 
-const toFiniteNumbers = (rows: any[], field: string): number[] =>
+const toFiniteNumbers = (rows: any[], field: string, emptyAsZero: boolean): number[] =>
   rows.reduce<number[]>((acc, row) => {
     const raw = row?.[field];
-    // 空值（null / undefined / ''）不参与聚合，避免 Number('') / Number(null) 被强转为 0
-    if (!isNonEmpty(raw)) return acc;
+    // 空值（null / undefined / ''）默认不参与聚合，避免 Number('') / Number(null) 被强转为 0；
+    // 开启 emptyAsZero 后空值计为 0 并计入分母（例如空白代表“无销量=0”的场景）。
+    if (!isNonEmpty(raw)) {
+      if (emptyAsZero) acc.push(0);
+      return acc;
+    }
     const value = Number(raw);
     if (Number.isFinite(value)) acc.push(value);
     return acc;
@@ -73,6 +77,8 @@ export interface summaryMethodBuilder<Row = any> {
   formatter(formatter: SummaryFormatter): this;
   /** 无合计列的占位文本（默认空字符串） */
   emptyText(text: string): this;
+  /** 将空值（null / undefined / ''）计为 0 并计入聚合（影响 avg 的分母）；默认排除空值 */
+  emptyAsZero(enabled?: boolean): this;
   build(): SummaryMethod;
 }
 
@@ -84,6 +90,7 @@ class summaryMethodBuilderImpl<Row = any> implements summaryMethodBuilder<Row> {
   private precisionDigits = DEFAULT_PRECISION;
   private formatterFn?: SummaryFormatter;
   private emptyTextValue = '';
+  private emptyAsZeroFlag = false;
 
   label(text: string, columnIndex = 0): this {
     this.labelText = text;
@@ -142,6 +149,11 @@ class summaryMethodBuilderImpl<Row = any> implements summaryMethodBuilder<Row> {
     return this;
   }
 
+  emptyAsZero(enabled = true): this {
+    this.emptyAsZeroFlag = enabled;
+    return this;
+  }
+
   private formatNumber(value: number, field: string): string {
     return this.formatterFn ? this.formatterFn(value, field) : value.toFixed(this.precisionDigits);
   }
@@ -161,7 +173,7 @@ class summaryMethodBuilderImpl<Row = any> implements summaryMethodBuilder<Row> {
     rows: Row[],
     props: SummaryMethodProps,
   ): string {
-    const values = toFiniteNumbers(rows as any[], field);
+    const values = toFiniteNumbers(rows as any[], field, this.emptyAsZeroFlag);
 
     if (rule.kind === 'custom') {
       const output = rule.resolver(values, rows, props);

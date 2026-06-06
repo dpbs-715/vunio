@@ -633,11 +633,13 @@ Creates a summary-row builder returning a chainable object. Supports the generic
 | `precision(digits)`             | `number`                                           | Decimal places for numeric results, default `2`                 |
 | `formatter(fn)`                 | `(value, field) => string`                         | Custom numeric formatting, higher priority than `precision`     |
 | `emptyText(text)`               | `string`                                           | Placeholder for columns without a summary, default empty string |
+| `emptyAsZero(enabled?)`         | `boolean`                                          | Count empty cells as 0 in aggregation (affects the avg denominator); empties are excluded by default |
 | `build()`                       | —                                                  | Produce the el-table `summary-method` function                  |
 
 ### Notes
 
 - The function returned by `build()` reads rows from the `data` provided in the `summary-method` argument — no need to call `withData` like `spanMethodBuilder`.
-- Non-finite values (empty strings, `null`, non-numeric) are filtered out and excluded from aggregation.
+- By default, empty values (`null` / `undefined` / `''`) and non-numeric values (e.g. `'abc'`) are both filtered out and excluded from aggregation, so `avg`'s denominator only counts valid numbers (e.g. the average of `[100, null]` is `100`).
+- If blank cells should count as 0 (e.g. blank means "no sales = 0"), call `emptyAsZero()`: empty values are then counted as 0 and included in the denominator (the average of `[100, null]` becomes `50`), while non-numeric values are still excluded.
 - Aggregation columns return `emptyText` (default empty string) when there are no valid numeric values; however `count` returns `0` for empty data (a count of zero is a legitimate summary value).
 - Explicit rules (`sum`/`avg`/`count`/`aggregate`/`custom`) take precedence over sums inferred by `summableFrom`.

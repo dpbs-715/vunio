@@ -160,6 +160,22 @@ describe('summaryMethodBuilder', () => {
       expect(result).toEqual(['-']);
     });
 
+    it('emptyAsZero：空值计为 0 并计入平均值分母', () => {
+      const data = [{ rate: 100 }, { rate: null }];
+      const method = summaryMethodBuilder().avg('rate').emptyAsZero().build();
+      const result = method(createProps(['rate'], data));
+      // 空值计为 0：(100 + 0) / 2 = 50
+      expect(result).toEqual(['50.00']);
+    });
+
+    it('emptyAsZero 下非数值（如 abc）仍被排除', () => {
+      const data = [{ rate: 100 }, { rate: null }, { rate: 'abc' }];
+      const method = summaryMethodBuilder().avg('rate').emptyAsZero().build();
+      const result = method(createProps(['rate'], data));
+      // 'abc' 排除，null 计为 0：(100 + 0) / 2 = 50
+      expect(result).toEqual(['50.00']);
+    });
+
     it('label：默认落在第 0 列', () => {
       const method = summaryMethodBuilder().label('合计').build();
       const result = method(createProps([undefined, undefined], rows));

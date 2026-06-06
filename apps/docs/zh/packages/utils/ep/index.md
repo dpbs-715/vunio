@@ -633,11 +633,13 @@ const summaryMethod = summaryMethodBuilder()
 | `precision(digits)`             | `number`                                          | 数值结果小数位数，默认 `2`                 |
 | `formatter(fn)`                 | `(value, field) => string`                        | 自定义数值格式化，优先级高于 `precision`   |
 | `emptyText(text)`               | `string`                                          | 无合计列的占位文本，默认空字符串           |
+| `emptyAsZero(enabled?)`         | `boolean`                                         | 空值计为 0 并计入聚合（影响 avg 分母），默认排除空值 |
 | `build()`                       | —                                                 | 生成 el-table 的 `summary-method` 函数     |
 
 ### 注意事项
 
 - `build()` 返回的函数从 `summary-method` 的入参自带的 `data` 取数，无需像 `spanMethodBuilder` 那样调用 `withData`。
-- 非有限数值（如空字符串、`null`、非数字）会被自动过滤，不参与聚合。
+- 默认情况下，空值（`null` / `undefined` / `''`）与非数值（如 `'abc'`）都会被过滤，不参与聚合；因此 `avg` 的分母只统计有效数值（例如 `[100, null]` 的平均值为 `100`）。
+- 如果空白单元格应当按 0 计算（例如空白代表“无销量 = 0”），调用 `emptyAsZero()`：此时空值计为 0 并计入分母（`[100, null]` 的平均值变为 `50`），但非数值仍被排除。
 - 聚合列在无有效数值时返回 `emptyText`（默认空字符串）；但 `count` 在空数据时返回 `0`（计数为 0 是合法汇总值）。
 - 显式规则（`sum`/`avg`/`count`/`aggregate`/`custom`）优先于 `summableFrom` 推导出的求和。
