@@ -15,6 +15,8 @@ export type CommonTableConfig = Omit<baseConfig, 'component'> & {
   helpText?: string;
   align?: 'left' | 'center' | 'right';
   formatter?: Function;
+  // 标记该列参与合计行自动求和（配合 @vunio/utils 的 summaryMethodBuilder().summableFrom）
+  summable?: Boolean;
   columnChildren?: CommonTableConfig[];
   //自定义单元格
   cellRenderer?: Function;
