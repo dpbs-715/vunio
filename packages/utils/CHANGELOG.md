@@ -1,5 +1,11 @@
 # @vunio/utils
 
+## 1.5.1
+
+### Patch Changes
+
+- c8a8be9: 添加了一些新特性
+
 ## 1.5.0
 
 ### Minor Changes
