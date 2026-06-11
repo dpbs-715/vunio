@@ -58,6 +58,14 @@ export default {
     },
   },
   CommonDialog: {
+    showClose: true,
+    // 继承 ElDialogProps 后，这些 Element Plus 默认为 true 的布尔属性会被 Vue 声明为本地
+    // Boolean prop，未传入时会被实例化为 false。在此显式声明默认值，配合 useComponentProps
+    // 的守卫逻辑，保证未显式传入时维持 Element Plus 的 true 默认值。
+    modal: true,
+    closeOnClickModal: false,
+    closeOnPressEscape: true,
+    lockScroll: true,
     modalBlur: true,
     draggable: true,
     top: '15vh',

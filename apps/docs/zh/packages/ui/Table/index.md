@@ -186,7 +186,7 @@ function isDisabled({ cellData, column, rowData, rowIndex, tableData }) {
 | width                 | `number \| string`                       | -                                                      | 表格宽度，若为字符串则需包含单位。               |
 | maxHeight             | `number \| string`                       | -                                                      | 表格最大高度，若为字符串则需包含单位。           |
 | stripe                | `boolean`                                | `false`                                                | 是否为斑马纹表格。                               |
-| border                | `boolean`                                | `false`                                                | 是否带有纵向边框。                               |
+| border                | `boolean`                                | `true`                                                 | 是否带有纵向边框。                               |
 | size                  | `'large' \| 'default' \| 'small'`        | `'default'`                                            | 设置表格元素的尺寸。                             |
 | fit                   | `boolean`                                | `true`                                                 | 列的宽度是否自适应。                             |
 | showHeader            | `boolean`                                | `true`                                                 | 是否显示表头。                                   |

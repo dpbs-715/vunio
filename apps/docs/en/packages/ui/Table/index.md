@@ -189,7 +189,7 @@ function isDisabled({ cellData, column, rowData, rowIndex, tableData }) {
 | width                 | `number \| string`                       | -                                                      | Table width, if string must include unit.                      |
 | maxHeight             | `number \| string`                       | -                                                      | Table maximum height, if string must include unit.             |
 | stripe                | `boolean`                                | `false`                                                | Whether to use zebra stripe table.                             |
-| border                | `boolean`                                | `false`                                                | Whether to show vertical borders.                              |
+| border                | `boolean`                                | `true`                                                 | Whether to show vertical borders.                              |
 | size                  | `'large' \| 'default' \| 'small'`        | `'default'`                                            | Sets the size of table elements.                               |
 | fit                   | `boolean`                                | `true`                                                 | Whether column widths are adaptive.                            |
 | showHeader            | `boolean`                                | `true`                                                 | Whether to show table header.                                  |
