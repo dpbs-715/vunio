@@ -75,7 +75,7 @@ const comSlots = computed(() => {
             ${dialogProps.modalBlur ? 'modalBlur' : ''}
             ${dialogProps.modalClass ?? ''}
           `,
-          class: ['CommonDialog', attrs.class],
+          class: ['commonDialog', attrs.class],
           modelValue: dialogVisible,
           'onUpdate:modelValue': updateModel,
         },
