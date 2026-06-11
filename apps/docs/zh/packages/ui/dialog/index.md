@@ -22,6 +22,14 @@
 
 除以上属性外，支持透传 Element Plus Dialog 的属性。
 
+CommonDialog 对部分 Element Plus 属性使用了不同的默认值，可按需覆盖：
+
+| 属性              | 说明                       | 类型    | 默认值（Element Plus 默认值） |
+| ----------------- | -------------------------- | ------- | ----------------------------- |
+| closeOnClickModal | 是否点击遮罩层关闭弹窗     | boolean | false（true）                 |
+| draggable         | 是否可拖拽弹窗             | boolean | true（false）                 |
+| appendToBody      | 弹窗自身是否插入到 body 上 | boolean | true（false）                 |
+
 ## renderDialog
 
 | 参数        | 说明                              | 类型                           |

@@ -18,6 +18,14 @@ Basic dialog component.
 
 CommonDialog also passes through Element Plus Dialog props.
 
+CommonDialog overrides the defaults of some Element Plus props; override them as needed:
+
+| Attribute         | Description                            | Type    | Default (Element Plus default) |
+| ----------------- | -------------------------------------- | ------- | ------------------------------ |
+| closeOnClickModal | Whether clicking the overlay closes it | boolean | false (true)                   |
+| draggable         | Whether the dialog can be dragged      | boolean | true (false)                   |
+| appendToBody      | Whether the dialog appends to body     | boolean | true (false)                   |
+
 ## renderDialog
 
 | Parameter   | Description                                         | Type                           |
