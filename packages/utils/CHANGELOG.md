@@ -1,5 +1,11 @@
 # @vunio/utils
 
+## 1.5.4
+
+### Patch Changes
+
+- 7fa34c8: 微调
+
 ## 1.5.3
 
 ### Patch Changes
