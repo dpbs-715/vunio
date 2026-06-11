@@ -1,14 +1,7 @@
 import type { AppContext, Component, VNode } from 'vue';
 import type { DialogProps as ElDialogProps } from 'element-plus';
 
-type ElDialogTrueDefaultBooleanKeys =
-  | 'showClose'
-  | 'modal'
-  | 'closeOnClickModal'
-  | 'closeOnPressEscape'
-  | 'lockScroll';
-
-export interface DialogProps extends Omit<ElDialogProps, ElDialogTrueDefaultBooleanKeys> {
+export interface DialogProps extends ElDialogProps {
   modalBlur?: boolean;
   footerHide?: boolean;
 }

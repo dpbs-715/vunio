@@ -58,6 +58,7 @@ export default {
     },
   },
   CommonDialog: {
+    showClose: true,
     modalBlur: true,
     draggable: true,
     top: '15vh',
