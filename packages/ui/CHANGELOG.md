@@ -1,5 +1,11 @@
 # @vunio/ui
 
+## 1.5.2
+
+### Patch Changes
+
+- 3f822ee: 添加了一些新特性
+
 ## 1.5.1
 
 ### Patch Changes
