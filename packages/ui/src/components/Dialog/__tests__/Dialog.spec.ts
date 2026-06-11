@@ -106,7 +106,7 @@ describe('CommonDialog', () => {
       },
     });
 
-    const dialog = wrapper.find('.CommonDialog');
+    const dialog = wrapper.find('.commonDialog');
     expect(dialog.exists()).toBe(true);
     expect(dialog.classes()).toContain('user-dialog');
   });
@@ -120,7 +120,7 @@ describe('CommonDialog', () => {
       },
     });
 
-    const dialog = wrapper.find('.CommonDialog');
+    const dialog = wrapper.find('.commonDialog');
     expect(dialog.attributes('data-show-close')).toBe('true');
     expect(dialog.attributes('data-close-on-click-modal')).toBe('false');
   });
@@ -133,7 +133,7 @@ describe('CommonDialog', () => {
       },
     });
 
-    const dialog = wrapper.find('.CommonDialog');
+    const dialog = wrapper.find('.commonDialog');
     expect(dialog.attributes('data-modal-class')).toContain('modalBlur');
   });
 
@@ -144,7 +144,7 @@ describe('CommonDialog', () => {
       },
     });
 
-    const dialog = wrapper.find('.CommonDialog');
+    const dialog = wrapper.find('.commonDialog');
     expect(dialog.attributes('data-modal-class')).toContain('modalBlur');
     expect(dialog.attributes('data-draggable')).toBe('true');
     expect(dialog.attributes('data-append-to-body')).toBe('true');
@@ -161,7 +161,7 @@ describe('CommonDialog', () => {
       },
     });
 
-    const dialog = wrapper.find('.CommonDialog');
+    const dialog = wrapper.find('.commonDialog');
     expect(dialog.attributes('data-modal-class')).not.toContain('modalBlur');
     expect(dialog.attributes('data-draggable')).toBe('false');
     expect(dialog.attributes('data-append-to-body')).toBe('false');
@@ -174,7 +174,7 @@ describe('CommonDialog', () => {
       },
     });
 
-    const dialog = wrapper.find('.CommonDialog');
+    const dialog = wrapper.find('.commonDialog');
     expect(dialog.attributes('data-draggable')).toBe('true');
 
     await wrapper.setProps({
