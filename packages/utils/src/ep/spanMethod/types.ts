@@ -27,6 +27,16 @@ export interface MergeArea {
 export type ColumnMergeAreas = Map<string, MergeArea[]>;
 
 /**
+ * 行合并区域来源：合计侧据此对被合并列去重（每个合并区域只取首行代表值），
+ * 复用展示侧的合并计算，确保合计与渲染合并一致。
+ * 由 spanMethodBuilder.rowMergeSource() 提供，summaryMethodBuilder.mergedFrom() 消费。
+ */
+export interface RowMergeSource {
+  /** 基于给定数据计算每列的合并区域 */
+  collectAreas(rows: any[]): ColumnMergeAreas;
+}
+
+/**
  * 单元格合并信息缓存
  * key 格式：`${rowIndex}-${columnProp}`
  */

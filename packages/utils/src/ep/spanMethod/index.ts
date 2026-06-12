@@ -1,11 +1,18 @@
 import { MaybeRef } from 'vue';
 import { composeSpanMethods } from './utils';
 import { createColSpanMethod } from './colSpan';
-import { createRowSpanMethod } from './rowSpan';
-import type { MergeGroup, SpanMethod } from './types';
+import { collectMergeAreas, createRowSpanMethod } from './rowSpan';
+import type { ColumnMergeAreas, MergeGroup, RowMergeSource, SpanMethod } from './types';
 
-export type { SpanMethod, SpanMethodProps, MergeGroup } from './types';
-export { createRowSpanMethod } from './rowSpan';
+export type {
+  SpanMethod,
+  SpanMethodProps,
+  MergeGroup,
+  MergeArea,
+  ColumnMergeAreas,
+  RowMergeSource,
+} from './types';
+export { createRowSpanMethod, collectMergeAreas } from './rowSpan';
 export { createColSpanMethod } from './colSpan';
 export { composeSpanMethods } from './utils';
 
@@ -22,6 +29,12 @@ export interface spanMethodBuilder {
   noCache(): this;
 
   withCacheKey(key: MaybeRef<string | number>): this;
+
+  /**
+   * 提供给 summaryMethodBuilder 的行合并来源，使合计按合并区域去重（每组只计一次）。
+   * 复用 mergeRows(...) 声明，无需在合计侧重复声明合并列。
+   */
+  rowMergeSource(): RowMergeSource;
 
   build(): SpanMethod;
 }
@@ -64,6 +77,26 @@ class spanMethodBuilderImpl implements spanMethodBuilder {
   withCacheKey(key: MaybeRef<string | number>): this {
     this.cacheKey = key;
     return this;
+  }
+
+  rowMergeSource(): RowMergeSource {
+    const groups = this.rowMergeGroups;
+    const resolveColumns =
+      (group: string[] | ((rowIndex: number, row: any) => string[])) =>
+      (rowIndex: number, row: any): string[] =>
+        typeof group === 'function' ? group(rowIndex, row) : group;
+
+    return {
+      collectAreas(rows: any[]): ColumnMergeAreas {
+        // 每个 mergeRows(...) 组各算一遍合并区域，再并入（同一字段通常只属于一组）
+        const merged: ColumnMergeAreas = new Map();
+        for (const group of groups) {
+          const areas = collectMergeAreas(rows, resolveColumns(group));
+          areas.forEach((value, field) => merged.set(field, value));
+        }
+        return merged;
+      },
+    };
   }
 
   build(): SpanMethod {

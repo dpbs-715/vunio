@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ref } from 'vue';
 import { summaryMethodBuilder, SummaryMethodProps } from '../summaryMethod';
+import { spanMethodBuilder } from '../spanMethod';
 
 describe('summaryMethodBuilder', () => {
   // 辅助函数：构造 summary-method 入参。columns 用 property 对齐字段。
@@ -116,6 +117,49 @@ describe('summaryMethodBuilder', () => {
       // el-table 只对叶子列（qty/price）调用 summary，分组父列无 property
       const result = method(createProps([undefined, 'qty', 'price'], rows));
       expect(result).toEqual(['合计', '60.00', '12.00']);
+    });
+  });
+
+  describe('mergedFrom 行合并去重', () => {
+    // orderAmount 跨行合并（A 跨 2 行、B 跨 3 行），itemQty 逐行
+    const mergedData = [
+      { orderNo: 'A', orderAmount: 1000, itemQty: 3 },
+      { orderNo: 'A', orderAmount: 1000, itemQty: 5 },
+      { orderNo: 'B', orderAmount: 800, itemQty: 2 },
+      { orderNo: 'B', orderAmount: 800, itemQty: 4 },
+      { orderNo: 'B', orderAmount: 800, itemQty: 1 },
+    ];
+
+    it('被合并列按合并区域去重，未合并列逐行求和', () => {
+      const span = spanMethodBuilder().withData(mergedData).mergeRows(['orderNo', 'orderAmount']);
+      const method = summaryMethodBuilder()
+        .label('合计')
+        .mergedFrom(span.rowMergeSource())
+        .sum(['orderAmount', 'itemQty'])
+        .build();
+      const result = method(createProps([undefined, 'orderAmount', 'itemQty'], mergedData));
+      // orderAmount 去重：1000 + 800 = 1800（而非逐行 4400）；itemQty 逐行：15
+      expect(result).toEqual(['合计', '1800.00', '15.00']);
+    });
+
+    it('未声明合并来源时退化为逐行求和', () => {
+      const method = summaryMethodBuilder().sum('orderAmount').build();
+      const result = method(createProps(['orderAmount'], mergedData));
+      expect(result).toEqual(['4400.00']);
+    });
+
+    it('动态 mergeRows：未参与合并的行集合保持不变', () => {
+      // 仅当 orderNo 为 A 时合并 orderAmount，B 的三行不去重
+      const span = spanMethodBuilder()
+        .withData(mergedData)
+        .mergeRows((_idx, row) => (row.orderNo === 'A' ? ['orderNo', 'orderAmount'] : []));
+      const method = summaryMethodBuilder()
+        .mergedFrom(span.rowMergeSource())
+        .sum('orderAmount')
+        .build();
+      const result = method(createProps(['orderAmount'], mergedData));
+      // A 去重为 1000，B 三行逐行 800*3=2400 → 3400
+      expect(result).toEqual(['3400.00']);
     });
   });
 

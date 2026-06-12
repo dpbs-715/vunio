@@ -43,8 +43,10 @@ function areDependentColumnsInSameMergeArea(
 
 /**
  * 收集所有列的合并区域信息
+ *
+ * 展示侧（spanMethod）与合计侧（summaryMethod）共用此计算，确保合计去重与渲染合并完全一致。
  */
-function collectMergeAreas(
+export function collectMergeAreas(
   data: any[],
   getMergeColumns: (rowIndex: number, row: any) => string[],
 ): ColumnMergeAreas {
