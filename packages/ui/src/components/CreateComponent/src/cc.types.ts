@@ -1,4 +1,4 @@
-import { Component, defineAsyncComponent, VNode } from 'vue';
+import { Component, defineAsyncComponent, MaybeRef, VNode } from 'vue';
 export type Props = Record<string, any>;
 
 export type SlotContent = () => string | number | VNode | (string | number | VNode)[];
@@ -8,7 +8,7 @@ export interface Config {
   props?: Props;
   children?: string | string[] | Config[];
   slots?: Slots;
-  label?: string;
+  label?: MaybeRef<string>;
 }
 
 type AsyncComponent = ReturnType<typeof defineAsyncComponent>;
@@ -22,7 +22,7 @@ export type registerSlotsMap = Record<string, Record<string, any>>;
 export type registerKeysMap = Record<string, string | number>;
 export interface baseConfig extends Config {
   field: string;
-  label?: string;
-
+  label?: MaybeRef<string>;
+  group?: any;
   model?: Record<string, string>;
 }

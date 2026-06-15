@@ -21,7 +21,7 @@ export interface useConfigsResultType<
   setDisabled: (fields: string[], state: boolean) => void;
   setDisabledAll: (state?: boolean) => void;
   setPropsByField: (field: string, props: Record<string, any>) => void;
-  getConfigByField: (field: string) => T | undefined;
+  getConfigByField: (field: string) => T | {};
   filterConfigs: (predicate: (item: T) => boolean) => T[];
   cleanup: () => void;
 }
@@ -106,7 +106,7 @@ export function createConfigsManager<T extends Omit<baseConfig, 'component'>>(
   };
 
   const getConfigByField: useConfigsResultType<T>['getConfigByField'] = (field) =>
-    configMap.value.get(field);
+    configMap.value.get(field) || {};
 
   const filterConfigs: useConfigsResultType<T>['filterConfigs'] = (predicate) => {
     return config.filter(predicate as any) as T[];
