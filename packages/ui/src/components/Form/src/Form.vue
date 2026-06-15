@@ -215,7 +215,7 @@ const transformModel = defineComponent({
             style="width: 100%"
             :rules="getRules(item, { formData: toValue(formData) })"
             :prop="item.field"
-            :label="`${item.label}:`"
+            :label="`${toValue(item.label)}:`"
             v-bind="item.formItemProps"
           >
             <el-skeleton v-if="formProps.loading" animated :rows="0" />
