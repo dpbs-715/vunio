@@ -1,5 +1,11 @@
 # @vunio/utils
 
+## 1.5.5
+
+### Patch Changes
+
+- 87d1f9d: 新增功能
+
 ## 1.5.4
 
 ### Patch Changes
