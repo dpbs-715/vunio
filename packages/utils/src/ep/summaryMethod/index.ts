@@ -1,4 +1,5 @@
 import { unref, type MaybeRef } from 'vue';
+import type { RowMergeSource } from '../spanMethod/index';
 import type {
   Aggregator,
   SummaryColumnLike,
@@ -71,6 +72,11 @@ export interface summaryMethodBuilder<Row = any> {
   custom(field: keyof Row | string, resolver: SummaryResolver<Row>): this;
   /** 从列配置中自动收集 summable: true 的列并求和（支持 ref / getter，按 tab 切换实时生效） */
   summableFrom(columns: ColumnsSource): this;
+  /**
+   * 复用展示侧行合并，使被合并列按合并区域去重——每个合并单元格只计一次，避免重复值被累加。
+   * 来源由 spanMethodBuilder.rowMergeSource() 提供，合并列只需在 mergeRows(...) 声明一次。
+   */
+  mergedFrom(source: RowMergeSource): this;
   /** 数值结果的小数位数（默认 2） */
   precision(digits: number): this;
   /** 自定义数值格式化（优先级高于 precision） */
@@ -85,6 +91,7 @@ export interface summaryMethodBuilder<Row = any> {
 class summaryMethodBuilderImpl<Row = any> implements summaryMethodBuilder<Row> {
   private rules = new Map<string, FieldRule<Row>>();
   private summableColumns?: ColumnsSource;
+  private mergeSource?: RowMergeSource;
   private labelText = '';
   private labelIndex = 0;
   private precisionDigits = DEFAULT_PRECISION;
@@ -131,6 +138,11 @@ class summaryMethodBuilderImpl<Row = any> implements summaryMethodBuilder<Row> {
 
   summableFrom(columns: ColumnsSource): this {
     this.summableColumns = columns;
+    return this;
+  }
+
+  mergedFrom(source: RowMergeSource): this {
+    this.mergeSource = source;
     return this;
   }
 
@@ -197,6 +209,23 @@ class summaryMethodBuilderImpl<Row = any> implements summaryMethodBuilder<Row> {
       const { columns } = props;
       const rows = (Array.isArray(props.data) ? props.data : []) as Row[];
       const summableFields = this.collectSummableFields();
+      const mergeAreas = this.mergeSource?.collectAreas(rows as any[]);
+
+      // 被合并列只保留每个合并区域的首行（代表值），跳过 rowspan=0 的续行，避免重复值被累加。
+      // 对未声明合并的列、或动态合并中未参与合并的行，行集合保持不变。
+      const resolveRows = (field: string): Row[] => {
+        const areas = mergeAreas?.get(field);
+        if (!areas) return rows;
+        const continuationRows = new Set<number>();
+        for (const area of areas) {
+          for (let offset = 1; offset < area.rowCount; offset++) {
+            continuationRows.add(area.startRow + offset);
+          }
+        }
+        return continuationRows.size
+          ? rows.filter((_, index) => !continuationRows.has(index))
+          : rows;
+      };
 
       return columns.map((column, index) => {
         const field = column?.property as string | undefined;
@@ -204,7 +233,7 @@ class summaryMethodBuilderImpl<Row = any> implements summaryMethodBuilder<Row> {
         if (field) {
           // 显式规则优先于 summableFrom 推导出的求和
           const rule = this.rules.get(field) ?? (summableFields.has(field) ? sumRule : undefined);
-          if (rule) return this.applyRule(rule, field, rows, props);
+          if (rule) return this.applyRule(rule, field, resolveRows(field), props);
         }
 
         if (index === this.labelIndex) return this.labelText;
