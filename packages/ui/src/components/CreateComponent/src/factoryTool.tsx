@@ -1,4 +1,4 @@
-import { Reactive } from 'vue';
+import { Reactive, toValue } from 'vue';
 import type { Config, Props } from './cc.types';
 import { ElCheckbox, ElOption, ElRadio } from 'element-plus';
 
@@ -46,7 +46,10 @@ export function ExpandHandler({
 
   function handlerPlaceholder() {
     if (normalProps.placeholder && normalProps.placeholder.includes?.('{label}')) {
-      normalProps.placeholder = normalProps.placeholder?.replace('{label}', config.label || '');
+      normalProps.placeholder = normalProps.placeholder?.replace(
+        '{label}',
+        toValue(config.label) || '',
+      );
     }
   }
 

@@ -4,6 +4,8 @@ import { ElSelect, ElSelectV2, ElTreeSelect, ElOption, ElOptionGroup } from 'ele
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { injectFormContext } from '~/components/Form/src/formContext.ts';
 
+const DEFAULT_CLASS_NAME = 'commonSelect';
+
 export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
   slots: any;
   ref: any;
@@ -302,6 +304,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         {...props}
         {...moreProps}
         vModel={this.model.value}
+        class={[DEFAULT_CLASS_NAME, this.attrs.class]}
       >
         {{
           default: !Com.props.options ? () => this.renderOptionNodes() : null,
@@ -327,6 +330,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         {...props}
         options={this.withDisabledOptions()}
         vModel={this.model.value}
+        class={[DEFAULT_CLASS_NAME, this.attrs.class]}
       />
     );
   }
@@ -348,6 +352,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         {...props}
         data={this.withDisabledOptions()}
         vModel={this.model.value}
+        class={[DEFAULT_CLASS_NAME, this.attrs.class]}
       />
     );
   }
