@@ -141,13 +141,13 @@ describe('useConfigs', () => {
     expect(nameConfig?.label).toBe('Name');
   });
 
-  it('should return undefined for non-existent field', () => {
+  it('should return an empty object for non-existent field', () => {
     const initialConfig = createInitialConfig();
     const { getConfigByField } = useConfigs(initialConfig);
 
     const result = getConfigByField('nonExistent');
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual({});
   });
 
   it('should filter configs', () => {
