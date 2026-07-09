@@ -11,6 +11,7 @@ import {
   type PropType,
   defineComponent,
   reactive,
+  useAttrs,
 } from 'vue';
 import { ElForm, ElFormItem, ElRow, ElCol, ElSkeleton } from 'element-plus';
 import { configIterator, getRules, isHidden, useComponentProps } from '~/_utils/componentUtils.ts';
@@ -24,6 +25,7 @@ defineOptions({
 });
 const vm = getCurrentInstance();
 const props = defineProps<CommonFormProps>();
+const attrs = useAttrs();
 const formProps: any = useComponentProps(props, 'CommonForm', ['config']);
 
 const formData: Record<string, any> = defineModel('modelValue', {
@@ -203,7 +205,12 @@ const transformModel = defineComponent({
 </script>
 
 <template>
-  <el-form v-bind="formProps" :ref="collectFormRef" class="commonForm" :model="formData">
+  <el-form
+    v-bind="formProps"
+    :ref="collectFormRef"
+    :class="['commonForm', attrs.class]"
+    :model="formData"
+  >
     <el-row :gutter="20">
       <template v-for="item in props.config" :key="item.field">
         <el-col
