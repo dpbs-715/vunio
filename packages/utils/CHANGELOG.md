@@ -1,5 +1,11 @@
 # @vunio/utils
 
+## 1.5.6
+
+### Patch Changes
+
+- 80f552b: 绑定数据path链路支持
+
 ## 1.5.5
 
 ### Patch Changes
