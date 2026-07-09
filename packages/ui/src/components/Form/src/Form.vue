@@ -16,7 +16,7 @@ import { ElForm, ElFormItem, ElRow, ElCol, ElSkeleton } from 'element-plus';
 import { configIterator, getRules, isHidden, useComponentProps } from '~/_utils/componentUtils.ts';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { provideFormContext } from './formContext.ts';
-import { isEmpty } from '@vunio/utils';
+import { getByKeyOrPath, isEmpty, setByKeyOrPath } from '@vunio/utils';
 
 defineOptions({
   name: 'CommonForm',
@@ -153,7 +153,7 @@ const transformModel = defineComponent({
       const modelMap: Record<string, any> = {};
       const model = props.config.model;
       for (const key in model) {
-        modelMap[key] = props.formData[model[key]];
+        modelMap[key] = getByKeyOrPath(props.formData, model[key]);
         modelMap[`onUpdate:${key}`] = (val: any) => {
           emit('update:field', { field: model[key], value: val });
         };
@@ -163,21 +163,23 @@ const transformModel = defineComponent({
         const { readField, field, component } = props.config;
         //如果设置了读取字段 直接返回
         if (readField) {
-          return props.formData[readField];
+          return getByKeyOrPath(props.formData, readField);
         }
         let v;
+
         //需要处理的组件
         if (translateComponent.includes(component)) {
           if (!dataHandler) {
             dataHandler = new DataHandlerClass(props.config.props);
             dataHandler.afterInit = () => {
-              readValue.value = dataHandler.getLabelByValue(props.formData[field]);
+              const fieldValue = getByKeyOrPath(props.formData, field);
+              readValue.value = isEmpty(fieldValue) ? '' : dataHandler.getLabelByValue(fieldValue);
             };
           }
           dataHandler.initOptions();
           v = readValue.value;
         } else {
-          v = props.formData[field];
+          v = getByKeyOrPath(props.formData, field);
         }
 
         if (isEmpty(v)) {
@@ -188,7 +190,7 @@ const transformModel = defineComponent({
       }
 
       return h(CreateComponent, {
-        modelValue: props.formData[props.config.field],
+        modelValue: getByKeyOrPath(props.formData, props.config.field),
         [`onUpdate:modelValue`]: (val: any) => {
           emit('update:field', { field: props.config.field, value: val });
         },
@@ -223,7 +225,9 @@ const transformModel = defineComponent({
               <transformModel
                 :config="item"
                 :form-data="formData"
-                @update:field="({ field, value }: Record<string, any>) => (formData[field] = value)"
+                @update:field="
+                  ({ field, value }: Record<string, any>) => setByKeyOrPath(formData, field, value)
+                "
               />
             </slot>
           </el-form-item>

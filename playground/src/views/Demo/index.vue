@@ -26,7 +26,7 @@ function mockFun() {
 }
 const { config } = useConfigs<CommonFormConfig>([
   {
-    field: 'test1',
+    field: 'style.color',
     label: '测试1',
     component: 'commonSelect',
     model: {
@@ -90,7 +90,12 @@ const { config } = useConfigs<CommonFormConfig>([
   },
 ]);
 const loading = ref(false);
-const formData = reactive({ test1: 1 });
+const formData = reactive({
+  test1: 1,
+  style: {
+    color: 'red',
+  },
+});
 
 const readonlyFlg = ref(false);
 

@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { toPath, getByPath, setByPath, unsetByPath } from '../path';
+import {
+  toPath,
+  getByPath,
+  getByKeyOrPath,
+  hasOwnKey,
+  setByPath,
+  setByKeyOrPath,
+  unsetByPath,
+} from '../path';
 
 describe('path utils', () => {
   describe('toPath', () => {
@@ -12,11 +20,15 @@ describe('path utils', () => {
     });
 
     it('should handle bracket notation', () => {
-      expect(toPath('a[0].b[1]')).toEqual(['a', '0', 'b', '1']);
+      expect(toPath('a[0].b[1]')).toEqual(['a', 0, 'b', 1]);
     });
 
     it('should handle mixed notation', () => {
-      expect(toPath('a.b[0].c')).toEqual(['a', 'b', '0', 'c']);
+      expect(toPath('a.b[0].c')).toEqual(['a', 'b', 0, 'c']);
+    });
+
+    it('should preserve numeric dot notation as string keys', () => {
+      expect(toPath('a.0.b')).toEqual(['a', '0', 'b']);
     });
 
     it('should filter empty strings', () => {
@@ -30,6 +42,26 @@ describe('path utils', () => {
     it('should handle path with symbols', () => {
       const sym = Symbol('test');
       expect(toPath([sym, 'a'])).toEqual([sym, 'a']);
+    });
+  });
+
+  describe('hasOwnKey', () => {
+    it('should check own keys safely', () => {
+      const proto = { inherited: true };
+      const obj = Object.create(proto);
+      obj.own = true;
+
+      expect(hasOwnKey(obj, 'own')).toBe(true);
+      expect(hasOwnKey(obj, 'inherited')).toBe(false);
+      expect(hasOwnKey(null, 'own')).toBe(false);
+      expect(hasOwnKey(undefined, 'own')).toBe(false);
+    });
+
+    it('should support symbol keys', () => {
+      const sym = Symbol('own');
+      const obj = { [sym]: true };
+
+      expect(hasOwnKey(obj, sym)).toBe(true);
     });
   });
 
@@ -85,6 +117,40 @@ describe('path utils', () => {
     });
   });
 
+  describe('getByKeyOrPath', () => {
+    it('should prefer own flat keys over path values', () => {
+      const obj = {
+        'style.color': 'red',
+        style: {
+          color: 'blue',
+        },
+      };
+
+      expect(getByKeyOrPath(obj, 'style.color')).toBe('red');
+    });
+
+    it('should fall back to path values when flat key is missing', () => {
+      const obj = {
+        style: {
+          color: 'blue',
+        },
+      };
+
+      expect(getByKeyOrPath(obj, 'style.color')).toBe('blue');
+    });
+
+    it('should use array paths directly', () => {
+      const obj = {
+        'style,color': 'flat',
+        style: {
+          color: 'blue',
+        },
+      };
+
+      expect(getByKeyOrPath(obj, ['style', 'color'])).toBe('blue');
+    });
+  });
+
   describe('setByPath', () => {
     it('should set value at simple path', () => {
       const obj: any = {};
@@ -126,6 +192,7 @@ describe('path utils', () => {
     it('should handle mixed object and array paths', () => {
       const obj: any = {};
       setByPath(obj, 'users[0].name', 'Alice');
+      expect(Array.isArray(obj.users)).toBe(true);
       expect(obj.users[0].name).toBe('Alice');
     });
 
@@ -139,6 +206,36 @@ describe('path utils', () => {
       setByPath(obj, 'a.y', 2);
       expect(obj.a.x).toBe(1);
       expect(obj.a.y).toBe(2);
+    });
+  });
+
+  describe('setByKeyOrPath', () => {
+    it('should prefer writing own flat keys over path values', () => {
+      const obj: any = {
+        'style.color': 'red',
+        style: {
+          color: 'blue',
+        },
+      };
+
+      setByKeyOrPath(obj, 'style.color', 'green');
+
+      expect(obj['style.color']).toBe('green');
+      expect(obj.style.color).toBe('blue');
+    });
+
+    it('should fall back to path writes when flat key is missing', () => {
+      const obj: any = {};
+
+      setByKeyOrPath(obj, 'users[0].name', 'Alice');
+
+      expect(obj).toEqual({
+        users: [
+          {
+            name: 'Alice',
+          },
+        ],
+      });
     });
   });
 

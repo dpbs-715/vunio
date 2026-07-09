@@ -4,20 +4,64 @@
 export type PathKey = string | number | symbol;
 export type Path = string | readonly PathKey[];
 
+function isPathKey(path: Path): path is string {
+  return !Array.isArray(path);
+}
+
 /**
  * 将路径转换为键数组
  * @example
  * toPath('a.b.c') // ['a', 'b', 'c']
- * toPath('a[0].b') // ['a', '0', 'b']
+ * toPath('a[0].b') // ['a', 0, 'b']
  * toPath(['a', 0, 'b']) // ['a', 0, 'b']
  */
 export function toPath(path: Path): PathKey[] {
   if (Array.isArray(path)) return [...path];
 
-  return (path as string)
-    .replace(/\[(\d+)\]/g, '.$1')
-    .split('.')
-    .filter(Boolean);
+  const keys: PathKey[] = [];
+  const pathString = path as string;
+  let segment = '';
+
+  const pushSegment = () => {
+    if (segment) {
+      keys.push(segment);
+      segment = '';
+    }
+  };
+
+  for (let i = 0; i < pathString.length; i++) {
+    const char = pathString[i];
+
+    if (char === '.') {
+      pushSegment();
+      continue;
+    }
+
+    if (char === '[') {
+      const closeIndex = pathString.indexOf(']', i + 1);
+      const bracketValue = closeIndex === -1 ? '' : pathString.slice(i + 1, closeIndex);
+
+      if (/^\d+$/.test(bracketValue)) {
+        pushSegment();
+        keys.push(Number(bracketValue));
+        i = closeIndex;
+        continue;
+      }
+    }
+
+    segment += char;
+  }
+
+  pushSegment();
+
+  return keys;
+}
+
+/**
+ * 判断对象自身是否拥有指定 key
+ */
+export function hasOwnKey(obj: any, key: PathKey): boolean {
+  return obj != null && Object.prototype.hasOwnProperty.call(obj, key);
 }
 
 /**
@@ -54,6 +98,33 @@ export function setByPath(obj: any, path: Path, value: any): void {
   if (lastKey !== undefined) {
     current[lastKey] = value;
   }
+}
+
+/**
+ * 优先按对象自身 key 读值，不存在时按路径读取
+ */
+export function getByKeyOrPath<T = any>(obj: any, path: Path): T | undefined {
+  if (isPathKey(path)) {
+    const keyValue = obj?.[path];
+
+    if (hasOwnKey(obj, path)) {
+      return keyValue;
+    }
+  }
+
+  return getByPath(obj, path);
+}
+
+/**
+ * 优先按对象自身 key 写值，不存在时按路径写入
+ */
+export function setByKeyOrPath(obj: any, path: Path, value: any): void {
+  if (isPathKey(path) && hasOwnKey(obj, path)) {
+    obj[path] = value;
+    return;
+  }
+
+  setByPath(obj, path, value);
 }
 
 /**
