@@ -78,6 +78,32 @@ export default defineConfig({
 });
 ```
 
+When using both Element Plus and Vunio resolvers, import the Element Plus stylesheet globally in the app entry:
+
+```ts [main.ts]
+import 'element-plus/dist/index.css';
+```
+
+It is also recommended to disable style imports in `ElementPlusResolver` to avoid duplicating the global stylesheet:
+
+```ts [vite.config.ts]
+import { defineConfig } from 'vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import { vunioUIResolver } from '@vunio/ui/resolver';
+
+export default defineConfig({
+  plugins: [
+    Components({
+      resolvers: [ElementPlusResolver({ importStyle: false }), vunioUIResolver()],
+      dts: true,
+    }),
+  ],
+});
+```
+
+`vunioUIResolver()` automatically imports `@vunio/ui/style.css`. If you disable style imports in `vunioUIResolver`, import `@vunio/ui/style.css` manually in the app entry.
+
 ### Utility Functions
 
 ```ts

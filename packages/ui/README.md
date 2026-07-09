@@ -52,6 +52,28 @@ app.use(Button);
 app.mount('#app');
 ```
 
+### 与 Element Plus Resolver 一起使用
+
+如果项目同时使用 Element Plus 和 Vunio 的 resolver，请在入口文件全局引入 Element Plus 样式：
+
+```ts
+import 'element-plus/dist/index.css';
+```
+
+并建议关闭 Element Plus resolver 的按需样式导入：
+
+```ts
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import { vunioUIResolver } from '@vunio/ui/resolver';
+
+Components({
+  resolvers: [ElementPlusResolver({ importStyle: false }), vunioUIResolver()],
+});
+```
+
+`vunioUIResolver()` 会自动导入 `@vunio/ui/style.css`。如果关闭了 `vunioUIResolver` 的样式导入，请在入口文件中手动引入 `@vunio/ui/style.css`。
+
 ## 使用示例
 
 ```vue

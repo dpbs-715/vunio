@@ -80,6 +80,32 @@ export default defineConfig({
 });
 ```
 
+如果项目同时使用 Element Plus 和 Vunio 的 resolver，入口文件需要全局引入 Element Plus 样式：
+
+```ts [main.ts]
+import 'element-plus/dist/index.css';
+```
+
+并建议关闭 Element Plus resolver 的按需样式导入，避免和全局样式重复：
+
+```ts [vite.config.ts]
+import { defineConfig } from 'vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import { vunioUIResolver } from '@vunio/ui/resolver';
+
+export default defineConfig({
+  plugins: [
+    Components({
+      resolvers: [ElementPlusResolver({ importStyle: false }), vunioUIResolver()],
+      dts: true,
+    }),
+  ],
+});
+```
+
+`vunioUIResolver()` 会自动导入 `@vunio/ui/style.css`。如果关闭了 `vunioUIResolver` 的样式导入，请在入口文件中手动引入 `@vunio/ui/style.css`。
+
 ### 工具函数
 
 ```ts
