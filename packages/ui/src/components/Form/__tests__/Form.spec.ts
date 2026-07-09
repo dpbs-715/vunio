@@ -152,6 +152,25 @@ describe('CommonForm', () => {
     });
   });
 
+  it('should merge custom class with commonForm class on the root el-form', () => {
+    const config: CommonFormConfig[] = [
+      {
+        field: 'name',
+        label: '名称',
+      },
+    ];
+
+    const wrapper = mountForm({
+      modelValue: {},
+      config,
+      class: 'custom-form-class',
+    });
+
+    const formEl = wrapper.find('.el-form');
+    expect(formEl.classes()).toContain('commonForm');
+    expect(formEl.classes()).toContain('custom-form-class');
+  });
+
   it('should clear readonly select label when the field value is emptied', async () => {
     const formData = reactive<Record<string, any>>({
       choice: '1',
