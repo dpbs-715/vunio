@@ -23,8 +23,7 @@ describe('pick', () => {
   it('should pick array elements', () => {
     const obj = { arr: [1, 2, 3, 4] };
     const result = pick(obj, ['arr[0]', 'arr[2]']);
-    // Note: String keys like 'arr[0]' create objects, not arrays
-    expect(result).toEqual({ arr: { '0': 1, '2': 3 } });
+    expect(result).toEqual({ arr: [1, undefined, 3] });
   });
 
   it('should return empty object when no paths match', () => {
@@ -86,12 +85,8 @@ describe('pick', () => {
       ],
     };
     const result = pick(obj, ['users[0].name', 'users[1].age']);
-    // Note: String bracket notation creates objects, not arrays
     expect(result).toEqual({
-      users: {
-        '0': { name: 'Alice' },
-        '1': { age: 25 },
-      },
+      users: [{ name: 'Alice' }, { age: 25 }],
     });
   });
 

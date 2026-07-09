@@ -16,7 +16,7 @@ import { ElForm, ElFormItem, ElRow, ElCol, ElSkeleton } from 'element-plus';
 import { configIterator, getRules, isHidden, useComponentProps } from '~/_utils/componentUtils.ts';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { provideFormContext } from './formContext.ts';
-import { getByPath, isEmpty, setByPath } from '@vunio/utils';
+import { getByKeyOrPath, isEmpty, setByKeyOrPath } from '@vunio/utils';
 
 defineOptions({
   name: 'CommonForm',
@@ -132,27 +132,6 @@ const translateComponent: string[] = [
   'commonSelectOrDialog',
 ];
 
-function hasOwnField(formData: Record<string, any>, field: string) {
-  return Object.prototype.hasOwnProperty.call(formData, field);
-}
-
-function getFormField(formData: Record<string, any>, field: string) {
-  if (hasOwnField(formData, field)) {
-    return formData[field];
-  }
-
-  return getByPath(formData, field);
-}
-
-function setFormField(formData: Record<string, any>, field: string, value: any) {
-  if (hasOwnField(formData, field)) {
-    formData[field] = value;
-    return;
-  }
-
-  setByPath(formData, field, value);
-}
-
 const transformModel = defineComponent({
   name: 'TransformModel',
   props: {
@@ -174,7 +153,7 @@ const transformModel = defineComponent({
       const modelMap: Record<string, any> = {};
       const model = props.config.model;
       for (const key in model) {
-        modelMap[key] = getFormField(props.formData, model[key]);
+        modelMap[key] = getByKeyOrPath(props.formData, model[key]);
         modelMap[`onUpdate:${key}`] = (val: any) => {
           emit('update:field', { field: model[key], value: val });
         };
@@ -184,7 +163,7 @@ const transformModel = defineComponent({
         const { readField, field, component } = props.config;
         //如果设置了读取字段 直接返回
         if (readField) {
-          return getFormField(props.formData, readField);
+          return getByKeyOrPath(props.formData, readField);
         }
         let v;
 
@@ -193,14 +172,14 @@ const transformModel = defineComponent({
           if (!dataHandler) {
             dataHandler = new DataHandlerClass(props.config.props);
             dataHandler.afterInit = () => {
-              const fieldValue = getFormField(props.formData, field);
+              const fieldValue = getByKeyOrPath(props.formData, field);
               readValue.value = isEmpty(fieldValue) ? '' : dataHandler.getLabelByValue(fieldValue);
             };
           }
           dataHandler.initOptions();
           v = readValue.value;
         } else {
-          v = getFormField(props.formData, field);
+          v = getByKeyOrPath(props.formData, field);
         }
 
         if (isEmpty(v)) {
@@ -211,7 +190,7 @@ const transformModel = defineComponent({
       }
 
       return h(CreateComponent, {
-        modelValue: getFormField(props.formData, props.config.field),
+        modelValue: getByKeyOrPath(props.formData, props.config.field),
         [`onUpdate:modelValue`]: (val: any) => {
           emit('update:field', { field: props.config.field, value: val });
         },
@@ -247,7 +226,7 @@ const transformModel = defineComponent({
                 :config="item"
                 :form-data="formData"
                 @update:field="
-                  ({ field, value }: Record<string, any>) => setFormField(formData, field, value)
+                  ({ field, value }: Record<string, any>) => setByKeyOrPath(formData, field, value)
                 "
               />
             </slot>

@@ -80,6 +80,30 @@ describe('CommonForm', () => {
     expect(formData.style).toBeUndefined();
   });
 
+  it('should react when a dotted flat key is assigned after mount', async () => {
+    const formData = reactive<Record<string, any>>({});
+    const config: CommonFormConfig[] = [
+      {
+        field: 'style.color',
+        label: '颜色',
+      },
+    ];
+
+    const wrapper = mountForm({
+      modelValue: formData,
+      config,
+    });
+
+    expect(wrapper.find<HTMLInputElement>('.mock-create-component').element.value).toBe('');
+
+    Object.assign(formData, {
+      'style.color': 'red',
+    });
+    await nextTick();
+
+    expect(wrapper.find<HTMLInputElement>('.mock-create-component').element.value).toBe('red');
+  });
+
   it('should write nested paths when no matching flat key exists', async () => {
     const formData = reactive<Record<string, any>>({});
     const config: CommonFormConfig[] = [
@@ -100,6 +124,31 @@ describe('CommonForm', () => {
       style: {
         color: 'blue',
       },
+    });
+  });
+
+  it('should create arrays for bracket paths', async () => {
+    const formData = reactive<Record<string, any>>({});
+    const config: CommonFormConfig[] = [
+      {
+        field: 'users[0].name',
+        label: '用户',
+      },
+    ];
+
+    const wrapper = mountForm({
+      modelValue: formData,
+      config,
+    });
+
+    await wrapper.find('.mock-create-component').setValue('Alice');
+
+    expect(formData).toEqual({
+      users: [
+        {
+          name: 'Alice',
+        },
+      ],
     });
   });
 
