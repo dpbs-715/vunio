@@ -1,5 +1,11 @@
 # @vunio/ui
 
+## 1.5.6
+
+### Patch Changes
+
+- a62281b: 添加骨架引入
+
 ## 1.5.5
 
 ### Patch Changes
