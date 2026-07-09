@@ -12,7 +12,7 @@ import {
   defineComponent,
   reactive,
 } from 'vue';
-import { ElForm, ElFormItem, ElRow, ElCol } from 'element-plus';
+import { ElForm, ElFormItem, ElRow, ElCol, ElSkeleton } from 'element-plus';
 import { configIterator, getRules, isHidden, useComponentProps } from '~/_utils/componentUtils.ts';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { provideFormContext } from './formContext.ts';
