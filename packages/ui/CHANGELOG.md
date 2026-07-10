@@ -1,5 +1,11 @@
 # @vunio/ui
 
+## 1.6.0
+
+### Minor Changes
+
+- d060706: Add consumer-managed command dispatching with undo, redo, merge, and scoped-slot field updates to CommonForm.
+
 ## 1.5.7
 
 ### Patch Changes
