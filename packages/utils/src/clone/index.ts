@@ -89,3 +89,35 @@ export const deepClone = (() => {
   }
   return clone;
 })();
+
+export type CloneStrategy = 'deep' | 'shallow' | 'none';
+
+export function shallowClone<T>(target: T): T {
+  if (target === null || typeof target !== 'object' || (target as any).__v_isRef) {
+    return target;
+  }
+
+  if (Array.isArray(target)) {
+    return target.slice() as T;
+  }
+  if (target instanceof Date) {
+    return new Date(target.getTime()) as T;
+  }
+  if (target instanceof RegExp) {
+    return new RegExp(target.source, target.flags) as T;
+  }
+  if (target instanceof Map) {
+    return new Map(target) as T;
+  }
+  if (target instanceof Set) {
+    return new Set(target) as T;
+  }
+
+  return Object.assign(Object.create(Object.getPrototypeOf(target)), target);
+}
+
+export function cloneByStrategy<T>(target: T, strategy: CloneStrategy = 'deep'): T {
+  if (strategy === 'none') return target;
+  if (strategy === 'shallow') return shallowClone(target);
+  return deepClone(target);
+}

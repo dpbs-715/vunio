@@ -1,4 +1,4 @@
-import { deepClone } from '../clone';
+import { cloneByStrategy, type CloneStrategy } from '../clone';
 
 /**
  * 路径类型定义
@@ -6,6 +6,10 @@ import { deepClone } from '../clone';
 export type PathKey = string | number | symbol;
 export type Path = string | readonly PathKey[];
 export type PathRollback = () => void;
+
+export interface ReversibleSetOptions {
+  clone?: CloneStrategy;
+}
 
 interface CreatedPathContainer {
   container: object;
@@ -165,16 +169,23 @@ function isEmptyContainer(target: object): boolean {
  *
  * 回滚会恢复旧值、显式存在的 nullish 中间节点和数组长度，并清理本次写入创建且仍为空的容器。
  */
-export function setByKeyOrPathReversibly(obj: any, path: Path, value: any): PathRollback {
+export function setByKeyOrPathReversibly(
+  obj: any,
+  path: Path,
+  value: any,
+  options: ReversibleSetOptions = {},
+): PathRollback {
+  const cloneValue = <T>(target: T) => cloneByStrategy(target, options.clone);
+
   if (isPathKey(path) && hasOwnKey(obj, path)) {
-    const previousValue = deepClone(obj[path]);
-    obj[path] = deepClone(value);
+    const previousValue = cloneValue(obj[path]);
+    obj[path] = cloneValue(value);
     let canRollback = true;
 
     return () => {
       if (!canRollback) return;
       canRollback = false;
-      obj[path] = deepClone(previousValue);
+      obj[path] = cloneValue(previousValue);
     };
   }
 
@@ -218,10 +229,10 @@ export function setByKeyOrPathReversibly(obj: any, path: Path, value: any): Path
 
   const leafParent = current;
   const leafExisted = hasOwnKey(leafParent, leafKey);
-  const previousValue = leafExisted ? deepClone(Reflect.get(leafParent, leafKey)) : undefined;
+  const previousValue = leafExisted ? cloneValue(Reflect.get(leafParent, leafKey)) : undefined;
   const previousArrayLength = Array.isArray(leafParent) ? leafParent.length : undefined;
 
-  Reflect.set(leafParent, leafKey, deepClone(value));
+  Reflect.set(leafParent, leafKey, cloneValue(value));
 
   let canRollback = true;
 
@@ -230,7 +241,7 @@ export function setByKeyOrPathReversibly(obj: any, path: Path, value: any): Path
     canRollback = false;
 
     if (leafExisted) {
-      Reflect.set(leafParent, leafKey, deepClone(previousValue));
+      Reflect.set(leafParent, leafKey, cloneValue(previousValue));
     } else {
       Reflect.deleteProperty(leafParent, leafKey);
       if (Array.isArray(leafParent)) {

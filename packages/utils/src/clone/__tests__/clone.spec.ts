@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deepClone } from '../index';
+import { cloneByStrategy, deepClone, shallowClone } from '../index';
 
 describe('clone utils', () => {
   describe('deepClone', () => {
@@ -225,6 +225,35 @@ describe('clone utils', () => {
       expect(cloned.regex).not.toBe(complex.regex);
       expect(cloned.map).not.toBe(complex.map);
       expect(cloned.set).not.toBe(complex.set);
+    });
+  });
+
+  describe('shallowClone', () => {
+    it('should clone a collection while preserving item identity', () => {
+      const node = { id: 'node-1' };
+      const nodes = [node];
+
+      const cloned = shallowClone(nodes);
+
+      expect(cloned).not.toBe(nodes);
+      expect(cloned).toEqual(nodes);
+      expect(cloned[0]).toBe(node);
+    });
+  });
+
+  describe('cloneByStrategy', () => {
+    it('should use deep cloning by default', () => {
+      const value = [{ id: 'node-1' }];
+      const cloned = cloneByStrategy(value);
+
+      expect(cloned).not.toBe(value);
+      expect(cloned[0]).not.toBe(value[0]);
+    });
+
+    it('should preserve the original value with the none strategy', () => {
+      const value = [{ id: 'node-1' }];
+
+      expect(cloneByStrategy(value, 'none')).toBe(value);
     });
   });
 });

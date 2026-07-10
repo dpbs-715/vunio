@@ -12,4 +12,5 @@ export {
   type Path,
   type PathKey,
   type PathRollback,
+  type ReversibleSetOptions,
 } from './path';

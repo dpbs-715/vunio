@@ -96,6 +96,61 @@ describe('SetFormFieldCommand', () => {
     expect(formData.name).toBe('AB');
   });
 
+  it('should preserve collection item identity across undo and redo with shallow cloning', () => {
+    const node = { id: 'node-1', content: '' };
+    const formData: { nodes: Array<typeof node> } = { nodes: [] };
+    const command = new SetFormFieldCommand(() => formData, 'nodes', [node], {
+      clone: 'shallow',
+    });
+
+    command.execute();
+    const firstExecutedNode = formData.nodes[0];
+
+    expect(command.clone).toBe('shallow');
+    expect(firstExecutedNode).toBe(node);
+
+    command.undo();
+    expect(formData.nodes).toEqual([]);
+
+    command.redo();
+    expect(formData.nodes[0]).toBe(firstExecutedNode);
+  });
+
+  it('should redo a later field write on an entity restored by a shallow collection command', () => {
+    const node = { id: 'node-1', content: '' };
+    const page: { nodes: Array<typeof node> } = { nodes: [] };
+    const addNodeCommand = new SetFormFieldCommand(() => page, 'nodes', [node], {
+      clone: 'shallow',
+    });
+
+    addNodeCommand.execute();
+    const createdNode = page.nodes[0];
+    const editContentCommand = new SetFormFieldCommand(() => createdNode, 'content', 'updated');
+    editContentCommand.execute();
+
+    editContentCommand.undo();
+    addNodeCommand.undo();
+    addNodeCommand.redo();
+    editContentCommand.redo();
+
+    expect(page.nodes[0]).toBe(createdNode);
+    expect(page.nodes[0].content).toBe('updated');
+  });
+
+  it('should not merge commands with different clone strategies', () => {
+    const formData: { nodes: object[] } = { nodes: [] };
+    const getFormData = () => formData;
+    const deepCommand = new SetFormFieldCommand(getFormData, 'nodes', [{ id: 'A' }]);
+    const shallowCommand = new SetFormFieldCommand(getFormData, 'nodes', [{ id: 'B' }], {
+      clone: 'shallow',
+    });
+
+    deepCommand.execute();
+    shallowCommand.execute();
+
+    expect(deepCommand.merge(shallowCommand)).toBe(false);
+  });
+
   it('should not merge commands for different fields', () => {
     const formData = { firstName: '', lastName: '' };
     const getFormData = () => formData;
