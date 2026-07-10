@@ -66,11 +66,11 @@
   },
   "peerDependencies": {
     "@element-plus/icons-vue": "^2.3.0",
+    "@vunio/utils": "^1.6.2",
     "element-plus": "^2.6.1",
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@vunio/utils": "workspace:*",
     "@codemirror/autocomplete": "catalog:ui",
     "@codemirror/commands": "catalog:ui",
     "@codemirror/language": "catalog:ui",
