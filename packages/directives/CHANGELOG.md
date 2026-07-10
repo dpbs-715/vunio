@@ -1,5 +1,11 @@
 # @vunio/directives
 
+## 1.6.1
+
+### Patch Changes
+
+- Align the public package version with the fixed Vunio release group.
+
 ## 1.5.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @vunio/ui
 
+## 1.6.1
+
+### Patch Changes
+
+- Reuse the shared reversible key-or-path assignment utility for CommonForm commands.
+
 ## 1.6.0
 
 ### Minor Changes
