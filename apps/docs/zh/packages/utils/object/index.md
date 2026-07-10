@@ -21,6 +21,14 @@ console.log(formData);
 
 回滚会恢复原值、显式存在的 `null`/`undefined` 中间节点和数组长度，并删除本次写入创建且仍为空的容器。多个写入需要按照执行顺序的相反顺序回滚。
 
+第四个参数可指定克隆策略，默认是 `deep`。集合场景可使用 `shallow` 创建独立数组快照并保留成员引用。
+
+```ts
+const rollback = setByKeyOrPathReversibly(page, 'nodes', nextNodes, {
+  clone: 'shallow',
+});
+```
+
 ```ts
 type PathRollback = () => void;
 
@@ -28,5 +36,6 @@ function setByKeyOrPathReversibly(
   obj: any,
   path: string | readonly (string | number | symbol)[],
   value: any,
+  options?: { clone?: 'deep' | 'shallow' | 'none' },
 ): PathRollback;
 ```

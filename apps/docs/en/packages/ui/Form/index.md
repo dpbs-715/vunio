@@ -71,6 +71,19 @@ redo stack whenever a new command is executed after an undo.
 If external code replaces the entire `modelValue`, clear that form's command history because
 existing inverse operations belong to the previous model object.
 
+The `clone` option on `SetFormFieldCommand` controls how values are captured, executed, and
+restored. It defaults to `deep`. Entity collections can use `shallow` to keep independent array
+snapshots while preserving member identities.
+
+```ts
+const command = new SetFormFieldCommand(getPageData, 'nodes', nextNodes, {
+  clone: 'shallow',
+});
+```
+
+Commands with different clone strategies do not merge. `none` keeps the original reference and
+should only be used when the consumer guarantees that the value will not be mutated unexpectedly.
+
 ## Validation Rules
 
 <demo vue="ui/CommonForm/rules.vue" />
