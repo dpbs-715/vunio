@@ -70,6 +70,7 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
+    "@vunio/utils": "workspace:*",
     "@codemirror/autocomplete": "catalog:ui",
     "@codemirror/commands": "catalog:ui",
     "@codemirror/language": "catalog:ui",
