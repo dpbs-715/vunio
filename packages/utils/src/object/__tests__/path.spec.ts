@@ -319,6 +319,26 @@ describe('path utils', () => {
       expect(obj.profile).not.toBe(previousValue);
     });
 
+    it('should preserve collection item identity with shallow cloning', () => {
+      const previousNode = { id: 'previous' };
+      const nextNode = { id: 'next' };
+      const nextNodes = [nextNode];
+      const obj = { nodes: [previousNode] };
+
+      const rollback = setByKeyOrPathReversibly(obj, 'nodes', nextNodes, {
+        clone: 'shallow',
+      });
+      const assignedNodes = obj.nodes;
+
+      expect(assignedNodes).not.toBe(nextNodes);
+      expect(assignedNodes[0]).toBe(nextNode);
+
+      rollback();
+
+      expect(obj.nodes).not.toBe(assignedNodes);
+      expect(obj.nodes[0]).toBe(previousNode);
+    });
+
     it('should make rollback idempotent', () => {
       const obj: any = {};
       const rollback = setByKeyOrPathReversibly(obj, 'profile.name', 'Ada');

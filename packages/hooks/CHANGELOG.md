@@ -1,5 +1,11 @@
 # @vunio/hooks
 
+## 1.6.2
+
+### Patch Changes
+
+- Align the public package version with the fixed Vunio release group.
+
 ## 1.6.1
 
 ### Patch Changes
