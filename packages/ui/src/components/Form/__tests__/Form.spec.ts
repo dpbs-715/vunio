@@ -42,7 +42,7 @@ vi.mock('~/_utils/dataHandlerClass.ts', () => ({
 }));
 
 import Form from '../src/Form.vue';
-import type { CommonFormConfig } from '../src/Form.types';
+import type { CommonFormCommand, CommonFormConfig } from '../src/Form.types';
 
 describe('CommonForm', () => {
   function mountForm(props: Record<string, any>) {
@@ -150,6 +150,93 @@ describe('CommonForm', () => {
         },
       ],
     });
+  });
+
+  it('should delegate field writes to the command dispatcher', async () => {
+    const formData = reactive<Record<string, any>>({
+      name: 'before',
+    });
+    const commands: CommonFormCommand[] = [];
+    const config: CommonFormConfig[] = [
+      {
+        field: 'name',
+        label: '名称',
+      },
+    ];
+
+    const wrapper = mountForm({
+      modelValue: formData,
+      config,
+      commandDispatcher: (command: CommonFormCommand) => {
+        commands.push(command);
+      },
+    });
+
+    await wrapper.find('.mock-create-component').setValue('after');
+
+    expect(formData.name).toBe('before');
+    expect(commands).toHaveLength(1);
+    expect(commands[0].kind).toBe('common-form:set-field');
+    expect(commands[0].field).toBe('name');
+
+    commands[0].execute();
+    expect(formData.name).toBe('after');
+
+    commands[0].undo();
+    expect(formData.name).toBe('before');
+  });
+
+  it('should route scoped-slot field writes through the command dispatcher', async () => {
+    const formData = reactive<Record<string, any>>({
+      custom: 'before',
+    });
+    const commands: CommonFormCommand[] = [];
+    const config: CommonFormConfig[] = [
+      {
+        field: 'custom',
+        label: '自定义字段',
+      },
+    ];
+
+    const wrapper = mount(
+      defineComponent({
+        setup() {
+          return () =>
+            h(
+              Form,
+              {
+                modelValue: formData,
+                config,
+                commandDispatcher: (command: CommonFormCommand) => {
+                  command.execute();
+                  commands.push(command);
+                },
+              },
+              {
+                custom: ({ modelValue, updateModelValue }: Record<string, any>) =>
+                  h(
+                    'button',
+                    {
+                      class: 'slot-field-updater',
+                      onClick: () => updateModelValue('after'),
+                    },
+                    String(modelValue),
+                  ),
+              },
+            );
+        },
+      }),
+    );
+
+    expect(wrapper.find('.slot-field-updater').text()).toBe('before');
+
+    await wrapper.find('.slot-field-updater').trigger('click');
+
+    expect(formData.custom).toBe('after');
+    expect(commands).toHaveLength(1);
+
+    commands[0].undo();
+    expect(formData.custom).toBe('before');
   });
 
   it('should merge custom class with commonForm class on the root el-form', () => {

@@ -17,6 +17,7 @@ import { ElForm, ElFormItem, ElRow, ElCol, ElSkeleton } from 'element-plus';
 import { configIterator, getRules, isHidden, useComponentProps } from '~/_utils/componentUtils.ts';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { provideFormContext } from './formContext.ts';
+import { SetFormFieldCommand } from './formCommand.ts';
 import { getByKeyOrPath, isEmpty, setByKeyOrPath } from '@vunio/utils';
 
 defineOptions({
@@ -26,13 +27,23 @@ defineOptions({
 const vm = getCurrentInstance();
 const props = defineProps<CommonFormProps>();
 const attrs = useAttrs();
-const formProps: any = useComponentProps(props, 'CommonForm', ['config']);
+const formProps: any = useComponentProps(props, 'CommonForm', ['config', 'commandDispatcher']);
 
 const formData: Record<string, any> = defineModel('modelValue', {
   type: Object,
   default: () => reactive({}),
 });
 const formRef = ref();
+const getFormData = () => toValue(formData);
+
+function updateFormField(field: string, value: unknown) {
+  if (!props.commandDispatcher) {
+    setByKeyOrPath(getFormData(), field, value);
+    return;
+  }
+
+  props.commandDispatcher(new SetFormFieldCommand(getFormData, field, value));
+}
 
 // 使用 createContext 收集子组件的 ready Promise
 const childrenReadyPromises: Promise<void>[] = [];
@@ -228,12 +239,17 @@ const transformModel = defineComponent({
             v-bind="item.formItemProps"
           >
             <el-skeleton v-if="formProps.loading" animated :rows="0" />
-            <slot :name="item.field" :config="item">
+            <slot
+              :name="item.field"
+              :config="item"
+              :model-value="getByKeyOrPath(formData, item.field)"
+              :update-model-value="(value: unknown) => updateFormField(item.field, value)"
+            >
               <transformModel
                 :config="item"
                 :form-data="formData"
                 @update:field="
-                  ({ field, value }: Record<string, any>) => setByKeyOrPath(formData, field, value)
+                  ({ field, value }: Record<string, any>) => updateFormField(field, value)
                 "
               />
             </slot>

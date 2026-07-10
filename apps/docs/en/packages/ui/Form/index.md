@@ -52,6 +52,25 @@ For example, elSelect's change event. CommonForm uniformly appends parameters to
 
 <demo vue="ui/CommonForm/fieldSlot.vue" />
 
+In addition to `config`, each field slot receives the current `modelValue` and an
+`updateModelValue(value)` function. Writes made through this function pass through
+`commandDispatcher`, so custom fields and generated fields can share one command history.
+
+## Command-based Undo and Redo
+
+`CommonForm` does not own a history stack. When `commandDispatcher` is provided, every field
+write creates a `CommonFormCommand`; the consumer decides how commands are executed, merged,
+undone, and redone. Without this prop, the form keeps its existing direct-write behavior.
+
+<demo vue="ui/CommonForm/commandHistory.vue" />
+
+The dispatcher must call `command.execute()` first. To coalesce continuous typing, call
+`previousCommand.merge(command)` inside the merge window chosen by the application. Clear the
+redo stack whenever a new command is executed after an undo.
+
+If external code replaces the entire `modelValue`, clear that form's command history because
+existing inverse operations belong to the previous model object.
+
 ## Validation Rules
 
 <demo vue="ui/CommonForm/rules.vue" />
@@ -65,10 +84,24 @@ For example, elSelect's change event. CommonForm uniformly appends parameters to
 
 ## Props
 
-| Attribute | Description                        | Type               | Default |
-| --------- | ---------------------------------- | ------------------ | ------- |
-| config    | Component generation configuration | CommonFormConfig[] | None    |
-| ...       | Other elForm parameters            | CommonFormProps    | None    |
+| Attribute         | Description                                                        | Type                                   | Default |
+| ----------------- | ------------------------------------------------------------------ | -------------------------------------- | ------- |
+| config            | Component generation configuration                                 | CommonFormConfig[]                     | None    |
+| commandDispatcher | Dispatches field commands for consumer-owned execution and history | `(command: CommonFormCommand) => void` | None    |
+| ...               | Other elForm parameters                                            | CommonFormProps                        | None    |
+
+## CommonFormCommand
+
+| Member         | Description                                                                           |
+| -------------- | ------------------------------------------------------------------------------------- |
+| kind           | Command kind; field writes use `common-form:set-field`                                |
+| field          | Field path written by the command                                                     |
+| createdAt      | Time when the command was created                                                     |
+| updatedAt      | Time when the command was last merged                                                 |
+| execute()      | Executes the field write                                                              |
+| undo()         | Reverts the field write                                                               |
+| redo()         | Executes the field write again                                                        |
+| merge(command) | Merges executed commands for the same form model and field; returns `true` on success |
 
 ## CommonFormConfig Object Parameters
 
