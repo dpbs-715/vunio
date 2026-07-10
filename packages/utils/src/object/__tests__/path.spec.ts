@@ -6,6 +6,7 @@ import {
   hasOwnKey,
   setByPath,
   setByKeyOrPath,
+  setByKeyOrPathReversibly,
   unsetByPath,
 } from '../path';
 
@@ -236,6 +237,96 @@ describe('path utils', () => {
           },
         ],
       });
+    });
+  });
+
+  describe('setByKeyOrPathReversibly', () => {
+    it('should restore an existing dotted flat key', () => {
+      const obj: any = {
+        'style.color': 'red',
+        style: { color: 'blue' },
+      };
+
+      const rollback = setByKeyOrPathReversibly(obj, 'style.color', 'green');
+
+      expect(obj['style.color']).toBe('green');
+      expect(obj.style.color).toBe('blue');
+
+      rollback();
+
+      expect(obj['style.color']).toBe('red');
+      expect(obj.style.color).toBe('blue');
+
+      obj['style.color'] = 'purple';
+      rollback();
+
+      expect(obj['style.color']).toBe('purple');
+    });
+
+    it('should remove nested containers and restore array length', () => {
+      const obj: any = { users: [] };
+
+      const rollback = setByKeyOrPathReversibly(obj, 'users[0].name', 'Alice');
+
+      expect(obj.users).toEqual([{ name: 'Alice' }]);
+
+      rollback();
+
+      expect(obj.users).toEqual([]);
+      expect(obj.users).toHaveLength(0);
+    });
+
+    it.each([null, undefined])(
+      'should restore an existing nullish parent value: %s',
+      (previousValue) => {
+        const obj: any = { profile: previousValue };
+
+        const rollback = setByKeyOrPathReversibly(obj, 'profile.name', 'Ada');
+
+        expect(obj.profile).toEqual({ name: 'Ada' });
+
+        rollback();
+
+        expect(hasOwnKey(obj, 'profile')).toBe(true);
+        expect(obj.profile).toBe(previousValue);
+      },
+    );
+
+    it('should preserve later sibling writes when rolling back', () => {
+      const obj: any = {};
+
+      const rollback = setByKeyOrPathReversibly(obj, 'profile.name', 'Ada');
+      obj.profile.age = 36;
+
+      rollback();
+
+      expect(obj).toEqual({ profile: { age: 36 } });
+    });
+
+    it('should clone assigned and restored values', () => {
+      const previousValue = { name: 'before' };
+      const nextValue = { name: 'after' };
+      const obj = { profile: previousValue };
+
+      const rollback = setByKeyOrPathReversibly(obj, 'profile', nextValue);
+      nextValue.name = 'mutated';
+
+      expect(obj.profile).toEqual({ name: 'after' });
+      expect(obj.profile).not.toBe(nextValue);
+
+      rollback();
+      expect(obj.profile).toEqual({ name: 'before' });
+      expect(obj.profile).not.toBe(previousValue);
+    });
+
+    it('should make rollback idempotent', () => {
+      const obj: any = {};
+      const rollback = setByKeyOrPathReversibly(obj, 'profile.name', 'Ada');
+
+      rollback();
+      rollback();
+
+      expect(obj).toEqual({});
     });
   });
 

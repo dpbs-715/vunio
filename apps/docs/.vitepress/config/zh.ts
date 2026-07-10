@@ -87,6 +87,7 @@ export const zh = defineConfig({
           { text: '异步任务包装器', link: '/packages/utils/async/' },
           { text: '缓存工具', link: '/packages/utils/cache/' },
           { text: '克隆工具', link: '/packages/utils/clone/' },
+          { text: '对象工具', link: '/packages/utils/object/' },
           { text: '数据转化工具', link: '/packages/utils/parse/' },
           { text: 'ElementPlus 工具', link: '/packages/utils/ep/' },
         ],

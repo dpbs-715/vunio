@@ -1,6 +1,6 @@
 {
   "name": "@vunio/hooks",
-  "version": "1.5.5",
+  "version": "1.6.1",
   "description": "@vunio hooks library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.mjs",

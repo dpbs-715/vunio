@@ -1,5 +1,11 @@
 # @vunio/utils
 
+## 1.6.1
+
+### Patch Changes
+
+- Add reversible own-key and nested-path assignment with exact rollback support.
+
 ## 1.5.6
 
 ### Patch Changes
