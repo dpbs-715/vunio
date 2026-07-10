@@ -1,5 +1,11 @@
 # @vunio/ui
 
+## 1.6.2
+
+### Patch Changes
+
+- Add configurable deep, shallow, and reference-preserving clone strategies for reversible form commands and path writes.
+
 ## 1.6.1
 
 ### Patch Changes
