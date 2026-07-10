@@ -6,8 +6,10 @@ export {
   hasOwnKey,
   setByPath,
   setByKeyOrPath,
+  setByKeyOrPathReversibly,
   unsetByPath,
   toPath,
   type Path,
   type PathKey,
+  type PathRollback,
 } from './path';
