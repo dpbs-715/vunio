@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { configIterator } from '../componentUtils';
+import { computed, ref } from 'vue';
+import { configIterator, isHidden } from '../componentUtils';
 
 describe('componentUtils', () => {
   describe('configIterator', () => {
@@ -57,6 +58,23 @@ describe('componentUtils', () => {
       expect(handler).toHaveBeenCalledTimes(1);
       expect(handler.mock.calls[0]).toHaveLength(2);
       expect(handler.mock.calls[0][0]).toBe('change');
+    });
+  });
+
+  describe('isHidden', () => {
+    it('should unwrap computed hidden state', () => {
+      const hidden = ref(false);
+      const config = {
+        component: 'input',
+        field: 'name',
+        hidden: computed(() => hidden.value),
+      };
+
+      expect(isHidden(config)).toBe(false);
+
+      hidden.value = true;
+
+      expect(isHidden(config)).toBe(true);
     });
   });
 });
