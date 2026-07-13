@@ -1,6 +1,13 @@
 import type { CommonFormConfig, CommonTableConfig } from '~/components';
 import { isArray, isFunction, isObject } from '@vunio/utils/src';
-import { computed, getCurrentInstance, onBeforeUpdate, shallowRef, type ComputedRef } from 'vue';
+import {
+  computed,
+  getCurrentInstance,
+  isRef,
+  onBeforeUpdate,
+  shallowRef,
+  type ComputedRef,
+} from 'vue';
 import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap';
 import type { registerPropsMap } from '~/components';
 
@@ -101,13 +108,10 @@ export function isHidden(
   item: CommonFormConfig | CommonTableConfig,
   otherCallBackArgs?: Record<string, any>,
 ): boolean {
-  //判断是否为布尔值
-  if (typeof item.hidden === 'boolean') {
-    return item.hidden;
-  } else if (typeof item.hidden === 'function') {
+  if (typeof item.hidden === 'function') {
     return item.hidden({ configItem: item, ...otherCallBackArgs }) as boolean;
   }
-  return false;
+  return Boolean(isRef(item.hidden) ? item.hidden.value : item.hidden);
 }
 export function getRules(
   item: CommonFormConfig | CommonTableConfig,

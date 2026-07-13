@@ -20,12 +20,13 @@ export type CommonFormCommandDispatcher = (command: CommonFormCommand) => void;
 
 type hiddenFunType = (params: Record<string, any>) => boolean;
 type rulesFunType = (params: Record<string, any>) => Arrayable<FormItemRule>;
+type MaybeReadonlyRef<T> = T | Readonly<{ value: T }>;
 
 export type CommonFormConfig = Omit<baseConfig, 'component'> & {
   readField?: string;
   component?: string | ComponentFunctionType | ComponentType;
   span?: number;
-  hidden?: MaybeRef<Boolean> | hiddenFunType;
+  hidden?: MaybeReadonlyRef<boolean> | hiddenFunType;
   isDisabled?: Function;
   labelField?: string;
   formItemProps?: {
