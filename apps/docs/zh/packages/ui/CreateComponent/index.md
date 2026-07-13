@@ -26,6 +26,21 @@
 
 <demo ssg="true" vue="ui/CreateComponent/options.vue" />
 
+当 `component` 为 `radioGroup`、`checkboxGroup` 或 `select` 时，可通过
+`props.options` 传入 `{ label, value }[]` 并自动生成选项。`radioGroup` 还支持以下扩展配置：
+
+| 属性      | 说明                   | 类型       | 默认值   |
+| --------- | ---------------------- | ---------- | -------- |
+| radioType | 将单选项渲染为按钮样式 | `'button'` | 普通单选 |
+| options   | 单选项的标签和值       | `Option[]` | 无       |
+
+```ts
+interface Option {
+  label: any;
+  value: any;
+}
+```
+
 ## 按需注册组件
 
 ```js

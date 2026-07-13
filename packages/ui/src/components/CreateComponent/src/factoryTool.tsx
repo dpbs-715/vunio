@@ -1,6 +1,6 @@
 import { Reactive, toValue } from 'vue';
 import type { Config, Props } from './cc.types';
-import { ElCheckbox, ElOption, ElRadio } from 'element-plus';
+import { ElCheckbox, ElOption, ElRadio, ElRadioButton } from 'element-plus';
 
 type Option = {
   label: any;
@@ -23,12 +23,15 @@ export function ExpandHandler({
    * */
   function optionsHandler() {
     switch (config.component) {
-      case 'radioGroup':
+      case 'radioGroup': {
+        const RadioOption = config.props?.radioType === 'button' ? ElRadioButton : ElRadio;
+        delete normalProps.radioType;
         slotsMap.default = () =>
-          config?.props?.options?.map((item: Option) => {
-            return <ElRadio value={item.value}>{item.label}</ElRadio>;
+          config.props?.options?.map((item: Option) => {
+            return <RadioOption value={item.value}>{item.label}</RadioOption>;
           });
         break;
+      }
       case 'checkboxGroup':
         slotsMap.default = () =>
           config?.props?.options?.map((item: Option) => {

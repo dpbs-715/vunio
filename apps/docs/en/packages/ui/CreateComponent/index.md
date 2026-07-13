@@ -26,6 +26,22 @@ Component utility.
 
 <demo vue="ui/CreateComponent/options.vue" />
 
+When `component` is `radioGroup`, `checkboxGroup`, or `select`, pass
+`{ label, value }[]` through `props.options` to generate options automatically.
+`radioGroup` also supports these extension properties:
+
+| Prop      | Description                     | Type       | Default        |
+| --------- | ------------------------------- | ---------- | -------------- |
+| radioType | Render radio options as buttons | `'button'` | Standard radio |
+| options   | Labels and values for options   | `Option[]` | None           |
+
+```ts
+interface Option {
+  label: any;
+  value: any;
+}
+```
+
 ## Register Components On Demand
 
 ```js
