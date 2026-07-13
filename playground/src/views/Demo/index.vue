@@ -62,8 +62,9 @@ const { config } = useConfigs<CommonFormConfig>([
   {
     field: 'test3',
     label: '测试3',
-    component: 'checkboxGroup',
+    component: 'radioGroup',
     props: {
+      radioType: 'button',
       options: options,
     },
   },

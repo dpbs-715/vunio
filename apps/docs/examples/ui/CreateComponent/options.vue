@@ -14,6 +14,14 @@ const config = ref<Config>({
     options: options,
   },
 });
+const radioButtonValue = ref();
+const radioButtonConfig = ref<Config>({
+  component: 'radioGroup',
+  props: {
+    options: options,
+    radioType: 'button',
+  },
+});
 const config2 = ref<Config>({
   component: 'select',
   props: {
@@ -38,9 +46,13 @@ function createOption() {
 </script>
 
 <template>
-  <el-divider>单选与下拉</el-divider>
+  <el-divider>单选</el-divider>
   值:{{ configValue }}<br>
   <CreateComponent v-model="configValue" :config="config" /><br>
+  按钮样式值:{{ radioButtonValue }}<br>
+  <CreateComponent v-model="radioButtonValue" :config="radioButtonConfig" /><br>
+  <el-divider>下拉</el-divider>
+  值:{{ configValue }}<br>
   <CreateComponent v-model="configValue" :config="config2" /><br>
   <el-divider>多选</el-divider>
   值:{{ configValue2 }}<br>

@@ -149,6 +149,39 @@ describe('CreateComponent', () => {
       wrapper.find('button').trigger('click');
       expect(onClick).toHaveBeenCalled();
     });
+
+    it('should render radio options as standard radios by default', () => {
+      const wrapper = mount(CreateComponent, {
+        props: {
+          config: {
+            component: 'radioGroup',
+            props: {
+              options: [{ label: 'Option 1', value: '1' }],
+            },
+          },
+        },
+      });
+
+      expect(wrapper.find('.el-radio').exists()).toBe(true);
+      expect(wrapper.find('.el-radio-button').exists()).toBe(false);
+    });
+
+    it('should render radio options as buttons when radioType is button', () => {
+      const wrapper = mount(CreateComponent, {
+        props: {
+          config: {
+            component: 'radioGroup',
+            props: {
+              radioType: 'button',
+              options: [{ label: 'Option 1', value: '1' }],
+            },
+          },
+        },
+      });
+
+      expect(wrapper.find('.el-radio-button').exists()).toBe(true);
+      expect(wrapper.attributes('radiotype')).toBeUndefined();
+    });
   });
 
   describe('Children rendering', () => {
