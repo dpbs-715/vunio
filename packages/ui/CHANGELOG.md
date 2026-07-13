@@ -1,5 +1,12 @@
 # @vunio/ui
 
+## 1.6.4
+
+### Patch Changes
+
+- a5eb744: 支持通过 `radioType: 'button'` 将 CreateComponent 的 radioGroup 选项渲染为按钮样式。
+  - @vunio/utils@1.6.4
+
 ## 1.6.3
 
 ### Patch Changes
