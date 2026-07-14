@@ -6,7 +6,7 @@ import { CommonTableLayout } from '../../TableLayout';
 import { CommonSearch } from '../../Search';
 import { CommonTable } from '../../Table';
 import { CommonPagination } from '../../Pagination';
-import { defineModel, ref, watch, type Ref, useAttrs } from 'vue';
+import { defineModel, nextTick, ref, watch, type Ref, useAttrs } from 'vue';
 import type { SelectOrDialogEmits, SelectOrDialogProps } from './SelectOrDialog.types';
 import { useMixConfig } from '@vunio/hooks';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
@@ -27,6 +27,7 @@ const visible = ref(false);
 const selections = ref<any>([]);
 const labelSelections = ref<any>([]);
 const isSettingSelection = ref(false); // 标志位：是否正在程序化设置选中状态
+let selectionSyncCount = 0;
 
 const tableRef = ref();
 
@@ -115,19 +116,25 @@ dataHandler.afterInit = (options: any[]) => {
  * 处理数据选中状态
  * */
 async function handlerDataSelections() {
-  if (!tableRef.value) return;
+  selectionSyncCount += 1;
+  isSettingSelection.value = true;
 
-  isSettingSelection.value = true; // 开始程序化设置选中状态
+  try {
+    await nextTick();
 
-  tableRef.value.clearSelection();
-  // 处理选中
-  tableData.forEach((item) => {
-    if (selections.value.includes(item[dataHandler.VALUE_FIELD.value])) {
-      tableRef.value.toggleRowSelection(item, true);
-    }
-  });
+    if (!tableRef.value) return;
 
-  isSettingSelection.value = false; // 结束程序化设置选中状态
+    tableRef.value.clearSelection();
+    // 处理选中
+    tableData.forEach((item) => {
+      if (selections.value.includes(item[dataHandler.VALUE_FIELD.value])) {
+        tableRef.value.toggleRowSelection(item, true);
+      }
+    });
+  } finally {
+    selectionSyncCount -= 1;
+    isSettingSelection.value = selectionSyncCount > 0;
+  }
 }
 
 /**

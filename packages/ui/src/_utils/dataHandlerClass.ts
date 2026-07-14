@@ -60,6 +60,7 @@ export const DEFAULT_DISABLED_FIELD = 'disabled';
 
 export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   props: ComputedRef<T>;
+  private readonly sourceProps: T;
   options: Ref<Record<any, any>[]> = ref([]);
   loading: Ref<Boolean> = ref(false);
   moreQueryParams: Record<any, any> = {};
@@ -78,6 +79,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   DISABLED_FIELD = computed(() => this.props.value.props?.disabled || DEFAULT_DISABLED_FIELD);
 
   constructor(props: T, attrs = {}) {
+    this.sourceProps = props;
     this.props = computed(() => {
       const cleaned = Object.fromEntries(
         Object.entries(props).filter(([_, v]) => {
@@ -105,6 +107,14 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   getReadyPromise(): Promise<void> {
     return this.readyPromise || Promise.resolve();
   }
+
+  private resolveReady() {
+    if (this.readyResolve) {
+      this.readyResolve();
+      this.readyResolve = null;
+    }
+  }
+
   /**
    * 子类可以重写这个方法用于处理后续操作
    * */
@@ -134,19 +144,21 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       this.preInitOptions();
     });
     watch(
-      () => this.props.value.appendOptions,
+      () => this.sourceProps.appendOptions,
       () => {
         if (this.props.value.appendOptions) {
           this.parseOptions(this.options.value);
         }
       },
+      { deep: 1 },
     );
     watch(
-      () => this.props.value.options,
+      () => this.sourceProps.options,
       (newBindOptions) => {
         const localOptions = newBindOptions && newBindOptions.length > 0 ? [...newBindOptions] : [];
         this.parseOptions(localOptions);
       },
+      { deep: 1 },
     );
   }
   /**
@@ -218,7 +230,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
           localOptions = props.parseData(res);
         } else {
           localOptions = res[commonKeysMap.list] || res;
-          if (res[commonKeysMap.total]) {
+          if (res[commonKeysMap.total] !== undefined) {
             this.total = res[commonKeysMap.total];
           }
         }
@@ -242,6 +254,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
           [this.VALUE_FIELD.value]: 0,
         },
       ];
+      this.resolveReady();
     } finally {
       loading.value = false;
     }
@@ -336,8 +349,10 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
     const processedAppendOptions =
       appendOptions
         .filter((o: any) => {
+          const optionValue = o[this.VALUE_FIELD.value];
           return (
-            o[this.VALUE_FIELD.value] &&
+            optionValue !== undefined &&
+            optionValue !== null &&
             filteredOptions.findIndex(
               (z: any) => z[this.LABEL_FIELD.value] == o[this.LABEL_FIELD.value],
             ) === -1
@@ -395,10 +410,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       options.value = localOptions;
     }
     // options 处理完成，resolve ready promise
-    if (this.readyResolve) {
-      this.readyResolve();
-      this.readyResolve = null;
-    }
+    this.resolveReady();
   }
 
   findOptionByValue(
