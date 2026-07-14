@@ -27,6 +27,7 @@ const visible = ref(false);
 const selections = ref<any>([]);
 const labelSelections = ref<any>([]);
 const isSettingSelection = ref(false); // 标志位：是否正在程序化设置选中状态
+let selectionSyncCount = 0;
 
 const tableRef = ref();
 
@@ -115,13 +116,14 @@ dataHandler.afterInit = (options: any[]) => {
  * 处理数据选中状态
  * */
 async function handlerDataSelections() {
-  await nextTick();
-
-  if (!tableRef.value) return;
-
-  isSettingSelection.value = true; // 开始程序化设置选中状态
+  selectionSyncCount += 1;
+  isSettingSelection.value = true;
 
   try {
+    await nextTick();
+
+    if (!tableRef.value) return;
+
     tableRef.value.clearSelection();
     // 处理选中
     tableData.forEach((item) => {
@@ -130,7 +132,8 @@ async function handlerDataSelections() {
       }
     });
   } finally {
-    isSettingSelection.value = false; // 结束程序化设置选中状态
+    selectionSyncCount -= 1;
+    isSettingSelection.value = selectionSyncCount > 0;
   }
 }
 
