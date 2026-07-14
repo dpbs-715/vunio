@@ -60,6 +60,7 @@ export const DEFAULT_DISABLED_FIELD = 'disabled';
 
 export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   props: ComputedRef<T>;
+  private readonly sourceProps: T;
   options: Ref<Record<any, any>[]> = ref([]);
   loading: Ref<Boolean> = ref(false);
   moreQueryParams: Record<any, any> = {};
@@ -78,6 +79,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   DISABLED_FIELD = computed(() => this.props.value.props?.disabled || DEFAULT_DISABLED_FIELD);
 
   constructor(props: T, attrs = {}) {
+    this.sourceProps = props;
     this.props = computed(() => {
       const cleaned = Object.fromEntries(
         Object.entries(props).filter(([_, v]) => {
@@ -142,19 +144,21 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       this.preInitOptions();
     });
     watch(
-      () => this.props.value.appendOptions,
+      () => this.sourceProps.appendOptions,
       () => {
         if (this.props.value.appendOptions) {
           this.parseOptions(this.options.value);
         }
       },
+      { deep: 1 },
     );
     watch(
-      () => this.props.value.options,
+      () => this.sourceProps.options,
       (newBindOptions) => {
         const localOptions = newBindOptions && newBindOptions.length > 0 ? [...newBindOptions] : [];
         this.parseOptions(localOptions);
       },
+      { deep: 1 },
     );
   }
   /**

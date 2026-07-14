@@ -72,4 +72,38 @@ describe('DataHandlerClass', () => {
     ]);
     scope.stop();
   });
+
+  it('should react once to structural changes in appended options', async () => {
+    const props = reactive<DataHandlerType>({
+      options: [{ label: 'Base', value: 1 }],
+      appendOptions: [{ label: 'Extra', value: 2 }],
+    });
+    const handler = new DataHandlerClass(props);
+    const afterInit = vi.spyOn(handler, 'afterInit');
+
+    handler.init();
+    afterInit.mockClear();
+
+    if (Array.isArray(props.appendOptions)) {
+      props.appendOptions.push({ label: 'Extra 2', value: 3 });
+    }
+    await nextTick();
+
+    expect(afterInit).toHaveBeenCalledTimes(1);
+    expect(handler.options.value).toEqual([
+      { label: 'Base', value: 1 },
+      { label: 'Extra', value: 2, appendData: true },
+      { label: 'Extra 2', value: 3, appendData: true },
+    ]);
+
+    afterInit.mockClear();
+    props.appendOptions = [{ label: 'Replacement', value: 4 }];
+    await nextTick();
+
+    expect(afterInit).toHaveBeenCalledTimes(1);
+    expect(handler.options.value).toEqual([
+      { label: 'Base', value: 1 },
+      { label: 'Replacement', value: 4, appendData: true },
+    ]);
+  });
 });
