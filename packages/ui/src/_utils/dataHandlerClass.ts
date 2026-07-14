@@ -105,6 +105,14 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   getReadyPromise(): Promise<void> {
     return this.readyPromise || Promise.resolve();
   }
+
+  private resolveReady() {
+    if (this.readyResolve) {
+      this.readyResolve();
+      this.readyResolve = null;
+    }
+  }
+
   /**
    * 子类可以重写这个方法用于处理后续操作
    * */
@@ -142,7 +150,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       },
     );
     watch(
-      () => this.props.value.options,
+      () => this.props.value.options?.slice(),
       (newBindOptions) => {
         const localOptions = newBindOptions && newBindOptions.length > 0 ? [...newBindOptions] : [];
         this.parseOptions(localOptions);
@@ -218,7 +226,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
           localOptions = props.parseData(res);
         } else {
           localOptions = res[commonKeysMap.list] || res;
-          if (res[commonKeysMap.total]) {
+          if (res[commonKeysMap.total] !== undefined) {
             this.total = res[commonKeysMap.total];
           }
         }
@@ -242,6 +250,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
           [this.VALUE_FIELD.value]: 0,
         },
       ];
+      this.resolveReady();
     } finally {
       loading.value = false;
     }
@@ -336,8 +345,10 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
     const processedAppendOptions =
       appendOptions
         .filter((o: any) => {
+          const optionValue = o[this.VALUE_FIELD.value];
           return (
-            o[this.VALUE_FIELD.value] &&
+            optionValue !== undefined &&
+            optionValue !== null &&
             filteredOptions.findIndex(
               (z: any) => z[this.LABEL_FIELD.value] == o[this.LABEL_FIELD.value],
             ) === -1
@@ -395,10 +406,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       options.value = localOptions;
     }
     // options 处理完成，resolve ready promise
-    if (this.readyResolve) {
-      this.readyResolve();
-      this.readyResolve = null;
-    }
+    this.resolveReady();
   }
 
   findOptionByValue(
