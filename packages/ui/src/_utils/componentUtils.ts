@@ -7,6 +7,7 @@ import {
   onBeforeUpdate,
   shallowRef,
   type ComputedRef,
+  unref,
 } from 'vue';
 import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap';
 import type { registerPropsMap } from '~/components';
@@ -27,6 +28,75 @@ function wrapWithCtx(fn: WrappedFn, getCtx: () => Record<string, any>) {
   return wrapped;
 }
 
+type GetConfigContext = () => Record<string, any>;
+
+function cloneConfigArray(
+  config: any[],
+  getCtx: GetConfigContext,
+  visited: WeakMap<object, any>,
+): any[] {
+  const cached = visited.get(config);
+  if (cached) return cached;
+
+  const cloned: any[] = [];
+  visited.set(config, cloned);
+
+  for (let index = 0; index < config.length; index++) {
+    const configItem = unref(config[index]);
+
+    if (isObject(configItem)) {
+      cloned[index] = cloneConfigObject({}, configItem, getCtx, visited);
+    } else if (isArray(configItem)) {
+      cloned[index] = cloneConfigArray(configItem, getCtx, visited);
+    } else {
+      cloned[index] = configItem;
+    }
+  }
+
+  return cloned;
+}
+
+function cloneConfigObject(
+  aimConfig: Record<string, any>,
+  config: Record<string, any>,
+  getCtx: GetConfigContext,
+  visited: WeakMap<object, any>,
+): Record<string, any> {
+  const cached = visited.get(config);
+  if (cached) return cached;
+
+  visited.set(config, aimConfig);
+
+  for (const key in config) {
+    const configValue = unref(config[key]);
+
+    if (isObject(configValue) && key !== 'component') {
+      aimConfig[key] = cloneConfigObject({}, configValue, getCtx, visited);
+    } else if (isArray(configValue)) {
+      aimConfig[key] = cloneConfigArray(configValue, getCtx, visited);
+    } else if (isFunction(configValue) && !configValue[`__D__`] && !ignoreFunction.includes(key)) {
+      aimConfig[key] = wrapWithCtx(configValue, getCtx);
+    } else {
+      aimConfig[key] = configValue;
+    }
+  }
+
+  const isDisabled = unref(config.isDisabled);
+  if (isDisabled) {
+    if (!aimConfig.props) {
+      aimConfig.props = {};
+    }
+    const disabled = unref(unref(config.props)?.['disabled']);
+    if (isFunction(isDisabled)) {
+      aimConfig.props['disabled'] = isDisabled(getCtx()) || disabled;
+    } else {
+      aimConfig.props['disabled'] = isDisabled || disabled;
+    }
+  }
+
+  return aimConfig;
+}
+
 /**
  * 配置迭代器 给函数式配置追加参数等
  * */
@@ -41,48 +111,13 @@ export const configIterator = (
     writeArgs?: Record<string, any>;
     getWriteArgs?: () => Record<string, any>;
   },
-) => {
+): Record<string, any> => {
   const getCtx = getWriteArgs || (() => writeArgs || {});
+  const resolvedConfig = unref(config);
 
-  for (const key in config) {
-    if (isObject(config[key]) && key != 'component') {
-      //处理对象递归调用
-      aimConfig[key] = {};
-      configIterator(aimConfig[key], { config: config[key], getWriteArgs: getCtx });
-    } else if (isArray(config[key])) {
-      aimConfig[key] = [];
-      for (let index = 0; index < config[key].length; index++) {
-        if (isObject(config[key][index])) {
-          aimConfig[key][index] = {};
-          configIterator(aimConfig[key][index], {
-            config: config[key][index],
-            getWriteArgs: getCtx,
-          });
-        } else {
-          aimConfig[key][index] = config[key][index];
-        }
-      }
-    } else if (isFunction(config[key]) && !config[key][`__D__`] && !ignoreFunction.includes(key)) {
-      //处理函数追加参数
-      aimConfig[key] = wrapWithCtx(config[key], getCtx);
-    } else {
-      //其他情况直接赋值
-      aimConfig[key] = config[key];
-    }
-  }
-  /**
-   * 处理其他扩展属性
-   * */
-  if (config.isDisabled) {
-    if (!aimConfig.props) {
-      aimConfig.props = {};
-    }
-    if (isFunction(config.isDisabled)) {
-      aimConfig.props['disabled'] = config.isDisabled?.(getCtx()) || config.props?.['disabled'];
-    } else {
-      aimConfig.props['disabled'] = config.isDisabled || config.props?.['disabled'];
-    }
-  }
+  if (!isObject(resolvedConfig)) return aimConfig;
+
+  return cloneConfigObject(aimConfig, resolvedConfig, getCtx, new WeakMap());
 };
 
 /**
