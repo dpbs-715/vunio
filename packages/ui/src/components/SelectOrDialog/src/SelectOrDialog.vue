@@ -6,7 +6,7 @@ import { CommonTableLayout } from '../../TableLayout';
 import { CommonSearch } from '../../Search';
 import { CommonTable } from '../../Table';
 import { CommonPagination } from '../../Pagination';
-import { defineModel, ref, watch, type Ref, useAttrs } from 'vue';
+import { defineModel, nextTick, ref, watch, type Ref, useAttrs } from 'vue';
 import type { SelectOrDialogEmits, SelectOrDialogProps } from './SelectOrDialog.types';
 import { useMixConfig } from '@vunio/hooks';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
@@ -115,19 +115,23 @@ dataHandler.afterInit = (options: any[]) => {
  * 处理数据选中状态
  * */
 async function handlerDataSelections() {
+  await nextTick();
+
   if (!tableRef.value) return;
 
   isSettingSelection.value = true; // 开始程序化设置选中状态
 
-  tableRef.value.clearSelection();
-  // 处理选中
-  tableData.forEach((item) => {
-    if (selections.value.includes(item[dataHandler.VALUE_FIELD.value])) {
-      tableRef.value.toggleRowSelection(item, true);
-    }
-  });
-
-  isSettingSelection.value = false; // 结束程序化设置选中状态
+  try {
+    tableRef.value.clearSelection();
+    // 处理选中
+    tableData.forEach((item) => {
+      if (selections.value.includes(item[dataHandler.VALUE_FIELD.value])) {
+        tableRef.value.toggleRowSelection(item, true);
+      }
+    });
+  } finally {
+    isSettingSelection.value = false; // 结束程序化设置选中状态
+  }
 }
 
 /**
