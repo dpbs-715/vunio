@@ -150,7 +150,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       },
     );
     watch(
-      () => this.props.value.options?.slice(),
+      () => this.props.value.options,
       (newBindOptions) => {
         const localOptions = newBindOptions && newBindOptions.length > 0 ? [...newBindOptions] : [];
         this.parseOptions(localOptions);
