@@ -13,7 +13,6 @@ import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defau
 import type { registerPropsMap } from '~/components';
 
 const ignoreFunction = ['api'];
-const referenceConfigKeys = new Set(['data', 'options']);
 const VUNIO_WRAPPED = Symbol('vunio_wrapped');
 
 type WrappedFn = ((...args: any[]) => any) & {
@@ -71,9 +70,7 @@ function cloneConfigObject(
   for (const key in config) {
     const configValue = unref(config[key]);
 
-    if (referenceConfigKeys.has(key)) {
-      aimConfig[key] = configValue;
-    } else if (isObject(configValue) && key !== 'component') {
+    if (isObject(configValue) && key !== 'component') {
       aimConfig[key] = cloneConfigObject({}, configValue, getCtx, visited);
     } else if (isArray(configValue)) {
       aimConfig[key] = cloneConfigArray(configValue, getCtx, visited);

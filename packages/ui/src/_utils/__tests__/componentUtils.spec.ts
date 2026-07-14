@@ -70,7 +70,9 @@ describe('componentUtils', () => {
         },
       });
 
-      expect(aimConfig.props.options).toBe(options.value);
+      expect(aimConfig.props.options).toEqual(options.value);
+      expect(aimConfig.props.options).not.toBe(options.value);
+      expect(aimConfig.props.options[0]).not.toBe(options.value[0]);
     });
 
     it('should unwrap computed options without traversing Vue internals', () => {
@@ -84,7 +86,32 @@ describe('componentUtils', () => {
         },
       });
 
-      expect(aimConfig.props.options).toBe(source.value);
+      expect(aimConfig.props.options).toEqual(source.value);
+      expect(aimConfig.props.options).not.toBe(source.value);
+      expect(aimConfig.props.options[0]).not.toBe(source.value[0]);
+    });
+
+    it('should isolate downstream option mutations from plain source options', () => {
+      const options = [
+        {
+          label: 'Parent',
+          value: 1,
+          children: [{ label: 'Child', value: 2 }],
+        },
+      ];
+      const aimConfig: Record<string, any> = {};
+
+      configIterator(aimConfig, {
+        config: {
+          props: { options },
+        },
+      });
+
+      aimConfig.props.options[0].value = '1';
+      aimConfig.props.options[0].children[0].value = '2';
+
+      expect(options[0].value).toBe(1);
+      expect(options[0].children[0].value).toBe(2);
     });
 
     it('should preserve direct and indirect circular references', () => {
