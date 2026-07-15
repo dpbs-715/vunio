@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { config, mount } from '@vue/test-utils';
 import { h, defineComponent, ref, nextTick } from 'vue';
 import { ElTable } from 'element-plus';
 
@@ -350,16 +350,28 @@ describe('CommonTable', () => {
   });
 
   describe('Loading state', () => {
-    it('should show loading state', () => {
-      const wrapper = mount(Table, {
-        props: {
-          config: basicConfig,
-          data: mockData,
-          loading: true,
-        },
-      });
+    it('should show loading without globally registering the directive', async () => {
+      const globalPlugins = config.global.plugins;
+      config.global.plugins = [];
 
-      expect(wrapper.findComponent(ElTable).exists()).toBe(true);
+      try {
+        const wrapper = mount(Table, {
+          props: {
+            config: basicConfig,
+            data: mockData,
+            loading: true,
+          },
+        });
+
+        try {
+          await nextTick();
+          expect(wrapper.find('.el-loading-mask').exists()).toBe(true);
+        } finally {
+          wrapper.unmount();
+        }
+      } finally {
+        config.global.plugins = globalPlugins;
+      }
     });
 
     it('should not show loading when loading is false', () => {
@@ -371,7 +383,7 @@ describe('CommonTable', () => {
         },
       });
 
-      expect(wrapper.findComponent(ElTable).exists()).toBe(true);
+      expect(wrapper.find('.el-loading-mask').exists()).toBe(false);
     });
   });
 
