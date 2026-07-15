@@ -12,3 +12,4 @@ export * from './SelectOrDialog';
 export * from './Descriptions';
 export * from './Foma';
 export * from './LazyRender';
+export * from './ColorPicker';
