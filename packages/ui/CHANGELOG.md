@@ -1,5 +1,15 @@
 # @vunio/ui
 
+## 1.7.0
+
+### Minor Changes
+
+- a3c976b: 新增通用 `CommonColorPicker` 颜色选择组件，并支持在 `CommonForm` 中通过 `component: 'color'` 直接渲染颜色字段。
+
+### Patch Changes
+
+- @vunio/utils@1.7.0
+
 ## 1.6.5
 
 ### Patch Changes
