@@ -53,17 +53,18 @@ watch(
   },
 );
 
-function emitModelValue(value: string) {
-  if (lastEmittedValue.value === value) return;
+function emitModelValue(value: string): boolean {
+  if (lastEmittedValue.value === value) return false;
   lastEmittedValue.value = value;
   emit('update:modelValue', value);
+  return true;
 }
 
 function acceptValue(value: string, emitChange = false) {
   draftValue.value = value;
   isInvalid.value = false;
-  emitModelValue(value);
-  if (emitChange) emit('change', value);
+  const hasValueChanged = emitModelValue(value);
+  if (emitChange && hasValueChanged) emit('change', value);
 }
 
 function commitDraft() {

@@ -71,6 +71,27 @@ describe('CommonColorPicker', () => {
     await vi.runAllTimersAsync();
 
     expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual(['rgb(7, 17, 31)']);
+    expect(wrapper.emitted('change')?.at(-1)).toEqual(['rgb(7, 17, 31)']);
+    expect(wrapper.emitted('blur')).toHaveLength(1);
+  });
+
+  it('does not emit change when Enter or blur commits an unchanged color', async () => {
+    vi.useFakeTimers();
+    const wrapper = mountColorPicker({ modelValue: '#07111F' });
+    const outside = document.createElement('button');
+    document.body.append(outside);
+    const input = nativeInput(wrapper);
+
+    input.element.focus();
+    await input.trigger('keydown', { key: 'Enter' });
+
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+    expect(wrapper.emitted('change')).toBeUndefined();
+
+    outside.focus();
+    await vi.runAllTimersAsync();
+
+    expect(wrapper.emitted('change')).toBeUndefined();
     expect(wrapper.emitted('blur')).toHaveLength(1);
   });
 

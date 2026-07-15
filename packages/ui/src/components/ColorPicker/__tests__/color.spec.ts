@@ -20,6 +20,8 @@ describe('CommonColorPicker color utilities', () => {
     '#12345',
     'rgb(256, 0, 0)',
     'rgb(0, 0)',
+    'rgb(1 2 3 / )',
+    'rgba(1 2 3 / )',
     'rgba(0, 0, 0, 2)',
     'red',
     'var(--brand-color)',

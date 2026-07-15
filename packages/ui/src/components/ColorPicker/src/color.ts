@@ -61,10 +61,12 @@ function splitRgbArguments(functionName: string, body: string): string[] | undef
   const slashParts = body.split('/').map((part) => part.trim());
   if (slashParts.length > 2) return undefined;
 
+  const hasAlphaSeparator = slashParts.length === 2;
   const colorChannels = slashParts[0].split(/\s+/).filter(Boolean);
   const alphaChannel = slashParts[1];
   if (colorChannels.length !== 3) return undefined;
-  if (expectsAlpha && !alphaChannel) return undefined;
+  if (hasAlphaSeparator && !alphaChannel) return undefined;
+  if (expectsAlpha && !hasAlphaSeparator) return undefined;
 
   return alphaChannel ? [...colorChannels, alphaChannel] : colorChannels;
 }
