@@ -1,7 +1,7 @@
-import { ElTable, ElTableV2, ElAutoResizer } from 'element-plus';
+import { ElAutoResizer, ElLoadingDirective, ElTable, ElTableV2 } from 'element-plus';
 import type { CommonTableConfig, CommonTableProps, DataType, RowDataType } from './Table.types';
 import { SORT_ORDERS, SORTABLE, sortChange, useTableV2Sort } from './useTableSort.ts';
-import { ComputedRef, SlotsType, toValue } from 'vue';
+import { toValue, withDirectives, type ComputedRef, type SlotsType, type VNode } from 'vue';
 import { setDefaultSlotColumnProps, useComponentProps } from '~/_utils/componentUtils.ts';
 import { RenderColumnsClass } from './renderColumns.tsx';
 import { VueDraggable } from 'vue-draggable-plus';
@@ -33,6 +33,9 @@ export class RenderTableClass {
   }
   getTableRef() {
     return this.tableRef;
+  }
+  applyLoading(vnode: VNode) {
+    return withDirectives(vnode, [[ElLoadingDirective, toValue(this.props.value.loading)]]);
   }
   /**
    * 渲染主入口
@@ -76,11 +79,10 @@ export class RenderTableClass {
       <ElAutoResizer>
         {{
           default: ({ height, width }: { height: number; width: number }) => {
-            return (
+            return this.applyLoading(
               <Com
                 class="commonTable"
                 ref={(instance: any) => (this.tableRef = instance)}
-                v-loading={toValue(this.props.value.loading)}
                 sortBy={sortState.value}
                 onColumnSort={setSortState}
                 height={height}
@@ -90,7 +92,7 @@ export class RenderTableClass {
                 config={null}
               >
                 {this.renderTableV2Slots()}
-              </Com>
+              </Com>,
             );
           },
         }}
@@ -128,19 +130,20 @@ export class RenderTableClass {
    * */
   renderTable(Com: any) {
     return this.useDrag(
-      <Com
-        ref={(instance: any) => (this.tableRef = instance)}
-        class={['commonTable', this.props.value.singleSelection && 'commonTableSingleSelection']}
-        v-loading={toValue(this.props.value.loading)}
-        onSortChange={(arg: any) => sortChange(arg, this.data)}
-        onRowDblclick={(row: RowDataType) => this.onRowDblclick(row)}
-        onSelectionChange={(selection: Record<any, any>[]) =>
-          this.handleSelectionChange(selection, this.props.value)
-        }
-        {...this.props.value}
-      >
-        {this.renderTableSlots()}
-      </Com>,
+      this.applyLoading(
+        <Com
+          ref={(instance: any) => (this.tableRef = instance)}
+          class={['commonTable', this.props.value.singleSelection && 'commonTableSingleSelection']}
+          onSortChange={(arg: any) => sortChange(arg, this.data)}
+          onRowDblclick={(row: RowDataType) => this.onRowDblclick(row)}
+          onSelectionChange={(selection: Record<any, any>[]) =>
+            this.handleSelectionChange(selection, this.props.value)
+          }
+          {...this.props.value}
+        >
+          {this.renderTableSlots()}
+        </Com>,
+      ),
     );
   }
   /**
