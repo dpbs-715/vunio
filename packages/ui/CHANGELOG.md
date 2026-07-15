@@ -1,5 +1,12 @@
 # @vunio/ui
 
+## 1.6.5
+
+### Patch Changes
+
+- b291125: 修复 `CommonTable` 的 loading 指令依赖，使用方无需再全局注册 Element Plus 的 loading 指令。
+  - @vunio/utils@1.6.5
+
 ## 1.6.4
 
 ### Patch Changes
