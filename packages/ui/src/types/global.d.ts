@@ -24,6 +24,7 @@ declare module 'vue' {
     CommonSelectOrDialog: (typeof import('@vunio/ui'))['CommonSelectOrDialog'];
     CommonDescriptions: (typeof import('@vunio/ui'))['CommonDescriptions'];
     CommonFoma: (typeof import('@vunio/ui'))['CommonFoma'];
+    CommonColorPicker: (typeof import('@vunio/ui'))['CommonColorPicker'];
   }
 }
 

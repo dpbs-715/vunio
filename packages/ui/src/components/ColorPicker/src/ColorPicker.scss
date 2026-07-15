@@ -1,0 +1,83 @@
+.CommonColorPicker {
+  display: inline-flex;
+  gap: 8px;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  vertical-align: middle;
+
+  :deep(.CommonColorPicker__swatch) {
+    flex: 0 0 auto;
+  }
+
+  :deep(.CommonColorPicker__swatch .el-color-picker__trigger) {
+    padding: 0;
+  }
+
+  :deep(.CommonColorPicker__swatch .el-color-picker__color) {
+    background-color: var(--el-fill-color-blank);
+    background-image:
+      linear-gradient(
+        45deg,
+        var(--el-color-picker-alpha-bg-a, var(--el-border-color)) 25%,
+        transparent 25%
+      ),
+      linear-gradient(
+        135deg,
+        var(--el-color-picker-alpha-bg-a, var(--el-border-color)) 25%,
+        transparent 25%
+      ),
+      linear-gradient(
+        45deg,
+        transparent 75%,
+        var(--el-color-picker-alpha-bg-a, var(--el-border-color)) 75%
+      ),
+      linear-gradient(
+        135deg,
+        transparent 75%,
+        var(--el-color-picker-alpha-bg-a, var(--el-border-color)) 75%
+      );
+    background-position:
+      0 0,
+      6px 0,
+      6px -6px,
+      0 6px;
+    background-size: 12px 12px;
+  }
+
+  :deep(.CommonColorPicker__swatch .el-color-picker__color-inner) {
+    border-radius: calc(var(--el-border-radius-small) - 1px);
+  }
+
+  :deep(.CommonColorPicker__swatch .el-color-picker__icon.is-icon-arrow-down) {
+    display: none;
+  }
+
+  &__input {
+    --el-input-hover-border-color: var(--el-color-primary);
+
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  &.is-focused :deep(.CommonColorPicker__swatch .el-color-picker__trigger) {
+    border-color: var(--el-color-primary);
+  }
+
+  &.is-invalid &__input :deep(.el-input__wrapper) {
+    box-shadow: 0 0 0 1px var(--el-color-danger) inset;
+  }
+
+  &.is-invalid &__input :deep(.el-input__inner) {
+    color: var(--el-color-danger);
+  }
+
+  &.is-readonly :deep(.CommonColorPicker__swatch .el-color-picker__trigger) {
+    cursor: default;
+    background-color: var(--el-fill-color-blank);
+  }
+
+  &.is-readonly :deep(.CommonColorPicker__swatch .el-color-picker__color) {
+    opacity: 1;
+  }
+}

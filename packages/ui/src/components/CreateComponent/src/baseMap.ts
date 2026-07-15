@@ -13,6 +13,7 @@ import {
 import CommonButton from '../../Button';
 import CommonSelect from '../../Select';
 import CommonSelectOrDialog from '../../SelectOrDialog';
+import CommonColorPicker from '../../ColorPicker';
 const BaseMap: registerMap = {
   radio: ElRadio,
   radioGroup: ElRadioGroup,
@@ -26,6 +27,7 @@ const BaseMap: registerMap = {
   button: CommonButton,
   commonSelect: CommonSelect,
   commonSelectOrDialog: CommonSelectOrDialog,
+  color: CommonColorPicker,
 };
 
 const HtmlTags = [

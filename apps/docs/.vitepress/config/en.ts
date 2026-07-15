@@ -53,6 +53,7 @@ export const en = defineConfig({
           { text: 'Pagination', link: '/en/packages/ui/Pagination/' },
           { text: 'TableLayout', link: '/en/packages/ui/TableLayout/' },
           { text: 'Select', link: '/en/packages/ui/Select/' },
+          { text: 'ColorPicker', link: '/en/packages/ui/ColorPicker/' },
           { text: 'SelectOrDialog', link: '/en/packages/ui/SelectOrDialog/' },
           { text: 'Descriptions', link: '/en/packages/ui/Descriptions/' },
           { text: 'foma', link: '/en/packages/ui/Foma/' },
