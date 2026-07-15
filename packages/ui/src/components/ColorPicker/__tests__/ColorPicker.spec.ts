@@ -95,6 +95,24 @@ describe('CommonColorPicker', () => {
     expect(wrapper.emitted('blur')).toHaveLength(1);
   });
 
+  it('retries commits until the parent acknowledges modelValue', async () => {
+    const wrapper = mountColorPicker({ modelValue: '#07111F' });
+    const input = nativeInput(wrapper);
+
+    await input.setValue('#abc');
+    await input.trigger('keydown', { key: 'Enter' });
+    await input.trigger('keydown', { key: 'Enter' });
+
+    expect(wrapper.emitted('update:modelValue')).toEqual([['#ABC'], ['#ABC']]);
+    expect(wrapper.emitted('change')).toEqual([['#ABC'], ['#ABC']]);
+
+    await wrapper.setProps({ modelValue: '#ABC' });
+    await input.trigger('keydown', { key: 'Enter' });
+
+    expect(wrapper.emitted('update:modelValue')).toHaveLength(2);
+    expect(wrapper.emitted('change')).toHaveLength(2);
+  });
+
   it('restores modelValue on Escape', async () => {
     const wrapper = mountColorPicker({ modelValue: '#07111F' });
     const input = nativeInput(wrapper);

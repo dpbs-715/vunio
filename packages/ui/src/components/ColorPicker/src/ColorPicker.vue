@@ -39,7 +39,6 @@ const colorPickerRef = useTemplateRef<ColorPickerComponent>('colorPicker');
 const draftValue = ref(modelValue);
 const isInvalid = ref(false);
 const hasCompositeFocus = ref(false);
-const lastEmittedValue = ref(modelValue);
 const panelClass = `common-color-picker-panel-${useId().replace(/[^a-z\d_-]/gi, '')}`;
 const elementPlusFormat = computed(() => (colorFormat === 'auto' ? undefined : colorFormat));
 const pickerValue = computed(() => (modelValue ? modelValue : null));
@@ -48,14 +47,12 @@ watch(
   () => modelValue,
   (value) => {
     draftValue.value = value;
-    lastEmittedValue.value = value;
     isInvalid.value = false;
   },
 );
 
 function emitModelValue(value: string): boolean {
-  if (lastEmittedValue.value === value) return false;
-  lastEmittedValue.value = value;
+  if (modelValue === value) return false;
   emit('update:modelValue', value);
   return true;
 }
