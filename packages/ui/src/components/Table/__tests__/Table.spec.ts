@@ -187,7 +187,7 @@ describe('CommonTable', () => {
 
       expect(wrapper.findComponent(ElTable).exists()).toBe(true);
       // Data is bound through props
-      expect(wrapper.props('data')).toEqual(mockData);
+      expect(wrapper.findComponent(ElTable).props('data')).toEqual(mockData);
     });
 
     it('should update table data when parent replaces data prop', async () => {
@@ -214,7 +214,7 @@ describe('CommonTable', () => {
       });
 
       expect(wrapper.findComponent(ElTable).exists()).toBe(true);
-      expect(wrapper.props('data')).toEqual([]);
+      expect(wrapper.findComponent(ElTable).props('data')).toEqual([]);
     });
   });
 
