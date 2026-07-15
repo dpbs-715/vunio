@@ -67,7 +67,7 @@ function acceptValue(value: string, emitChange = false) {
 function commitDraft() {
   if (disabled || readonly) return false;
 
-  const candidate = draftValue.value.trim();
+  const candidate = draftValue.value?.trim() || null;
   if (!candidate) {
     if (clearable || !modelValue) {
       acceptValue('', true);
