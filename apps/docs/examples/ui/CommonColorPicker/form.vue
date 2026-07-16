@@ -12,6 +12,7 @@ const config = [
       showAlpha: true,
       clearable: true,
     },
+    span: 24,
   },
 ];
 </script>
