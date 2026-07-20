@@ -11,7 +11,6 @@ defineOptions({
 
 const {
   modelValue = '',
-  size = 'default',
   disabled = false,
   readonly = false,
   clearable = false,
