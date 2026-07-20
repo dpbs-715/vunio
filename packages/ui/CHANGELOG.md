@@ -1,5 +1,13 @@
 # @vunio/ui
 
+## 1.7.1
+
+### Patch Changes
+
+- ba12ed2: change color component size
+- Updated dependencies [ba12ed2]
+  - @vunio/utils@1.7.1
+
 ## 1.7.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @vunio/directives
 
+## 1.7.1
+
+### Patch Changes
+
+- ba12ed2: change color component size
+
 ## 1.7.0
 
 ## 1.6.5
