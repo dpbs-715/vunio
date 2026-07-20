@@ -89,6 +89,11 @@ const { config } = useConfigs<CommonFormConfig>([
       ],
     },
   },
+  {
+    field: 'test9',
+    label: '测试9',
+    component: 'color',
+  },
 ]);
 const loading = ref(false);
 const formData = reactive({
@@ -117,7 +122,13 @@ setTimeout(() => {
 <template>
   {{ formData }}
 
-  <CommonForm v-model="formData" :readonly="readonlyFlg" :loading="loading" :config="config" />
+  <CommonForm
+    v-model="formData"
+    size="small"
+    :readonly="readonlyFlg"
+    :loading="loading"
+    :config="config"
+  />
 </template>
 
 <style scoped></style>
