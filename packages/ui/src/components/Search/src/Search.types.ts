@@ -8,6 +8,7 @@ export interface CommonSearchProps extends CommonFormBaseProps {
     lg: number;
     xl: number;
   };
+  actionCol?: number;
   //会把默认值也清空
   resetAll?: boolean;
   //重置时不查询
