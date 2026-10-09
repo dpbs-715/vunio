@@ -1,5 +1,12 @@
 # @vunio/ui
 
+## 1.7.2
+
+### Patch Changes
+
+- 2833883: Fix CommonSearch actionCol prop overrides while preserving global defaults.
+  - @vunio/utils@1.7.2
+
 ## 1.7.1
 
 ### Patch Changes
