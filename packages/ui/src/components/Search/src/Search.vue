@@ -3,10 +3,7 @@ import { CommonForm, CommonButton } from '~/components';
 import type { CommonSearchEmits, CommonSearchProps } from './Search.types';
 import { getCurrentInstance, ref, inject } from 'vue';
 import { ElCol, ElFormItem } from 'element-plus';
-import {
-  commonKeysMap,
-  componentDefaultPropsMap,
-} from '~/components/CreateComponent/src/defaultMap.ts';
+import { commonKeysMap } from '~/components/CreateComponent/src/defaultMap.ts';
 import { useComponentProps } from '~/_utils/componentUtils.ts';
 
 defineOptions({
@@ -81,7 +78,7 @@ function collectFormRef(instance: any) {
     <template #moreCol>
       <el-col
         style="display: flex; align-items: center; min-width: 140px"
-        :span="componentDefaultPropsMap.CommonSearch.actionCol"
+        :span="searchProps.actionCol"
       >
         <el-form-item>
           <CommonButton :loading="searchProps.loading" type="primary" @click="queryHandler">
